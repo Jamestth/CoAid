@@ -11,7 +11,7 @@
 import TopHeader from "@/components/TopHeader.vue";
 export default {
   components: {
-    "top-header": TopHeader,
+    "top-header": TopHeader
   },
 };
 </script>
