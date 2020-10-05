@@ -2,7 +2,7 @@
   <div class="navGroup">
     <b-navbar toggleable="lg" type="light" variant="light">
       <b-navbar-brand>
-        <img src="../assets/Logo.png" width="100" />
+        <img src="../assets/LogoIcon.png" width="100" />
       </b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -41,11 +41,10 @@ export default {};
   color: black;
   border-bottom-style: solid;
   border-bottom-color: #a6bfff;
-  
 }
 
-#nav a{
-    font-weight: 100;
+#nav a {
+  font-weight: 100;
 }
 .bg-info {
   background-color: white;
@@ -60,7 +59,6 @@ export default {};
 .navbar-expand-lg .navbar-nav {
   font-size: 1.5em;
   font-family: "Cabin", Helvetica, Arial;
-  
 }
 li {
   margin-top: auto;
@@ -68,7 +66,6 @@ li {
 }
 
 .navbar-dark .navbar-toggler-icon {
-    fill: #a6bfff;
-
+  fill: #a6bfff;
 }
 </style>
