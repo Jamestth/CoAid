@@ -113,13 +113,13 @@ export default {
         },
         {
           key: "department",
-          label: "department",
+          label: "Department",
           sortable: true,
           class: "text-center",
         },
         {
           key: "isActive",
-          label: "is Active",
+          label: "Status",
           // eslint-disable-next-line no-unused-vars
           formatter: (value, key, item) => {
             return value ? "Yes" : "No";

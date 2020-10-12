@@ -1,13 +1,14 @@
 <template>
+<b-container fluid>
   <div class="navGroup">
-    <b-navbar toggleable="lg" type="light" variant="light">
-      <b-navbar-brand>
+    <b-navbar  toggleable="lg" type="light" variant="light">
+      <b-navbar-brand class = "pl-3 ">
         <img src="../assets/LogoIcon.png" width="100" />
       </b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-      <b-collapse id="nav-collapse" class="ml-auto align-content-center" is-nav>
+      <b-collapse id="nav-collapse" class="ml-auto pr-3 align-content-center" is-nav>
         <b-navbar-nav class="ml-auto" right>
           <b-nav-item class="p-3" to="/">Home</b-nav-item>
           <b-nav-item class="p-3" to="/checkinout">Check In/Out</b-nav-item>
@@ -29,6 +30,7 @@
       </b-collapse>
     </b-navbar>
   </div>
+</b-container>
 </template>
 
 <script>
@@ -42,7 +44,11 @@ export default {};
   border-bottom-style: solid;
   border-bottom-color: #a6bfff;
 }
+.container-fluid {
+    padding-right: 0px;
+    padding-left: 0px;
 
+}
 #nav a {
   font-weight: 100;
 }
