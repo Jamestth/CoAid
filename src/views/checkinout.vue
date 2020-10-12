@@ -1,6 +1,11 @@
 <template>
   <div class="checkinout">
-    <h1>This is an checkinout page</h1>   
-    <h1>git test 2</h1> 
+    <b-container>
+      <b-row>
+        <b-col></b-col>
+        <b-col cols="8">Add content here</b-col>
+        <b-col></b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>

@@ -1,6 +1,9 @@
 <template>
   <div class="schedule">
-    <h1>This is an schedule page</h1>
-    <p> test </p>
+      <b-row>
+        <b-col></b-col>
+        <b-col cols="8">Add content here</b-col>
+        <b-col></b-col>
+      </b-row>
   </div>
 </template>
