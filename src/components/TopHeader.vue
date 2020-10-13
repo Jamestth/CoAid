@@ -1,40 +1,59 @@
 <template>
-<b-container fluid>
-  <div class="navGroup">
-    <b-navbar  toggleable="lg" type="light" variant="light">
-      <b-navbar-brand class = "pl-3 ">
-        <img src="../assets/LogoIcon.png" width="100" />
-      </b-navbar-brand>
+  <b-container fluid>
+    <div class="navGroup">
+      <b-navbar toggleable="lg" type="light" variant="light">
+        <b-navbar-brand class="pl-3 ">
+          <img src="../assets/LogoIcon.png" width="50" />
+        </b-navbar-brand>
+        <div class="d-flex justify-content-center">
+          <p class="m-auto">{{ $route.name }}</p>
+        </div>
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+        <b-collapse
+          id="nav-collapse"
+          class="ml-auto pr-3 align-content-center"
+          is-nav
+        >
+          <b-navbar-nav class="ml-auto" right>
+            <b-nav-item class="pr-3 p-2" to="/">Home</b-nav-item>
+            <b-nav-item class="pr-3 p-2" to="/checkinout"
+              >Check In/Out</b-nav-item
+            >
+            <b-nav-item class="pr-3 p-2" to="/schedule">Schedule</b-nav-item>
+            <b-nav-item class="pr-3 p-2" to="/meetings">Meetings</b-nav-item>
+            <b-nav-item class="pr-3 p-2" to="/analytics">Analytics</b-nav-item>
 
-      <b-collapse id="nav-collapse" class="ml-auto pr-3 align-content-center" is-nav>
-        <b-navbar-nav class="ml-auto" right>
-          <b-nav-item class="p-3" to="/">Home</b-nav-item>
-          <b-nav-item class="p-3" to="/checkinout">Check In/Out</b-nav-item>
-          <b-nav-item class="p-3" to="/schedule">Schedule</b-nav-item>
-          <b-nav-item class="p-3" to="/meetings">Meetings</b-nav-item>
-          <b-nav-item class="p-3" to="/analytics">Analytics</b-nav-item>
+            <b-nav-item-dropdown right>
+              <!-- Using 'button-content' slot -->
+              <template v-slot:button-content>
+                <img src="../assets/User.png" width="30" height="30" />
+              </template>
+              <b-dropdown-item href="#">Profile</b-dropdown-item>
+              <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+            </b-nav-item-dropdown>
+          </b-navbar-nav>
 
-          <b-nav-item-dropdown right>
-            <!-- Using 'button-content' slot -->
-            <template v-slot:button-content>
-              <img src="../assets/User.png" width="60" height="60" />
-            </template>
-            <b-dropdown-item href="#">Profile</b-dropdown-item>
-            <b-dropdown-item href="#">Sign Out</b-dropdown-item>
-          </b-nav-item-dropdown>
-        </b-navbar-nav>
-
-        <!-- Right aligned nav items -->
-      </b-collapse>
-    </b-navbar>
-  </div>
-</b-container>
+          <!-- Right aligned nav items -->
+        </b-collapse>
+      </b-navbar>
+    </div>
+  </b-container>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      computed: {
+        currentRouteName() {
+          return "hihihihhi";
+          //return this.$route.name;
+        },
+      },
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -45,9 +64,8 @@ export default {};
   border-bottom-color: #a6bfff;
 }
 .container-fluid {
-    padding-right: 0px;
-    padding-left: 0px;
-
+  padding-right: 0px;
+  padding-left: 0px;
 }
 #nav a {
   font-weight: 100;
@@ -61,9 +79,12 @@ export default {};
   border-bottom-width: 0.25em;
   margin-bottom: 20px;
 }
-
-.navbar-expand-lg .navbar-nav {
+p {
   font-size: 1.5em;
+  font-family: "Cabin", Helvetica, Arial;
+}
+.navbar-expand-lg .navbar-nav {
+  font-size: 1em;
   font-family: "Cabin", Helvetica, Arial;
 }
 li {
@@ -73,5 +94,11 @@ li {
 
 .navbar-dark .navbar-toggler-icon {
   fill: #a6bfff;
+}
+.navbar {
+  padding: 0;
+}
+.navbar-brand {
+  padding: 0;
 }
 </style>

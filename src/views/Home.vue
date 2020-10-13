@@ -2,7 +2,7 @@
   <b-container fluid>
     <b-row class="text-center">
       <b-col></b-col>
-      <b-col cols="8">
+      <b-col cols="4">
         <!-- User Interface controls -->
         <b-row>
           <b-col></b-col>
