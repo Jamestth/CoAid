@@ -39,7 +39,7 @@ const employees =[
         statusType: "danger",
         avatar: "https://picsum.photos/600/300/?"
     }, {
-        eID: 1234,
+        eID: 9102,
         name: "Geoffrey",
         department: "Marketing",
         unit: "Seasonal Marketing Team",
@@ -109,7 +109,7 @@ const employees =[
         contact: "91820123",
         status: "Healthy",
         statusType: "success",
-        avatar: "https://picsum.photos/600/300/?"
+        avatar: "https://placekitten.com/300/300"
     }, {
         eID: 1234,
         name: "Geoffrey",

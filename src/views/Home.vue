@@ -3,12 +3,14 @@
     <b-row class="text-center">
       <b-col></b-col>
       <b-col cols="6">
+        <h1 style = "text-align:left; font-size:2.5em;">Welcome back {{ this.userInfo.name }}</h1>
         <!-- User Interface controls -->
         <b-row class="pb-3">
           <b-col></b-col>
           <b-col cols="6" class="mr-auto">
             <b-form-group
               label="Department"
+              label-class="font-weight-bold"
               label-cols-sm="4"
               label-align-sm="right"
               label-size="sm"
@@ -24,6 +26,7 @@
             <b-form-group
               class="mb-0"
               label="Name"
+              label-class="font-weight-bold"
               label-cols-sm="4"
               label-align-sm="right"
               label-size="sm"
@@ -55,11 +58,21 @@
           :sort-direction="sortDirection"
           @filtered="onFiltered"
           :striped="true"
+          :bordered="true"
           :hover="true"
           :head-variant="headVariant"
         >
           <template v-slot:cell(status)="row">
-            <b-badge :variant="row.item.statusType"> {{ row.item.status }}</b-badge>
+            <b-badge :variant="row.item.statusType">
+              {{ row.item.status }}</b-badge
+            >
+          </template>
+          <template v-slot:cell(avatar)="row">
+            <b-avatar
+              src="https://placekitten.com/300/300"
+              size="2rem"
+            ></b-avatar>
+            {{ row.empty }}
           </template>
         </b-table>
 
@@ -90,7 +103,15 @@ export default {
       components: {
         stringSimilarity,
       },
+      employees: employees,
+      userId: 9102,
+      userInfo: [],
       fields: [
+        {
+          key: "avatar",
+          label: "",
+          sortable: false,
+        },
         {
           key: "name",
           label: "Employee",
@@ -108,14 +129,20 @@ export default {
           label: "Status",
           // eslint-disable-next-line no-unused-vars
           formatter: (value, key, item) => {
-            return value ? "Yes" : "No";
+            if (value == "COVID") {
+              return 3;
+            } else if (value == "Healthy") {
+              return 1;
+            } else {
+              return 2;
+            }
           },
           sortable: true,
           sortByFormatted: true,
           filterByFormatted: true,
         },
       ],
-      employees: employees,
+
       totalRows: 1,
       currentPage: 1,
       perPage: 10,
@@ -126,9 +153,8 @@ export default {
         department: "All",
         name: "",
       },
-      headVariant: "dark",
       filterOptions: ["All", "HR", "Marketing", "IT", "Sales"],
-      badgeColor: "danger",
+      headVariant: "dark",
     };
   },
   computed: {
@@ -140,14 +166,13 @@ export default {
           return { text: f.label, value: f.key };
         });
     },
-    statusColor() {
-      console.log("lol");
-      return "danger";
-    },
   },
   mounted() {
     // Set the initial number of items
     this.totalRows = this.employees.length;
+    // Get user info
+    this.userInfo = this.employees.filter(x => x.eID == this.userId)[0];
+
   },
   methods: {
     onFiltered(filteredItems) {
@@ -166,6 +191,7 @@ export default {
         stringSimilarity.compareTwoStrings(itemSubstring, searchString) >= 0.4;
       return deptPred && namePred;
     },
+
   },
 };
 </script>
