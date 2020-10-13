@@ -2,36 +2,43 @@
   <b-container fluid>
     <b-row class="text-center">
       <b-col></b-col>
-      <b-col cols="4">
+      <b-col cols="6">
         <!-- User Interface controls -->
-        <b-row>
+        <b-row class="pb-3">
           <b-col></b-col>
-          <b-col cols="4" class="mr-auto" >
+          <b-col cols="6" class="mr-auto">
             <b-form-group
-              label="Filter"
+              label="Filter On"
               label-cols-sm="3"
               label-align-sm="right"
               label-size="sm"
-              label-for="filterInput"
+              description="Leave all unchecked to filter on all data"
               class="mb-0"
             >
+              <b-form-select
+                v-model="filter.department"
+                id="perPageSelect"
+                size="sm"
+                :options="filterOptions"
+              ></b-form-select>
+            </b-form-group>
+            <b-form-group class="mb-0">
               <b-input-group size="sm">
                 <b-form-input
-                  v-model="filter"
+                  v-model="filter.name"
                   type="search"
                   id="filterInput"
-                  placeholder="Type to Search"
+                  placeholder="Search by Name"
                 ></b-form-input>
                 <b-input-group-append>
                   <b-button :disabled="!filter" @click="filter = ''"
-                    >Clear</b-button
+                    >x</b-button
                   >
                 </b-input-group-append>
               </b-input-group>
             </b-form-group>
           </b-col>
         </b-row>
-
         <!-- Main table element -->
         <b-table
           show-empty
@@ -42,11 +49,14 @@
           :current-page="currentPage"
           :per-page="perPage"
           :filter="filter"
-          :filter-included-fields="filterOn"
+          :filter-function="filterPredicate"
           :sort-by.sync="sortBy"
           :sort-desc.sync="sortDesc"
           :sort-direction="sortDirection"
           @filtered="onFiltered"
+          :striped="true"
+          :hover="true"
+          :head-variant="headVariant"
         >
           <template v-slot:cell(actions)="row">
             <b-button
@@ -82,17 +92,16 @@
           <pre>{{ infoModal.content }}</pre>
         </b-modal>
         <b-row>
-          
-        <b-col sm="7" class="my-1">
-          <b-pagination
-            v-model="currentPage"
-            :total-rows="totalRows"
-            :per-page="perPage"
-            align="right"
-            size="sm"
-            class="my-0"
-          ></b-pagination>
-        </b-col>
+          <b-col sm="7" class="my-1">
+            <b-pagination
+              v-model="currentPage"
+              :total-rows="totalRows"
+              :per-page="perPage"
+              align="right"
+              size="sm"
+              class="my-0"
+            ></b-pagination>
+          </b-col>
         </b-row>
       </b-col>
       <b-col></b-col>
@@ -101,13 +110,17 @@
 </template>
 
 <script>
+var stringSimilarity = require("string-similarity");
 export default {
   data() {
     return {
+      components: {
+        stringSimilarity,
+      },
       fields: [
         {
           key: "name",
-          label: "Person Full name",
+          label: "Employee",
           sortable: true,
           sortDirection: "desc",
         },
@@ -158,6 +171,15 @@ export default {
           status: "Healthy",
           avatar: "https://picsum.photos/600/300/?",
         },
+        {
+          eID: 1236,
+          name: "Deniase",
+          department: "Marketing",
+          unit: "Seasonal Marketing Team",
+          contact: "91820123",
+          status: "Healthy",
+          avatar: "https://picsum.photos/600/300/?",
+        },
       ],
       totalRows: 1,
       currentPage: 1,
@@ -165,13 +187,17 @@ export default {
       sortBy: "",
       sortDesc: false,
       sortDirection: "asc",
-      filter: null,
-      filterOn: [],
+      filter: {
+        department: "",
+        name: "",
+      },
       infoModal: {
         id: "info-modal",
         title: "",
         content: "",
       },
+      headVariant: "dark",
+      filterOptions: ["All", "Marketing", "HR"],
     };
   },
   computed: {
@@ -202,6 +228,19 @@ export default {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
+    },
+    filterPredicate(item, filter) {
+      var deptPred =
+        filter.department == "All" || item.department == filter.department;
+      var filterlen = filter.name.length;
+      var itemSubstring = item.name.substring(0, filterlen).toUpperCase();
+      var searchString = filter.name.toUpperCase();
+      var namePred =
+        filter.name == "" ||
+        stringSimilarity.compareTwoStrings(itemSubstring, searchString) >= 0.4;
+
+        console.log(        stringSimilarity.compareTwoStrings(itemSubstring, searchString))
+      return deptPred && namePred;
     },
   },
 };
