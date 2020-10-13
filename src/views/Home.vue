@@ -8,11 +8,10 @@
           <b-col></b-col>
           <b-col cols="6" class="mr-auto">
             <b-form-group
-              label="Filter On"
-              label-cols-sm="3"
+              label="Department"
+              label-cols-sm="4"
               label-align-sm="right"
               label-size="sm"
-              description="Leave all unchecked to filter on all data"
               class="mb-0"
             >
               <b-form-select
@@ -22,7 +21,13 @@
                 :options="filterOptions"
               ></b-form-select>
             </b-form-group>
-            <b-form-group class="mb-0">
+            <b-form-group
+              class="mb-0"
+              label="Name"
+              label-cols-sm="4"
+              label-align-sm="right"
+              label-size="sm"
+            >
               <b-input-group size="sm">
                 <b-form-input
                   v-model="filter.name"
@@ -188,7 +193,7 @@ export default {
       sortDesc: false,
       sortDirection: "asc",
       filter: {
-        department: "",
+        department: "All",
         name: "",
       },
       infoModal: {
@@ -238,8 +243,6 @@ export default {
       var namePred =
         filter.name == "" ||
         stringSimilarity.compareTwoStrings(itemSubstring, searchString) >= 0.4;
-
-        console.log(        stringSimilarity.compareTwoStrings(itemSubstring, searchString))
       return deptPred && namePred;
     },
   },
