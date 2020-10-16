@@ -3,10 +3,10 @@
     <div class="navGroup">
       <b-navbar toggleable="lg" type="light" variant="light">
         <b-navbar-brand class="pl-3 ">
-          <img src="../assets/LogoIcon.png" width="50" />
+          <img src="../assets/LogoIcon.png" class = "m-2" width="75" />
         </b-navbar-brand>
         <div class="d-flex justify-content-center">
-          <p class="m-auto">{{ $route.name }}</p>
+          <!--<p class="m-auto">{{ $route.name }}</p>-->
         </div>
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -58,6 +58,7 @@ export default {
 
 <style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Cabin:wght@500");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500");
 #nav a.router-link-exact-active {
   color: black;
   border-bottom-style: solid;
@@ -81,7 +82,7 @@ export default {
 }
 p {
   font-size: 1.5em;
-  font-family: "Cabin", Helvetica, Arial;
+  font-family: "Roboto", Helvetica, Arial;
 }
 .navbar-expand-lg .navbar-nav {
   font-size: 1em;
