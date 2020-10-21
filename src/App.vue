@@ -24,13 +24,12 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Questrial:wght@500");
 
 #app {
+  font-size: 1vw;
   font-family: open+sans, Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  
-  
 }
 
 #nav {

@@ -2,9 +2,34 @@
   <b-container fluid>
     <b-row class="text-center">
       <b-col></b-col>
-      <b-col cols="6">
-        <h1 style = "text-align:left; font-size:2.5em;">Welcome back {{ this.userInfo.name }}</h1>
+      <b-col cols="8">
+        <h1 style="text-align:left; font-size:2.5em;">
+          Welcome back {{ this.userInfo.name }}
+        </h1>
         <!-- User Interface controls -->
+        <b-row class="mb-4">
+          <b-col cols="4">
+            <b-card header="Healthy">
+              <AttendanceDonut
+                v-bind:sections="attendanceStatistic.healthy"
+              ></AttendanceDonut>
+            </b-card>
+          </b-col>
+          <b-col cols="4">
+            <b-card header="Sick">
+              <AttendanceDonut
+                v-bind:sections="attendanceStatistic.sick"
+              ></AttendanceDonut>
+            </b-card>
+          </b-col>
+          <b-col cols="4">
+            <b-card header="Covid">
+              <AttendanceDonut
+                v-bind:sections="attendanceStatistic.covid"
+              ></AttendanceDonut>
+            </b-card>
+          </b-col>
+        </b-row>
         <b-row class="pb-3">
           <b-col></b-col>
           <b-col cols="6" class="mr-auto">
@@ -76,33 +101,31 @@
           </template>
         </b-table>
 
-        <b-row>
-          <b-col sm="7" class="my-1">
-            <b-pagination
-              v-model="currentPage"
-              :total-rows="totalRows"
-              :per-page="perPage"
-              align="right"
-              size="sm"
-              class="my-0"
-            ></b-pagination>
-          </b-col>
-        </b-row>
+        <b-pagination
+          v-model="currentPage"
+          :total-rows="totalRows"
+          :per-page="perPage"
+          align="center"
+        ></b-pagination>
       </b-col>
       <b-col></b-col>
     </b-row>
   </b-container>
 </template>
-
 <script>
 import stringSimilarity from "string-similarity";
 import employees from "../assets/employees.js";
+import AttendanceDonut from "../components/AttendanceDonut.vue";
 export default {
+  components: { AttendanceDonut },
   data() {
     return {
-      components: {
-        stringSimilarity,
+      attendanceStatistic: {
+        healthy: [{ value: 100, color: "#28a745", number: 30 }],
+        sick: [{ value: 100, color: "#ffc107", number: 10 }],
+        covid: [{ value: 100, color: "#dc3545", number: 5 }],
       },
+
       employees: employees,
       userId: 9102,
       userInfo: [],
@@ -171,8 +194,7 @@ export default {
     // Set the initial number of items
     this.totalRows = this.employees.length;
     // Get user info
-    this.userInfo = this.employees.filter(x => x.eID == this.userId)[0];
-
+    this.userInfo = this.employees.filter((x) => x.eID == this.userId)[0];
   },
   methods: {
     onFiltered(filteredItems) {
@@ -191,7 +213,63 @@ export default {
         stringSimilarity.compareTwoStrings(itemSubstring, searchString) >= 0.4;
       return deptPred && namePred;
     },
-
   },
 };
 </script>
+<style scoped>
+.attendance {
+  color: #28a745;
+  font-size: 3vw;
+  padding: 0;
+  text-align: center;
+  top: 50%;
+}
+.slash {
+  font-size: 2vw;
+  margin: auto;
+  margin-right: 0;
+  margin-left: 0;
+  padding: 0;
+  text-align: center;
+}
+.maxAttendance {
+  font-size: 3vw;
+  text-align: center;
+  margin: auto;
+  padding: 0;
+  margin-right: 0;
+  margin-left: 0;
+}
+p {
+  padding: 0;
+  margin: auto;
+  margin-right: 0;
+  margin-left: 0;
+}
+.percentAttendance {
+  color: #28a745;
+  font-size: 2vw;
+}
+small {
+  font-size: 1vw;
+}
+
+.card-header {
+  padding: 0.5vw;
+  margin-bottom: 0;
+  background-color: #3e536a;
+  font-size: 1.3vw;
+  color: white !important;
+  font-weight: bold;
+}
+/deep/ .table .thead-dark th {
+  color: #fff;
+  background-color: #3e536a !important;
+}
+/deep/ .page-item.active .page-link {
+  background-color: #3e536a !important;
+}
+/deep/ .page-link {
+  color: #3e536a;
+}
+</style>

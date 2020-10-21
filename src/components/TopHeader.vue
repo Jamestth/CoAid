@@ -3,7 +3,7 @@
     <div class="navGroup">
       <b-navbar toggleable="lg" type="light" variant="light">
         <b-navbar-brand class="pl-3 ">
-          <img src="../assets/LogoIcon.png" class = "m-2" width="75" />
+          <img src="../assets/LogoIcon.png" class="m-2" width="75" />
         </b-navbar-brand>
         <div class="d-flex justify-content-center">
           <!--<p class="m-auto">{{ $route.name }}</p>-->
@@ -44,14 +44,7 @@
 <script>
 export default {
   data() {
-    return {
-      computed: {
-        currentRouteName() {
-          return "hihihihhi";
-          //return this.$route.name;
-        },
-      },
-    };
+    return {};
   },
 };
 </script>
