@@ -1,80 +1,69 @@
 <template>
-  <div class="Meetings">
-    <b-row class="text-center">
-      <b-col></b-col>
-      <b-col cols="8"> <!--change to adjust start point-->
-        <h1>Meeting Details</h1>
-        <b-container fluid>
-          <label for="meetingICemail"> Meeting I/C Email:</label>
-          <input
-            type="email"
-            id="meetingICemail"
-            name="meetingICemail"
-          /><br /><br />
+    <b-container class="meetingspage">
+    <h1> SCHEDULE A MEETING </h1>
+    <div class="Meetings">
+      <b-row class="text-center">
+        <b-col cols="6"> <!--change to adjust start point-->
+          <h1>Meeting Details</h1>
+          <b-container fluid>
 
-          <label for="meetingdate"> Meeting Date:</label>
-          <input type="date" id="meetingdate" name="meetingdate" /><br /><br />
+            <label for="meetingdate"> Date: </label>
+            <input type="date" id="meetingdate" name="meetingdate" /><br /><br /><br /><br />
 
-          <label for="meetingtime"> Meeting Start Time:</label>
-          <input type="time" id="meetingtime" name="meetingtime" /><br /><br />
+            <label for="meetingtime"> Start Time:</label>
+            <input type="time" id="meetingtime" name="meetingtime" /><br /><br /><br /><br />
 
-          <label for="location"> Location:</label>
-          <input type="text" id="location" name="location" /><br /><br />
+            <label for="location"> Location:</label>
+            <input type="text" id="location" name="location" /><br /><br /><br /><br />
 
-          <label class="typo__label">Select Employees Involved:</label>
-          <p class="test">
-            <multiselect
-              track-by="name"
-              label="name"
-              v-model="value"
-              :options="employees"
-              multiple
-              >Employees Involved</multiselect
+            <label class="typo__label">Select Employees Involved:</label>
+            <p class="test">
+              <multiselect
+                track-by="name"
+                label="name"
+                v-model="value"
+                :options="employees"
+                multiple
+                >Employees Involved</multiselect
+              >
+              <!--ugly!-->
+            </p>
+            <br />
+            </b-container></b-col
+        >
+
+      <!-- <b-row class="text-center"> -->
+        <b-col cols="6"> <!--change to adjust start point-->
+          <h1>Meeting Agreement</h1>
+          <b-container fluid>
+            <br />
+            <p class="para">By creating this meeting, I agree: <br><br>
+              <ul>
+              <li> To verify all participants are health status 'Healthy' for the past 14 days </li><br>
+              <li> Meeting duration is not to exceed 60 minutes </li><br>
+              <li> Participants must disinfect meeting location after use
+              </li></ul>
+              </p><br><br>
+
+
+            <b-form-checkbox
+              id="checkbox-1"
+              v-model="status1"
+              name="checkbox-1"
+              value="accepted"
+              unchecked-value="not_accepted"
             >
-            <!--ugly!-->
-          </p>
-          <br />
-          <h2>Meeting Agreement</h2>
-          <br />
-          <p>I acknowledge that:</p>
+              I acknowledge to all of the above </b-form-checkbox
+            ><br /><br />
+            <b-button variant="outline-primary">Submit</b-button>
+            
+          </b-container></b-col
+        >
+      </b-row>
+      </div>
+    </b-container>
+    
 
-          <b-form-checkbox
-            id="checkbox-1"
-            v-model="status1"
-            name="checkbox-1"
-            value="accepted"
-            unchecked-value="not_accepted"
-          >
-            All employees' involved are health status 'Healthy' for the past 2
-            weeks </b-form-checkbox
-          ><br /><br />
-
-          <b-form-checkbox
-            id="checkbox-2"
-            v-model="status2"
-            name="checkbox-2"
-            value="accepted"
-            unchecked-value="not_accepted"
-          >
-            This meeting should not exceed the 1-hour duration </b-form-checkbox
-          ><br /><br />
-
-          <b-form-checkbox
-            id="checkbox-3"
-            v-model="status3"
-            name="checkbox-3"
-            value="accepted"
-            unchecked-value="not_accepted"
-          >
-            This meeting should end promptly to allow time for disinfection </b-form-checkbox
-          ><br /><br />
-
-          <b-button variant="outline-primary">Submit</b-button>
-        </b-container></b-col
-      >
-      <b-col></b-col>
-    </b-row>
-  </div>
 </template>
 
 <script>
@@ -102,12 +91,16 @@ export default {
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@500");
 h1 {
+  font-family: 'Josefin Sans', sans-serif !important;
   padding: 15px;
   font-size: 30px;
+  text-align: center;
 }
 div {
-  text-align: left;
+  font-family: omnes-pro;
+  text-align: center;
   padding: 15px;
 }
 .multiselect {
@@ -115,4 +108,37 @@ div {
   border-color: black;
   font-size: 15px;
 }
+.multiselect, .multiselect_input, .multiselect_single {
+  font-family: inherit;
+  font-size: 15px;
+  padding: 15px;
+  text-align: left;
+  margin: auto;
+}
+.multiselect_single {
+  width: 10px;
+}
+.btn {
+  background-color: darkblue;
+  align-content: center;
+  color: white;
+  padding: 10px;
+  border-color: white;
+  display: flex;
+  margin: auto;
+  
+
+}
+label {
+  margin: 10px;
+
+}
+.multiselect__tags { 
+  border-color: black;
+
+}
+.para {
+  
+}
+
 </style>
