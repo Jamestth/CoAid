@@ -3,7 +3,7 @@
     background="white"
     foreground="#dee2e6"
     unit="%"
-    size=50
+    size= 50
     :thickness="10"
     :sections="sections"
     :total="100"

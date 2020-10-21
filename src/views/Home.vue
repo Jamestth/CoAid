@@ -87,17 +87,30 @@
           :hover="true"
           :head-variant="headVariant"
         >
-          <template v-slot:cell(status)="row">
-            <b-badge :variant="row.item.statusType">
-              {{ row.item.status }}</b-badge
-            >
-          </template>
           <template v-slot:cell(avatar)="row">
             <b-avatar
               src="https://placekitten.com/300/300"
               size="2rem"
             ></b-avatar>
             {{ row.empty }}
+          </template>
+          <template v-slot:cell(status)="row">
+            <BadgePopover v-bind:row = "row"></BadgePopover>
+              <!--
+                <div>
+            <b-badge :variant="row.item.statusType" v-bind:id="row.item.eID+''">
+              {{ row.item.status }}</b-badge
+            >
+            <b-popover
+              v-bind:target="row.item.eID+''"
+              triggers="hover"
+              placement="right"
+            >
+              <template #title>{{ row.item.name }} </template>
+              I am popover <b>component</b> content!
+            </b-popover>
+            </div>
+            -->
           </template>
         </b-table>
 
@@ -116,8 +129,9 @@
 import stringSimilarity from "string-similarity";
 import employees from "../assets/employees.js";
 import AttendanceDonut from "../components/AttendanceDonut.vue";
+import BadgePopover from "../components/BadgePopover"
 export default {
-  components: { AttendanceDonut },
+  components: { AttendanceDonut,BadgePopover },
   data() {
     return {
       attendanceStatistic: {
