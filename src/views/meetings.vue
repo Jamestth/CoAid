@@ -120,13 +120,14 @@ div {
 }
 .btn {
   background-color: darkblue;
-  align-content: center;
+  text-align: center;
   color: white;
   padding: 10px;
   border-color: white;
-  display: flex;
   margin: auto;
-  
+  font-family: Arial, Helvetica, sans-serif;
+  width: 100px;
+  border-radius: 8px
 
 }
 label {
