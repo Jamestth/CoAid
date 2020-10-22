@@ -27,10 +27,10 @@
             <b-nav-item-dropdown right>
               <!-- Using 'button-content' slot -->
               <template v-slot:button-content>
-                            <b-avatar
-              src="https://placekitten.com/300/300"
-              size="2rem"
-            ></b-avatar>
+                <b-avatar
+                  src="https://placekitten.com/300/300"
+                  size="2rem"
+                ></b-avatar>
               </template>
               <b-dropdown-item href="#">Profile</b-dropdown-item>
               <b-dropdown-item href="#">Sign Out</b-dropdown-item>
@@ -52,7 +52,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Cabin:wght@500");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500");
 #nav a.router-link-exact-active {
@@ -78,14 +78,17 @@ export default {
   border-bottom-width: 0.25em;
   
   */
-  margin-bottom: 20px;
-  background-color: #20368F;
-
+  margin-top: auto;
+  margin-bottom: auto;
+  background-color: #20368f;
+}
+.navbar {
 }
 p {
   font-size: 1.5em;
   font-family: "Roboto", Helvetica, Arial;
 }
+
 .navbar-expand-lg .navbar-nav {
   font-size: 1em;
   font-family: "Cabin", Helvetica, Arial;
@@ -104,7 +107,10 @@ li {
 .navbar-brand {
   padding: 0;
 }
-.dropdown-toggle::after{
-  color:white
+.dropdown-toggle::after {
+  color: white;
+}
+/deep/.navbar-light .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 255, 255, 3' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") ;
 }
 </style>

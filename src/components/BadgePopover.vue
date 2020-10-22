@@ -33,7 +33,7 @@ export default {
 <style scoped>
 .badge {
   display: inline-block;
-  font-size: 1vw;
+  font-size: 1vh;
   font-weight: 700;
   line-height: 1;
   text-align: center;

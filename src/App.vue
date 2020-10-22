@@ -1,9 +1,11 @@
 <template>
-  <div id="app">
+  <div>
     <div id="nav">
       <top-header></top-header>
     </div>
-    <router-view />
+    <div id="app">
+      <router-view />
+    </div>
   </div>
 </template>
 
@@ -12,7 +14,7 @@ import TopHeader from "@/components/TopHeader.vue";
 
 export default {
   components: {
-    "top-header": TopHeader
+    "top-header": TopHeader,
   },
 };
 </script>
@@ -24,17 +26,18 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Questrial:wght@500");
 
 #app {
-  font-size: 1vw;
-  font-family: open+sans, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 2vh;
+  font-family: open + sans, Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-
+  height: 94vh;
+  overflow-y: auto;
+ 
 }
 
 #nav {
-  padding: 30px;
   margin: 0 !important;
   padding: 0 !important;
   a {
@@ -45,9 +48,11 @@ export default {
       color: #42b983;
     }
   }
+  margin-bottom: 0;
 }
 body {
   margin: 0 !important;
   padding: 0 !important;
+  overflow: hidden;
 }
 </style>

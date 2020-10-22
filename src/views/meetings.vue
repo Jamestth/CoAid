@@ -6,12 +6,23 @@
         <b-col cols="6"> <!--change to adjust start point-->
           <h1>Meeting Details</h1>
           <b-container fluid>
-
-            <label for="meetingdate"> Date: </label>
-            <input type="date" id="meetingdate" name="meetingdate" /><br /><br /><br /><br />
-
-            <label for="meetingtime"> Start Time:</label>
-            <input type="time" id="meetingtime" name="meetingtime" /><br /><br /><br /><br />
+      <b-row>
+        <b-col
+          ><label for="meetingdate"> Date: </label></b-col
+        >
+        <b-col
+          ><input type="date" id="meetingdate" name="meetingdate" /></b-col
+        >
+      </b-row>
+            <b-row>
+        <b-col
+          ><label for="meetingtime"> Start Time:</label></b-col
+        >
+        <b-col
+          ><input type="time" id="meetingtime" name="meetingtime" /></b-col
+        >
+      </b-row>
+            
 
             <label for="location"> Location:</label>
             <input type="text" id="location" name="location" /><br /><br /><br /><br />

@@ -1,4 +1,4 @@
-const employees =[
+const employees = [
     {
         eID: 1234,
         name: "Aaron",
