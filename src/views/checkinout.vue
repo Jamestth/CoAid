@@ -14,8 +14,8 @@
         </td>
       </tr>
       <tr>
-        <td> <button type="button"> Check In </button> </td>
-        <td> <button type="button"> Check Out </button> </td>
+        <td> <b-button variant="outline-primary"> Check In </b-button> </td>
+        <td> <b-button variant="outline-primary"> Check Out </b-button> </td>
       </tr>
     </table>
     
@@ -40,5 +40,17 @@ div {
 .center {
   margin-left: auto;
   margin-right: auto;
+}
+.btn {
+  background-color: darkblue;
+  text-align: center;
+  color: white;
+  padding: 10px;
+  border-color: white;
+  margin: auto;
+  font-family: Arial, Helvetica, sans-serif;
+  width: 100px;
+  border-radius: 8px
+
 }
 </style>
