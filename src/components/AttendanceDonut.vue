@@ -2,8 +2,8 @@
   <vc-donut
     background="white"
     foreground="#dee2e6"
-    unit="%"
-    size= 50
+    unit="vh"
+    size= 10
     :thickness="10"
     :sections="sections"
     :total="100"
@@ -33,6 +33,6 @@ export default {
 <style scoped>
 h1 {
   margin: 0;
-  font-size: 3vw;
+  font-size: 3vh;
 }
 </style>

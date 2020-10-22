@@ -14,12 +14,14 @@
         <b-button variant="primary" class="float-right"> View Profile</b-button>
       </template>
 
-      <b-row v-for="(value, key) in row.item" v-bind:key ="key">
-          <b-col><p>{{key.toUpperCase()}}:</p></b-col>
-          <b-col><p style="font-weight:bold">{{value}}</p></b-col>
+      <b-row v-for="(value, key) in row.item" v-bind:key="key">
+        <b-col
+          ><p>{{ key.toUpperCase() }}:</p></b-col
+        >
+        <b-col
+          ><p style="font-weight:bold">{{ value }}</p></b-col
+        >
       </b-row>
-      
-      
     </b-popover>
   </div>
 </template>

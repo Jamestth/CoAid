@@ -141,6 +141,12 @@ div {
   border-radius: 8px
 
 }
+.btn:hover {
+    background-color: white;
+      border-color: darkblue;
+      color: darkblue;
+}
+
 label {
   margin: 10px;
 

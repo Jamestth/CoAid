@@ -9,6 +9,18 @@ const checkIn = [
     contactFlag: false,
     checkOut: "20:20:20",
     lId: "",
+    eId: "1234",
+  },  {
+    checkId: "1",
+    checkIn: "10:10:10",
+    status: "Healthy",
+    temperature: 36.5,
+    shnFlag: false,
+    fluFlag: false,
+    contactFlag: false,
+    checkOut: "20:20:20",
+    lId: "",
+    eId: "1234",
   },
 ];
 export default checkIn;

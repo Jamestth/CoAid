@@ -3,9 +3,26 @@
     <b-row class="text-center">
       <b-col></b-col>
       <b-col cols="8">
-        <h1 style="text-align:left; font-size:2.5em;">
-          Welcome back {{ this.userInfo.name }}
-        </h1>
+        <b-row class="pl-3 pr-3">
+          <h1 style="text-align:left; font-size:5vh;">
+            Welcome back {{ this.userInfo.name }}
+          </h1>
+          <p style="text-align:left; font-size:2.5vh;">
+            Your last check in was on <strong>{{this.CheckIn.checkOut}}</strong>.
+          </p>
+        </b-row>
+        <b-row class="pl-3 pr-3 pt-2 pb-5">
+          <p style="text-align:left; font-size:2.5vh ">
+            Would you like to check in?
+          </p>
+          <router-link
+            to="/CheckInsuccess"
+            tag="button"
+            class="btn ml-3"
+            style="margin:0"
+            >Check In</router-link
+          >
+        </b-row>
         <!-- User Interface controls -->
         <b-row class="mb-4">
           <b-col cols="4">
@@ -95,8 +112,8 @@
             {{ row.empty }}
           </template>
           <template v-slot:cell(status)="row">
-            <BadgePopover v-bind:row = "row"></BadgePopover>
-              <!--
+            <BadgePopover v-bind:row="row"></BadgePopover>
+            <!--
                 <div>
             <b-badge :variant="row.item.statusType" v-bind:id="row.item.eID+''">
               {{ row.item.status }}</b-badge
@@ -128,10 +145,11 @@
 <script>
 import stringSimilarity from "string-similarity";
 import employees from "../assets/employees.js";
+import CheckIn from "../assets/CheckIn.js";
 import AttendanceDonut from "../components/AttendanceDonut.vue";
-import BadgePopover from "../components/BadgePopover"
+import BadgePopover from "../components/BadgePopover";
 export default {
-  components: { AttendanceDonut,BadgePopover },
+  components: { AttendanceDonut, BadgePopover },
   data() {
     return {
       attendanceStatistic: {
@@ -139,9 +157,9 @@ export default {
         sick: [{ value: 100, color: "#ffc107", number: 10 }],
         covid: [{ value: 100, color: "#dc3545", number: 5 }],
       },
-
+      CheckIn: CheckIn,
       employees: employees,
-      userId: 9102,
+      userId: 1234,
       userInfo: [],
       fields: [
         {
@@ -209,6 +227,8 @@ export default {
     this.totalRows = this.employees.length;
     // Get user info
     this.userInfo = this.employees.filter((x) => x.eID == this.userId)[0];
+    this.CheckIn = this.CheckIn.filter((x) => x.eId == this.userId)[0];
+    console.log(this.CheckIn)
   },
   methods: {
     onFiltered(filteredItems) {
@@ -272,7 +292,7 @@ small {
   padding: 0.5vw;
   margin-bottom: 0;
   background-color: #3e536a;
-  font-size: 1.3vw;
+  font-size: 2vh;
   color: white !important;
   font-weight: bold;
 }
@@ -285,5 +305,20 @@ small {
 }
 /deep/ .page-link {
   color: #3e536a;
+}
+.btn {
+  background-color: darkblue;
+  text-align: center;
+  color: white;
+  padding: 10px;
+  border-color: white;
+  margin: auto;
+  font-family: Arial, Helvetica, sans-serif;
+  border-radius: 8px;
+}
+.btn:hover {
+  background-color: white;
+  border-color: darkblue;
+  color: darkblue;
 }
 </style>
