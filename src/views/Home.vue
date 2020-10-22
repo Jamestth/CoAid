@@ -8,7 +8,9 @@
             Welcome back {{ this.userInfo.name }}
           </h1>
           <p style="text-align:left; font-size:2.5vh;">
-            Your last check in was on <strong>{{this.CheckIn.checkOut}}</strong>.
+            Your last check in was on
+            <strong>{{ this.lastCheckIn }}</strong
+            >.
           </p>
         </b-row>
         <b-row class="pl-3 pr-3 pt-2 pb-5">
@@ -146,6 +148,7 @@
 import stringSimilarity from "string-similarity";
 import employees from "../assets/employees.js";
 import CheckIn from "../assets/CheckIn.js";
+import { DateTime } from 'luxon';
 import AttendanceDonut from "../components/AttendanceDonut.vue";
 import BadgePopover from "../components/BadgePopover";
 export default {
@@ -159,6 +162,8 @@ export default {
       },
       CheckIn: CheckIn,
       employees: employees,
+      lastCheckOut: "",
+      lastCheckIn: "",
       userId: 1234,
       userInfo: [],
       fields: [
@@ -228,7 +233,10 @@ export default {
     // Get user info
     this.userInfo = this.employees.filter((x) => x.eID == this.userId)[0];
     this.CheckIn = this.CheckIn.filter((x) => x.eId == this.userId)[0];
-    console.log(this.CheckIn)
+    this.lastCheckIn = DateTime.fromMillis(this.CheckIn.checkIn).toFormat(`ff`);
+    this.lastCheckOut = DateTime.fromMillis(this.CheckIn.checkOut).toFormat(`ff`);
+    //gets current timestamp, store this
+    console.log(new Date().getTime())
   },
   methods: {
     onFiltered(filteredItems) {
@@ -247,6 +255,7 @@ export default {
         stringSimilarity.compareTwoStrings(itemSubstring, searchString) >= 0.4;
       return deptPred && namePred;
     },
+    
   },
 };
 </script>
