@@ -1,7 +1,7 @@
 const checkIn = [
   {
-    checkId: "1",
-    checkIn: 1603384491272,
+    checkId: "2",
+    checkIn: 1603385059685 ,
     status: "Healthy",
     temperature: 36.5,
     shnFlag: false,
@@ -13,7 +13,7 @@ const checkIn = [
   },
   {
     checkId: "1",
-    checkIn: 1603385059685,
+    checkIn: 1603384491272,
     status: "Healthy",
     temperature: 36.5,
     shnFlag: false,

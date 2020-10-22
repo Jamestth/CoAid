@@ -13,7 +13,7 @@
             >.
           </p>
         </b-row>
-        <b-row class="pl-3 pr-3 pt-2 pb-5">
+        <b-row class="pl-3 pr-3 pt-2 pb-5" v-show="checkedIn">
           <p style="text-align:left; font-size:2.5vh ">
             Would you like to check in?
           </p>
@@ -23,6 +23,18 @@
             class="btn ml-3"
             style="margin:0"
             >Check In</router-link
+          >
+        </b-row>
+        <b-row class="pl-3 pr-3 pt-2 pb-5" v-show="!checkedIn">
+          <p style="text-align:left; font-size:2.5vh ">
+            Would you like to check out?
+          </p>
+          <router-link
+            to="/CheckOutsuccess"
+            tag="button"
+            class="btn ml-3"
+            style="margin:0"
+            >Check Out</router-link
           >
         </b-row>
         <!-- User Interface controls -->
@@ -148,7 +160,7 @@
 import stringSimilarity from "string-similarity";
 import employees from "../assets/employees.js";
 import CheckIn from "../assets/CheckIn.js";
-import { DateTime } from 'luxon';
+import { DateTime } from "luxon";
 import AttendanceDonut from "../components/AttendanceDonut.vue";
 import BadgePopover from "../components/BadgePopover";
 export default {
@@ -164,6 +176,7 @@ export default {
       employees: employees,
       lastCheckOut: "",
       lastCheckIn: "",
+      checkedIn: false,
       userId: 1234,
       userInfo: [],
       fields: [
@@ -232,11 +245,18 @@ export default {
     this.totalRows = this.employees.length;
     // Get user info
     this.userInfo = this.employees.filter((x) => x.eID == this.userId)[0];
-    this.CheckIn = this.CheckIn.filter((x) => x.eId == this.userId)[0];
+    this.CheckIn = this.CheckIn.filter((x) => x.eId == this.userId).sort(
+      (y, x) => x.checkIn - y.checkIn
+    )[0];
     this.lastCheckIn = DateTime.fromMillis(this.CheckIn.checkIn).toFormat(`ff`);
-    this.lastCheckOut = DateTime.fromMillis(this.CheckIn.checkOut).toFormat(`ff`);
-    //gets current timestamp, store this
-    console.log(new Date().getTime())
+    this.lastCheckOut = DateTime.fromMillis(this.CheckIn.checkOut).toFormat(
+      `ff`
+    );
+    if (this.lastCheckOut == "") {
+      this.checkedIn = true;
+    }
+    //gets current timestamp, store this for check ins
+    console.log(new Date().getTime());
   },
   methods: {
     onFiltered(filteredItems) {
@@ -255,7 +275,6 @@ export default {
         stringSimilarity.compareTwoStrings(itemSubstring, searchString) >= 0.4;
       return deptPred && namePred;
     },
-    
   },
 };
 </script>
