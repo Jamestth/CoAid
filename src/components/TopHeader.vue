@@ -17,9 +17,7 @@
         >
           <b-navbar-nav class="ml-auto" right>
             <b-nav-item class="pr-3 p-2" to="/">Home</b-nav-item>
-            <b-nav-item class="pr-3 p-2" to="/checkinout"
-              >Check In/Out</b-nav-item
-            >
+            <b-nav-item class="pr-3 p-2" to="/checkinout">Check In/Out</b-nav-item>
             <b-nav-item class="pr-3 p-2" to="/schedule">Schedule</b-nav-item>
             <b-nav-item class="pr-3 p-2" to="/meetings">Meetings</b-nav-item>
             <b-nav-item class="pr-3 p-2" to="/analytics">Analytics</b-nav-item>
