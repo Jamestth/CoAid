@@ -7,13 +7,15 @@
           <h1 style="text-align:left; font-size:5vh;">
             Welcome back {{ this.userInfo.name }}
           </h1>
+        </b-row>
+        <b-row class="pl-3 pr-3">
           <p style="text-align:left; font-size:2.5vh;">
             Your last check in was on
             <strong>{{ this.lastCheckIn }}</strong
             >.
           </p>
         </b-row>
-        <b-row class="pl-3 pr-3 pt-2 pb-5" v-show="checkedIn">
+        <b-row class="pl-3 pr-3 pt-2 pb-3" v-show="checkedIn">
           <p style="text-align:left; font-size:2.5vh ">
             Would you like to check in?
           </p>
@@ -25,7 +27,7 @@
             >Check In</router-link
           >
         </b-row>
-        <b-row class="pl-3 pr-3 pt-2 pb-5" v-show="!checkedIn">
+        <b-row class="pl-3 pr-3 pt-2 pb-3" v-show="!checkedIn">
           <p style="text-align:left; font-size:2.5vh ">
             Would you like to check out?
           </p>
@@ -127,21 +129,6 @@
           </template>
           <template v-slot:cell(status)="row">
             <BadgePopover v-bind:row="row"></BadgePopover>
-            <!--
-                <div>
-            <b-badge :variant="row.item.statusType" v-bind:id="row.item.eID+''">
-              {{ row.item.status }}</b-badge
-            >
-            <b-popover
-              v-bind:target="row.item.eID+''"
-              triggers="hover"
-              placement="right"
-            >
-              <template #title>{{ row.item.name }} </template>
-              I am popover <b>component</b> content!
-            </b-popover>
-            </div>
-            -->
           </template>
         </b-table>
 
@@ -150,6 +137,7 @@
           :total-rows="totalRows"
           :per-page="perPage"
           align="center"
+          class="pb-4"
         ></b-pagination>
       </b-col>
       <b-col></b-col>
@@ -257,10 +245,9 @@ export default {
       this.checkedIn = true;
     }
 
-
     //gets current timestamp, store this for check ins
     console.log(new Date().getTime());
-    
+
     //getting users
     console.log(this.$store.getters.getUser);
   },

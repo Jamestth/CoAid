@@ -112,8 +112,9 @@
             ></b-form-input>
           </b-form-group>
 
-          <b-button type="submit" v-if="editMode">Submit</b-button>
-          <b-button type="reset" v-if="editMode">cancel</b-button>
+          <b-button class = "mr-3" type="submit" v-if="editMode">Submit</b-button>
+          <b-button  class = "ml-3"   type="reset" v-if="editMode">cancel</b-button>
+    <b-row class = "mb-4"></b-row>
         </b-form>
         <b-button
           type="button"
@@ -125,7 +126,6 @@
       <div v-else>
         <p>Profile not found</p>
       </div>
-      <p>{{ this.userInfoOrignal }}</p>
     </b-col>
     <b-col></b-col>
   </b-row>
@@ -143,7 +143,7 @@ export default {
       employees: employees,
       departments: departments,
       profileFound: true,
-      editMode: true,
+      editMode: false,
       deptUnitDict: {},
       unitDeptDict: {},
       deptDict: {},
@@ -170,15 +170,7 @@ export default {
         name: "",
         food: null,
         checked: [],
-      },
-      foods: [
-        { text: "Select One", value: null },
-        "Carrots",
-        "Beans",
-        "Tomatoes",
-        "Corn",
-      ],
-      show: true,
+      }
     };
   },
   computed: {},
