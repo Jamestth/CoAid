@@ -29,17 +29,23 @@ const routes = [
     path: "/schedule",
     name: "Schedule",
     component: () => import("../views/schedule.vue"),
-  }, 
+  },
   {
     path: "/checkinsuccess",
     name: "Checkinsuccess",
     component: () => import("../views/checkinsuccess.vue"),
-  }, 
+  },
   {
     path: "/checkoutsuccess",
     name: "Checkoutsuccess",
     component: () => import("../views/checkoutsuccess.vue"),
-  }
+  },
+  {
+    path: "/profile/:id/:personal",
+    name: "Profile",
+    component: () => import("../views/profile.vue"),
+    props: true
+  },
 ];
 
 const router = new VueRouter({

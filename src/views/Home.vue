@@ -177,7 +177,7 @@ export default {
       lastCheckOut: "",
       lastCheckIn: "",
       checkedIn: false,
-      userId: 1234,
+      userId: "",
       userInfo: [],
       fields: [
         {
@@ -244,6 +244,7 @@ export default {
     // Set the initial number of items
     this.totalRows = this.employees.length;
     // Get user info
+    this.userId = this.$store.getters.getUser;
     this.userInfo = this.employees.filter((x) => x.eID == this.userId)[0];
     this.CheckIn = this.CheckIn.filter((x) => x.eId == this.userId).sort(
       (y, x) => x.checkIn - y.checkIn
@@ -252,11 +253,16 @@ export default {
     this.lastCheckOut = DateTime.fromMillis(this.CheckIn.checkOut).toFormat(
       `ff`
     );
-    if (this.lastCheckOut == "") {
+    if (this.lastCheckOut == "undefined") {
       this.checkedIn = true;
     }
+
+
     //gets current timestamp, store this for check ins
     console.log(new Date().getTime());
+    
+    //getting users
+    console.log(this.$store.getters.getUser);
   },
   methods: {
     onFiltered(filteredItems) {

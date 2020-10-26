@@ -11,7 +11,13 @@
       <template #title>
         <b-avatar src="https://placekitten.com/300/300" size="2rem"></b-avatar>
         {{ row.item.name }}
-        <b-button variant="primary" class="float-right"> View Profile</b-button>
+        <b-button
+          variant="primary"
+          class="float-right"
+          v-bind:to="'/profile/' + row.item.eID + '/' + false"
+        >
+          View Profile
+        </b-button>
       </template>
 
       <b-row v-for="(value, key) in row.item" v-bind:key="key">
@@ -35,7 +41,7 @@ export default {
 <style scoped>
 .badge {
   display: inline-block;
-  font-size: 1vh;
+  font-size: 1.5vh;
   font-weight: 700;
   line-height: 1;
   text-align: center;

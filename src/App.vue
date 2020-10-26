@@ -34,6 +34,7 @@ export default {
   color: #2c3e50;
   height: 94vh;
   overflow-y: auto;
+  overflow-x: hidden;
  
 }
 
@@ -53,6 +54,5 @@ export default {
 body {
   margin: 0 !important;
   padding: 0 !important;
-  overflow: hidden;
 }
 </style>
