@@ -1,75 +1,17 @@
 <template>
     <b-container class="meetingspage">
-    <h1> SCHEDULE A MEETING </h1>
+    <h1> Upcoming Meetings <router-link
+            to="/createmeeting"
+            tag="button"
+            class="btn ml-3"
+            style="margin:0"
+            >Create meeting</router-link
+          ></h1>
     <div class="Meetings">
       <b-row class="text-center">
-        <b-col cols="6"> <!--change to adjust start point-->
-          <h1>Meeting Details</h1>
-          <b-container fluid>
-      <b-row>
-        <b-col
-          ><label for="meetingdate"> Date: </label></b-col
-        >
-        <b-col
-          ><input type="date" id="meetingdate" name="meetingdate" /></b-col
-        >
-      </b-row>
-            <b-row>
-        <b-col
-          ><label for="meetingtime"> Start Time:</label></b-col
-        >
-        <b-col
-          ><input type="time" id="meetingtime" name="meetingtime" /></b-col
-        >
-      </b-row>
-            
-
-            <label for="location"> Location:</label>
-            <input type="text" id="location" name="location" /><br /><br /><br /><br />
-
-            <label class="typo__label">Select Employees Involved:</label>
-            <p class="test">
-              <multiselect
-                track-by="name"
-                label="name"
-                v-model="value"
-                :options="employees"
-                multiple
-                >Employees Involved</multiselect
-              >
-              <!--ugly!-->
-            </p>
-            <br />
-            </b-container></b-col
-        >
-
-      <!-- <b-row class="text-center"> -->
-        <b-col cols="6"> <!--change to adjust start point-->
-          <h1>Meeting Agreement</h1>
-          <b-container fluid>
-            <br />
-            <p class="para">By creating this meeting, I agree: <br><br>
-              <ul>
-              <li> To verify all participants are health status 'Healthy' for the past 14 days </li><br>
-              <li> Meeting duration is not to exceed 60 minutes </li><br>
-              <li> Participants must disinfect meeting location after use
-              </li></ul>
-              </p><br><br>
-
-
-            <b-form-checkbox
-              id="checkbox-1"
-              v-model="status1"
-              name="checkbox-1"
-              value="accepted"
-              unchecked-value="not_accepted"
-            >
-              I acknowledge to all of the above </b-form-checkbox
-            ><br /><br />
-            <b-button variant="outline-primary">Submit</b-button>
-            
-          </b-container></b-col
-        >
+          <h1>insert table of meetings here</h1>
+          <b-table striped hover :items="items"></b-table>
+             
       </b-row>
       </div>
     </b-container>
@@ -83,21 +25,16 @@ import Multiselect from "vue-multiselect";
 export default {
   components: { Multiselect },
   data() {
-    return {
-      status1: "not_accepted",
-      status2: "not_accepted",
-      status3: "not_accepted",
-      value: null,
-      employees: [
-        { name: "Andy (Marketing)", value: "Andy (Marketing)" },
-        { name: "Bobby (Marketing)", value: "Bobby (Marketing)" },
-        { name: "Daisy (HR)", value: "Daisy (HR)" },
-        { name: "Georgia (Tech)", value: "Georgia (Tech)" },
-        { name: "Ian (Tech)", value: "Ian (Tech)" },
-      ],
-    };
-  },
-};
+      return {
+        items: [
+          { 'Date DDMMYY': '25/11/20', time: '14:00', 'Meeting Subject': 'Marketing & Product Launch Meeting', status: 'ACCEPTED' },
+          { 'Date DDMMYY': '4/12/20', time: '10:00', 'Meeting Subject': 'Employee Appraisal', status: 'ACCEPTED' },
+          { 'Date DDMMYY': '7/01/21', time: '15:00', 'Meeting Subject': 'Project Aspire Stage 2', status: 'PENDING' },
+          { 'Date DDMMYY': '01/10/20', time: '9:30', 'Meeting Subject': 'Board of Directors Meeting', status: 'PAST' }
+      ]
+    }
+  }
+}
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
@@ -118,6 +55,14 @@ div {
   width: 300px;
   border-color: black;
   font-size: 15px;
+}
+.multiselect__tags {
+  min-height: 40px;
+  border: 1px solid #767676;
+  display: block;
+  padding: 0px 40px 0 5px;
+  border-radius: 5px;
+  background: #fff;
 }
 .multiselect, .multiselect_input, .multiselect_single {
   font-family: inherit;
@@ -150,13 +95,6 @@ div {
 label {
   margin: 10px;
 
-}
-.multiselect__tags { 
-  border-color: black;
-
-}
-.para {
-  
 }
 
 </style>
