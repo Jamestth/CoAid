@@ -39,7 +39,8 @@
             </p></b-col>
             </b-row>
         </b-container>
-                
+
+
       </div>
       <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
@@ -69,8 +70,6 @@
       
 
     </b-container>
-    
-
 </template>
 
 <script>

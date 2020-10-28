@@ -9,14 +9,12 @@
           ></h1>
     <div class="Meetings">
       <b-row class="text-center">
-          <h1>insert table of meetings here</h1>
           <b-table striped hover :items="items"></b-table>
              
       </b-row>
       </div>
     </b-container>
     
-
 </template>
 
 <script>
