@@ -14,8 +14,8 @@
         </td>
       </tr>
       <tr>
-        <td> <b-button variant="outline-primary"> Check In </b-button> </td>
-        <td> <b-button variant="outline-primary"> Check Out </b-button> </td>
+        <td> <router-link to="/healthdeclaration" tag="button" class="btn ml-3" style="margin:0"> Check In </router-link> </td>
+        <td> <router-link to="/checkoutsuccess" tag="button" class="btn ml-3" style="margin:0"> Check Out </router-link> </td>
       </tr>
     </table>
     
@@ -49,8 +49,11 @@ div {
   border-color: white;
   margin: auto;
   font-family: Arial, Helvetica, sans-serif;
-  width: 100px;
-  border-radius: 8px
-
+  border-radius: 8px;
+}
+.btn:hover {
+  background-color: white;
+  border-color: darkblue;
+  color: darkblue;
 }
 </style>

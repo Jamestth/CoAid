@@ -1,6 +1,10 @@
 <template>
   <div class="checkinsuccess">
     <table class = "center" style="text-align: center">
+        <tr> 
+          <td height = "125px"> </td>
+          <td height = "125px"> </td>
+        </tr>
         <tr>
             <td> <img src = "../assets/checkin.jpg" class = "left" style = "width:50%"> </td>
         </tr>
@@ -11,7 +15,7 @@
             <td> Have a nice day! </td>
         </tr>
         <tr>
-            <td> <button type="button"> Home </button> </td>
+            <td> <router-link to="/" tag="button" class="btn ml-3" style="margin:0"> Home </router-link> </td>
         </tr>
     </table>
   </div>
@@ -35,5 +39,20 @@ div {
 .center {
   margin-left: auto;
   margin-right: auto;
+}
+.btn {
+  background-color: darkblue;
+  text-align: center;
+  color: white;
+  padding: 10px;
+  border-color: white;
+  margin: auto;
+  font-family: Arial, Helvetica, sans-serif;
+  border-radius: 8px;
+}
+.btn:hover {
+  background-color: white;
+  border-color: darkblue;
+  color: darkblue;
 }
 </style>
