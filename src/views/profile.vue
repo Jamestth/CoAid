@@ -133,7 +133,7 @@
 
 <script>
 import employees from "../assets/Emp.js";
-import CheckIn from "../assets/CheckIn.js";
+import CheckIn from "../assets/Checkin.js";
 import departments from "../assets/DepartmentDetails.js";
 export default {
   components: {},

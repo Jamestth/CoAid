@@ -147,7 +147,7 @@
 <script>
 import stringSimilarity from "string-similarity";
 import employees from "../assets/employees.js";
-import CheckIn from "../assets/CheckIn.js";
+import CheckIn from "../assets/Checkin.js";
 import { DateTime } from "luxon";
 import AttendanceDonut from "../components/AttendanceDonut.vue";
 import BadgePopover from "../components/BadgePopover";
