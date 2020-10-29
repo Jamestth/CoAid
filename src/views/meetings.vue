@@ -1,7 +1,7 @@
 <template>
   <b-container class="meetingspage">
     <h1>
-      Upcoming Meetings
+      My Meetings
       <router-link
         to="/createmeeting"
         tag="button"
