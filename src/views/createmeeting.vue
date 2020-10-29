@@ -47,11 +47,32 @@
         </b-row>
       </b-container>
     </div>
+    <b-button v-b-modal.modal-1 variant="outline-primary">Submit</b-button>
+      
 
-    <b-button v-b-modal.modal-1>Launch demo modal</b-button>
+    <b-modal id="modal-1" title="Meeting Agreement">
+      <p class="para">By creating this meeting, I agree: <br><br>
+              <ul>
+              <li> To verify all participants are health status 'Healthy' for the past 14 days </li><br>
+              <li> Meeting duration is not to exceed 60 minutes </li><br>
+              <li> Participants must disinfect meeting location after use
+              </li></ul>
+              </p><br><br>
 
-    <b-modal id="modal-1" title="BootstrapVue">
-      <p class="my-4">Hello from modal!</p>
+
+            <b-form-checkbox
+              id="checkbox-1"
+              v-model="status1"
+              name="checkbox-1"
+              value="accepted"
+              unchecked-value="not_accepted"
+            >
+              I acknowledge to all of the above </b-form-checkbox
+            ><br /><br />
+
+      <router-link to="/meetingsuccess" tag="button" class="btn ml-3" style="margin:0"
+        >Submit</router-link
+      >
     </b-modal>
   </b-container>
 </template>

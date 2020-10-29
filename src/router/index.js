@@ -56,6 +56,11 @@ const routes = [
     name: "Createmeeting",
     component: () => import("../views/createmeeting.vue"),
   },
+  {
+    path: "/meetingsuccess",
+    name: "Meetingsuccess",
+    component: () => import("../views/meetingsuccess.vue"),
+  },
 ];
 
 const router = new VueRouter({
