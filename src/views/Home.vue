@@ -15,11 +15,7 @@
             >.
           </p>
         </b-row>
-        <b-row
-          class="pl-3 pr-3 pt-2 pb-3"
-          v-show="checkedIn"
-        
-        >
+        <b-row class="pl-3 pr-3 pt-2 pb-3" v-show="checkedIn">
           <p style="text-align:left; font-size:2.5vh ">
             Would you like to check in?
           </p>
@@ -32,11 +28,7 @@
             ><span v-on:click="this.check">Check In</span></router-link
           >
         </b-row>
-        <b-row
-          class="pl-3 pr-3 pt-2 pb-3"
-          v-show="!checkedIn"
-      
-        >
+        <b-row class="pl-3 pr-3 pt-2 pb-3" v-show="!checkedIn">
           <p style="text-align:left; font-size:2.5vh ">
             Would you like to check out?
           </p>
@@ -45,8 +37,7 @@
             tag="button"
             class="btn ml-3"
             style="margin:0"
-                   
-            >
+          >
             <span v-on:click="this.check">Check Out</span></router-link
           >
         </b-row>
@@ -157,7 +148,8 @@
 </template>
 <script>
 import stringSimilarity from "string-similarity";
-import employees from "../assets/employees.js";
+import employees from "../assets/Emp.js";
+import departments from "../assets/DepartmentDetails.js";
 import CheckIn from "../assets/Checkin.js";
 import { DateTime } from "luxon";
 import AttendanceDonut from "../components/AttendanceDonut.vue";
@@ -171,6 +163,7 @@ export default {
         sick: [{ value: 100, color: "#ffc107", number: 10 }],
         covid: [{ value: 100, color: "#dc3545", number: 5 }],
       },
+      departments: departments,
       CheckIn: CheckIn,
       employees: employees,
       lastCheckOut: "",
@@ -241,13 +234,32 @@ export default {
   },
   mounted() {
     // Set the initial number of items
+
     this.totalRows = this.employees.length;
     // Get user info
     this.userId = this.$store.getters.getUser;
-    this.userInfo = this.employees.filter((x) => x.eID == this.userId)[0];
+    //this.userInfo = this.employees.filter((x) => x.eID == this.userId)[0];
+    //console.log(this.employees)
+    this.employees = this.employees.map((x) => {
+      let lastCheckIn = this.CheckIn.filter((y) => y.eId == x.eId).sort(
+        (a, b) => b.checkIn - a.checkIn
+      )[0];
+      let status = lastCheckIn === undefined ? "None" : lastCheckIn.status;
+      return {
+        eId: x.eId,
+        name: x.name,
+        avatar: x.avatar,
+        status: status,
+        statusType: this.getStatusType(status),
+        department: this.departments.filter((y) => y.uId == x.uId)[0]
+          .department,
+      };
+    });
+    //console.log(this.userInfo);
     this.CheckIn = this.CheckIn.filter((x) => x.eId == this.userId).sort(
       (y, x) => x.checkIn - y.checkIn
     )[0];
+    //console.log(this.CheckIn);
     this.lastCheckIn = DateTime.fromMillis(this.CheckIn.checkIn).toFormat(`ff`);
     this.lastCheckOut = DateTime.fromMillis(this.CheckIn.checkOut).toFormat(
       `ff`
@@ -258,10 +270,10 @@ export default {
     this.checkedIn = this.$store.getters.getCheckIn;
 
     //gets current timestamp, store this for check ins
-    console.log(new Date().getTime());
+    //console.log(new Date().getTime());
 
     //getting users
-    console.log(this.$store.getters.getUser);
+    //console.log(this.$store.getters.getUser);
   },
   methods: {
     onFiltered(filteredItems) {
@@ -281,12 +293,21 @@ export default {
       return deptPred && namePred;
     },
     check() {
-      
-      console.log(this.checkedIn)
+      console.log(this.checkedIn);
       this.$store.actions.check;
-      console.log(this.checkedIn)
+      console.log(this.checkedIn);
       this.checkedIn = this.$store.getters.getCheckIn;
-      
+    },
+    getStatusType(status) {
+      if (status == "COVID") {
+        return "danger";
+      } else if (status == "Healthy") {
+        return "success";
+      } else if (status == "Sick") {
+        return "warning";
+      } else {
+        return "secondary";
+      }
     },
   },
 };

@@ -19,36 +19,34 @@
 </template>
 
 <script>
+import meetings from "../assets/Meeting.js";
+import { DateTime } from "luxon";
 export default {
   data() {
     return {
-      items: [
-        {
-          "Date DDMMYY": "25/11/20",
-          time: "14:00",
-          "Meeting Subject": "Marketing & Product Launch Meeting",
-          status: "ACCEPTED",
-        },
-        {
-          "Date DDMMYY": "4/12/20",
-          time: "10:00",
-          "Meeting Subject": "Employee Appraisal",
-          status: "ACCEPTED",
-        },
-        {
-          "Date DDMMYY": "7/01/21",
-          time: "15:00",
-          "Meeting Subject": "Project Aspire Stage 2",
-          status: "PENDING",
-        },
-        {
-          "Date DDMMYY": "01/10/20",
-          time: "9:30",
-          "Meeting Subject": "Board of Directors Meeting",
-          status: "PAST",
-        },
-      ],
+      meetings: meetings,
+      userId: 1234,
+      items: [],
     };
+  },
+  mounted() {
+    //filter meetings to only relevant to the user
+    let df = this.meetings.filter(
+      (x) => x.employeeIds.filter((y) => y["eId"] == this.userId).length == 1
+    );
+    this.items = df.map((x) => {
+      return {
+        name: x.name,
+        location: x.location,
+        start: DateTime.fromMillis(x["start"]).toFormat(`ff`),
+        end: DateTime.fromMillis(x["end"]).toFormat(`ff`),
+        stats: x.employeeIds
+          .filter((x) => x.eId == this.userId)
+          .map((y) => y.status)[0],
+      };
+    });
+
+    //this.meetings.filter(x => x.employeeIds.forEach( y => console.log(y["eId"] == this.userId) ));
   },
 };
 </script>
@@ -56,6 +54,7 @@ export default {
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@500");
+
 h1 {
   font-family: "Josefin Sans", sans-serif !important;
   padding: 15px;
