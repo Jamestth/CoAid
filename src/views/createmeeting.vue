@@ -7,7 +7,12 @@
       >
     </h1>
     <div class="Meetings">
-      <b-container class="bv-example-row">
+      <b-container fluid>
+        <b-row>
+        <b-col>
+        </b-col>
+        <b-col cols = 8>
+          
         <b-row>
           <b-col>Date: </b-col>
           <b-col
@@ -44,6 +49,9 @@
               >
             </p></b-col
           >
+        </b-row>
+        </b-col>
+        <b-col></b-col>
         </b-row>
       </b-container>
     </div>

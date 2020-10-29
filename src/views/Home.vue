@@ -154,6 +154,7 @@ import CheckIn from "../assets/Checkin.js";
 import { DateTime } from "luxon";
 import AttendanceDonut from "../components/AttendanceDonut.vue";
 import BadgePopover from "../components/BadgePopover";
+import db from "../assets/firebase";
 export default {
   components: { AttendanceDonut, BadgePopover },
   data() {
@@ -233,6 +234,12 @@ export default {
     },
   },
   mounted() {
+    db.collection("meetings")
+      .get()
+      .then((querySnapShot) => {
+        querySnapShot.forEach( (x) => console.log(x.data().location.name));
+      });
+
     // Set the initial number of items
 
     this.totalRows = this.employees.length;
