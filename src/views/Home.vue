@@ -15,7 +15,11 @@
             >.
           </p>
         </b-row>
-        <b-row class="pl-3 pr-3 pt-2 pb-3" v-show="checkedIn">
+        <b-row
+          class="pl-3 pr-3 pt-2 pb-3"
+          v-show="checkedIn"
+        
+        >
           <p style="text-align:left; font-size:2.5vh ">
             Would you like to check in?
           </p>
@@ -24,10 +28,15 @@
             tag="button"
             class="btn ml-3"
             style="margin:0"
-            >Check In</router-link
+            v-on:click="check"
+            ><span v-on:click="this.check">Check In</span></router-link
           >
         </b-row>
-        <b-row class="pl-3 pr-3 pt-2 pb-3" v-show="!checkedIn">
+        <b-row
+          class="pl-3 pr-3 pt-2 pb-3"
+          v-show="!checkedIn"
+      
+        >
           <p style="text-align:left; font-size:2.5vh ">
             Would you like to check out?
           </p>
@@ -36,7 +45,9 @@
             tag="button"
             class="btn ml-3"
             style="margin:0"
-            >Check Out</router-link
+                   
+            >
+            <span v-on:click="this.check">Check Out</span></router-link
           >
         </b-row>
         <!-- User Interface controls -->
@@ -244,6 +255,7 @@ export default {
     if (this.lastCheckOut == "undefined") {
       this.checkedIn = true;
     }
+    this.checkedIn = this.$store.getters.getCheckIn;
 
     //gets current timestamp, store this for check ins
     console.log(new Date().getTime());
@@ -267,6 +279,14 @@ export default {
         filter.name == "" ||
         stringSimilarity.compareTwoStrings(itemSubstring, searchString) >= 0.4;
       return deptPred && namePred;
+    },
+    check() {
+      
+      console.log(this.checkedIn)
+      this.$store.actions.check;
+      console.log(this.checkedIn)
+      this.checkedIn = this.$store.getters.getCheckIn;
+      
     },
   },
 };
