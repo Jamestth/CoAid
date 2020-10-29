@@ -33,4 +33,19 @@ div {
   margin-left: auto;
   margin-right: auto;
 }
+.btn {
+  background-color: darkblue;
+  text-align: center;
+  color: white;
+  padding: 10px;
+  border-color: white;
+  margin: auto;
+  font-family: Arial, Helvetica, sans-serif;
+  border-radius: 8px;
+}
+.btn:hover {
+  background-color: white;
+  border-color: darkblue;
+  color: darkblue;
+}
 </style>

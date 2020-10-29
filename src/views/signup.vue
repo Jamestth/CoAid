@@ -72,28 +72,8 @@ export default {
   data() {
     return {
     };
-  },
-  method() {
-    return {
-      authh: function(email, password) {
-      firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error){
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        alert(errorCode);
-        alert(errorMessage);
-      });
-      }
-    }
   }
 };
-function authh(email, password) {
-  firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error){
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        alert(errorCode);
-        alert(errorMessage);
-      });
-}
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
