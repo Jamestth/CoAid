@@ -1,77 +1,74 @@
 <template>
   <div class="signup">
-    <table class = "center" style="text-align: center">
-      <tr> 
-        <td height = "125px"> </td>
-      </tr>
-      <tr>
-        <td>
-        <form>
-                <label for="mobileno"> Mobile Number: </label>
-                &nbsp;
-                <input type="text" id="mobileno" name="mobileno"> <br> <br>
-        </form>
-        </td>
-      </tr>
-      <tr>
-        <td>
-        <form>
-                <label for="password"> Password: </label>
-                &nbsp;
-                <input type="text" id="password" name="password"> <br> <br>
-        </form>
-        </td>
-      </tr>
-      <tr>
-        <td>
-        <form>
-                <label for="password2"> Confirm Password: </label>
-                &nbsp;
-                <input type="text" id="password2" name="password2"> <br> <br>
-        </form>
-        </td>
-      </tr>
-      <tr>
-        <td>
-        <form>
-                <label for="orgcode"> Organisation Code: </label>
-                &nbsp;
-                <input type="text" id="orgcode" name="orgcode"> <br> <br>
-        </form>
-        </td>
-      </tr>
-      <tr>
-        <td>
-        <form>
-                <label for="dept"> Department: </label>
-                &nbsp;
-                <input type="text" id="dept" name="dept"> <br> <br>
-        </form>
-        </td>
-      </tr>
-      <tr>
-        <td>
-        <form>
-                <label for="rot"> Rotation Team: </label>
-                &nbsp;
-                <input type="text" id="rot" name="rot"> <br> <br>
-        </form>
-        </td>
-      </tr>
-      <tr>
-        <td> <button onclick='authh("geo@yahoo.com", "123")'> Submit </button> </td>
-      </tr>
-    </table>
+    <form @submit.prevent="submit">
+      <table class="center" style="text-align: center">
+        <tr>
+          <td height="125px"></td>
+        </tr>
+        <tr>
+          <td><label for="email"> Email: </label></td>
+          <td><input type="text" id="email" name="email" /></td>
+        </tr>
+        <tr>
+          <td><label for="password"> Password: </label></td>
+          <td><input type="text" id="password" name="password" /></td>
+        </tr>
+        <tr>
+          <td><label for="password2"> Confirm Password: </label></td>
+          <td><input type="text" id="password2" name="password2" /></td>
+        </tr>
+        <tr>
+          <td><label for="orgcode"> Organisation Code: </label></td>
+          <td><input type="text" id="orgcode" name="orgcode" /></td>
+        </tr>
+        <tr>
+          <td><label for="dept"> Department: </label></td>
+          <td><input type="text" id="dept" name="dept" /></td>
+        </tr>
+        <tr>
+          <td><label for="rot"> Rotation Team: </label></td>
+          <td><input type="text" id="rot" name="rot" /></td>
+        </tr>
+        <tr>
+          <button type="submit" onclick="submit">Submit</button>
+        </tr>
+      </table>
+    </form>
   </div>
 </template>
 
 <script>
-import firebase from '../assets/firebase.js';
-
+import { auth } from "../assets/firebase.js";
+// import 'firebase/auth'
+//this.form.email, this.form.password
 export default {
   data() {
     return {
+      form: {
+        email: "",
+        password: "",
+        orgCode: "",
+        dept: "",
+        team: ""
+      }
     };
+<<<<<<< HEAD
+=======
+  },
+  methods: {
+    submit() {
+      console.log('hi');
+      auth
+        .createUserWithEmailAndPassword("geo@yahoo.com", "123")
+        .catch(function(error) {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          alert(errorCode);
+          alert(errorMessage);
+          
+        });
+    }
+>>>>>>> c86276dff0be4e05a1dfb8b07cf31540bce516a4
   }
 };
 </script>
