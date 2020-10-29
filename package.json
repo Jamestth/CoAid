@@ -12,6 +12,7 @@
     "bootstrap-vue": "^2.17.3",
     "chart.js": "^2.9.4",
     "core-js": "^3.6.5",
+    "firebase": "^8.0.0",
     "fuse.js": "^6.4.1",
     "luxon": "^1.25.0",
     "string-similarity": "^4.0.2",
