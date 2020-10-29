@@ -39,8 +39,7 @@
 
 <script>
 import { auth } from "../assets/firebase.js";
-// import 'firebase/auth'
-//this.form.email, this.form.password
+
 export default {
   data() {
     return {
@@ -57,7 +56,7 @@ export default {
     submit() {
       console.log('hi');
       auth
-        .createUserWithEmailAndPassword("geo@yahoo.com", "123")
+        .createUserWithEmailAndPassword("geo@yahoo.com", "MatheusAaron09052000")
         .catch(function(error) {
           var errorCode = error.code;
           var errorMessage = error.message;
