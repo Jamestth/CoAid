@@ -59,7 +59,7 @@
         </td>
       </tr>
       <tr>
-        <td> <button onclick='authh("geo@yahoo.com", "123")'> Submit </button> </td>
+        <td> <button type='submit'> Submit </button> </td>
       </tr>
     </table>
   </div>
@@ -67,16 +67,15 @@
 
 <script>
 import firebase from '../assets/firebase.js';
-
+//this.form.email, this.form.password
 export default {
   data() {
     return {
     };
   },
-  method() {
-    return {
-      authh: function(email, password) {
-      firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error){
+  methods: {
+    submit(){
+      firebase.auth().createUserWithEmailAndPassword("geo@yahoo.com", "123").catch(function(error){
         var errorCode = error.code;
         var errorMessage = error.message;
         alert(errorCode);
@@ -84,16 +83,8 @@ export default {
       });
       }
     }
-  }
-};
-function authh(email, password) {
-  firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error){
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        alert(errorCode);
-        alert(errorMessage);
-      });
-}
+  };
+
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
