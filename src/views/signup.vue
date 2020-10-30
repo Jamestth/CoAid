@@ -48,13 +48,13 @@ export default {
         password: "",
         orgCode: "",
         dept: "",
-        team: ""
-      }
+        team: "",
+      },
     };
   },
   methods: {
     submit() {
-      console.log('hi');
+      console.log("hi");
       auth
         .createUserWithEmailAndPassword("geo@yahoo.com", "MatheusAaron09052000")
         .catch(function(error) {
@@ -62,10 +62,9 @@ export default {
           var errorMessage = error.message;
           alert(errorCode);
           alert(errorMessage);
-          
         });
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -37,8 +37,6 @@ export default {
   overflow-x: hidden;
 }
 
-
-
 #nav {
   margin: 0 !important;
   padding: 0 !important;
