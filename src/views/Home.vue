@@ -8,14 +8,14 @@
             Welcome back {{ this.userInfo.name }}
           </h1>
         </b-row>
-        <b-row class="pl-3 pr-3">
+        <b-row class="pl-3 pr-3" v-show="!check(this.userInfo)">
           <p style="text-align:left; font-size:2.5vh;">
             Your last check in was on
-            <strong>{{ this.lastCheckIn }}</strong
+            <strong>{{ getCheckInTime(this.userInfo) }}</strong
             >.
           </p>
         </b-row>
-        <b-row class="pl-3 pr-3 pt-2 pb-3" v-show="checkedIn">
+        <b-row class="pl-3 pr-3 pt-2 pb-3" v-show="!check(this.userInfo)">
           <p style="text-align:left; font-size:2.5vh ">
             Would you like to check in?
           </p>
@@ -28,7 +28,8 @@
             ><span v-on:click="this.check">Check In</span></router-link
           >
         </b-row>
-        <b-row class="pl-3 pr-3 pt-2 pb-3" v-show="!checkedIn">
+
+        <b-row class="pl-3 pr-3 pt-2 pb-3" v-show="check(this.userInfo)">
           <p style="text-align:left; font-size:2.5vh ">
             Would you like to check out?
           </p>
@@ -41,6 +42,14 @@
             <span v-on:click="this.check">Check Out</span></router-link
           >
         </b-row>
+        <b-row class="pl-3 pr-3" v-show="check(this.userInfo)">
+          <p style="text-align:left; font-size:2.5vh;">
+            You last checked out on
+            <strong>{{ getCheckOutTime(this.userInfo) }}</strong
+            >.
+          </p>
+        </b-row>
+
         <!-- User Interface controls -->
         <b-row class="mb-4">
           <b-col cols="4">
@@ -124,7 +133,7 @@
         >
           <template v-slot:cell(avatar)="row">
             <b-avatar
-              src="https://placekitten.com/300/300"
+              :src="row.item.avatar"
               size="2rem"
             ></b-avatar>
             {{ row.empty }}
@@ -148,7 +157,6 @@
 </template>
 <script>
 import stringSimilarity from "string-similarity";
-import employees from "../assets/Emp.js";
 import departments from "../assets/DepartmentDetails.js";
 import CheckIn from "../assets/Checkin.js";
 import { DateTime } from "luxon";
@@ -166,12 +174,10 @@ export default {
       },
       departments: departments,
       CheckIn: CheckIn,
-      employees: employees,
-      lastCheckOut: "",
-      lastCheckIn: "",
+      employees: [],
       checkedIn: false,
-      userId: "",
-      userInfo: [],
+      userId: "cYGr7M3495GeyYroOeM0",
+      userInfo: {},
       fields: [
         {
           key: "avatar",
@@ -235,57 +241,87 @@ export default {
         });
     },
   },
-  mounted() {
-    database
-      .collection("meetings")
-      .get()
-      .then((querySnapShot) => {
-        querySnapShot.forEach((x) => console.log(x.data().location.name));
-      });
+  created() {
+    this.fetchEmployees();
 
-    // Set the initial number of items
-
-    this.totalRows = this.employees.length;
-    // Get user info
-    this.userId = this.$store.getters.getUser;
-    //this.userInfo = this.employees.filter((x) => x.eID == this.userId)[0];
-    //console.log(this.employees)
-    this.employees = this.employees.map((x) => {
-      let lastCheckIn = this.CheckIn.filter((y) => y.eId == x.eId).sort(
-        (a, b) => b.checkIn - a.checkIn
-      )[0];
-      let status = lastCheckIn === undefined ? "Out of Office" : lastCheckIn.status;
-      return {
-        eId: x.eId,
-        name: x.name,
-        avatar: x.avatar,
-        status: status,
-        statusType: this.getStatusType(status),
-        department: this.departments.filter((y) => y.uId == x.uId)[0]
-          .department,
-      };
-    });
-    //console.log(this.userInfo);
-    this.CheckIn = this.CheckIn.filter((x) => x.eId == this.userId).sort(
-      (y, x) => x.checkIn - y.checkIn
-    )[0];
-    //console.log(this.CheckIn);
-    this.lastCheckIn = DateTime.fromMillis(this.CheckIn.checkIn).toFormat(`ff`);
-    this.lastCheckOut = DateTime.fromMillis(this.CheckIn.checkOut).toFormat(
-      `ff`
-    );
-    if (this.lastCheckOut == "undefined") {
-      this.checkedIn = true;
-    }
-    this.checkedIn = this.$store.getters.getCheckIn;
-
-    //gets current timestamp, store this for check ins
-    //console.log(new Date().getTime());
-
-    //getting users
-    //console.log(this.$store.getters.getUser);
+    console.log(this.totalRows);
   },
+  mounted() {},
   methods: {
+    fetchEmployees: function() {
+      database
+        .collection("employees")
+        .get()
+        .then((querySnapShot) => {
+          querySnapShot.forEach((employee) => {
+            let employeeData = employee.data();
+            let records = {
+              id: employee.id,
+              name: employeeData.name,
+              avatar: employeeData.avatar,
+              email: employeeData.email,
+              phone: employeeData.phone,
+              department: "",
+              unit: "",
+              lastCheck: "",
+              status: "",
+              office: "",
+            };
+            employeeData.unit.get().then((unit) => {
+              unit = unit.data();
+              records.unit = unit.name;
+
+              unit.location.get().then((location) => {
+                records.office = location.data().name;
+              });
+
+              unit.department.get().then((department) => {
+                records.department = department.data().name;
+              });
+            });
+            database
+              .collection("checkIn")
+              .where("employee", "==", employee.id)
+              .orderBy("checkIn", "desc")
+              .limit(1)
+              //.where("Temperature", "==",36.5)
+              .get()
+              .then((snap) => {
+                snap.forEach((checkInRecord) => {
+                  records.lastCheck = {
+                    checkIn: checkInRecord.data().checkIn,
+                    checkOut: checkInRecord.data().checkOut,
+                    //location: checkInRecord.data().location,
+
+                    fluFlag: checkInRecord.data().fluFlag,
+                    shnFlag: checkInRecord.data().shnFlag,
+                    contactFlag: checkInRecord.data().contactFlag,
+                    temperature: checkInRecord.data().temperature,
+                  };
+                  records.status = this.evaluateStatus(
+                    records.lastCheck.fluFlag,
+                    records.lastCheck.shnFlag,
+                    records.lastCheck.contactFlag,
+                    records.lastCheck.temperature
+                  );
+                  records.statusType = this.getStatusType(records.status);
+                });
+              });
+            this.employees.push(records);
+            this.userInfo = this.employees.filter(
+              (x) => x.id == this.userId
+            )[0];
+            this.totalRows = this.employees.length;
+          });
+        });
+    },
+    evaluateStatus(fluFlag, shnFlag, contactFlag, temperature) {
+      let status = "Healthy";
+      let flags = fluFlag + shnFlag + contactFlag + temperature > 37.5;
+      status = flags == 0 ? "Healthy" : flags > 1 ? "Unwell" : "Sick";
+
+      return status;
+    },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
@@ -302,21 +338,36 @@ export default {
         stringSimilarity.compareTwoStrings(itemSubstring, searchString) >= 0.4;
       return deptPred && namePred;
     },
-    check() {
-      console.log(this.checkedIn);
-      this.$store.actions.check;
-      console.log(this.checkedIn);
-      this.checkedIn = this.$store.getters.getCheckIn;
+    check(userInfo) {
+      return userInfo.lastCheck.checkOut == undefined;
     },
     getStatusType(status) {
-      if (status == "COVID") {
-        return "danger";
+      if (status == "Unwell") {
+        return "warning";
       } else if (status == "Healthy") {
         return "success";
       } else if (status == "Sick") {
-        return "warning";
+        return "danger";
       } else {
         return "secondary";
+      }
+    },
+    getCheckInTime(userInfo) {
+      try {
+        return DateTime.fromSeconds(
+          userInfo.lastCheck.checkIn.seconds
+        ).toFormat(`ff`);
+      } catch (err) {
+        return 0;
+      }
+    },
+    getCheckOutTime(userInfo) {
+      try {
+        return DateTime.fromSeconds(
+          userInfo.lastCheck.checkOut.seconds
+        ).toFormat(`ff`);
+      } catch (err) {
+        return 0;
       }
     },
   },
