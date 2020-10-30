@@ -1,10 +1,10 @@
 <template>
   <div>
-    <b-badge :variant="row.item.statusType" v-bind:id="row.item.eID + ''">
+    <b-badge :variant="row.item.statusType" v-bind:id="row.item.eId + ''">
       {{ row.item.status }}</b-badge
     >
     <b-popover
-      v-bind:target="row.item.eID + ''"
+      v-bind:target="row.item.eId + ''"
       triggers="hover"
       placement="right"
     >
@@ -14,7 +14,7 @@
         <b-button
           variant="primary"
           class="float-right"
-          v-bind:to="'/profile/' + row.item.eID + '/' + false"
+          v-bind:to="'/profile/' + row.item.eId + '/' + false"
         >
           View Profile
         </b-button>

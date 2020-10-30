@@ -14,7 +14,7 @@ const checkIn = [
   {
     checkId: "1",
     checkIn: 1603384491272,
-    status: "Healthy",
+    status: "COVID",
     temperature: 36.5,
     shnFlag: false,
     fluFlag: false,

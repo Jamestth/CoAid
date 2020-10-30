@@ -112,9 +112,9 @@
             ></b-form-input>
           </b-form-group>
 
-          <b-button class = "mr-3" type="submit" v-if="editMode">Submit</b-button>
-          <b-button  class = "ml-3"   type="reset" v-if="editMode">cancel</b-button>
-    <b-row class = "mb-4"></b-row>
+          <b-button class="mr-3" type="submit" v-if="editMode">Submit</b-button>
+          <b-button class="ml-3" type="reset" v-if="editMode">cancel</b-button>
+          <b-row class="mb-4"></b-row>
         </b-form>
         <b-button
           type="button"
@@ -155,7 +155,7 @@ export default {
       lastCheckIn: "",
       checkedIn: false,
       userInfo: {
-        eID: "",
+        eId: "",
         name: "",
         email: "",
         uId: "",
@@ -170,12 +170,12 @@ export default {
         name: "",
         food: null,
         checked: [],
-      }
+      },
     };
   },
   computed: {},
   mounted() {
-    var userInfo = this.employees.filter((x) => x.eID == this.$route.params.id);
+    var userInfo = this.employees.filter((x) => x.eId == this.$route.params.id);
     this.userInfo = userInfo[0];
     this.userInfoOrignal = JSON.parse(JSON.stringify(userInfo[0]));
     if (userInfo.length == 0) {
@@ -202,7 +202,7 @@ export default {
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
-      alert(JSON.stringify(this.form));
+      alert(JSON.stringify(this.userInfo));
     },
     onReset(evt) {
       evt.preventDefault();
@@ -213,7 +213,6 @@ export default {
       this.curDept = this.unitDeptDict[this.curUnit];
       this.updateUnitOptions();
       this.editMode = !this.editMode;
-      console.log("hi");
     },
     updateUnitOptions() {
       this.curUnitOptions = this.deptUnitDict[this.curDept];

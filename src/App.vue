@@ -23,11 +23,11 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Cabin:wght@500");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500");
 @import url("https://fonts.googleapis.com/css2?family=open+sans:wght@500");
-@import url("https://fonts.googleapis.com/css2?family=Questrial:wght@500");
+@import url("https://fonts.googleapis.com/css2?family=questrial:wght@500");
 
 #app {
   font-size: 2vh;
-  font-family: open + sans, Avenir, Helvetica, Arial, sans-serif;
+  font-family: questrial, Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -35,8 +35,9 @@ export default {
   height: 94vh;
   overflow-y: auto;
   overflow-x: hidden;
- 
 }
+
+
 
 #nav {
   margin: 0 !important;
