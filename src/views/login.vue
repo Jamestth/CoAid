@@ -1,18 +1,27 @@
 <template>
-  <div class="checkoutsuccess">
+  <div class="login">
     <table class = "center" style="text-align: center">
         <tr>
-            <td> <img src = "../assets/checkout.jpg" class = "left" style = "width:50%"> </td>
-        </tr>
-        <tr>
-            <td> Your check out was successful. </td>
-        </tr>
-        <tr>
-            <td> Have a nice day! </td>
-        </tr>
-        <tr>
-            <td> <button type="button"> Home </button> </td>
-        </tr>
+        <td>
+        <form>
+                <label for="mobileno"> Mobile Number: </label>
+                &nbsp;
+                <input type="text" id="mobileno" name="mobileno"> <br> <br>
+        </form>
+        </td>
+      </tr>
+      <tr>
+        <td>
+        <form>
+                <label for="password"> Password: </label>
+                &nbsp;
+                <input type="text" id="password" name="password"> <br> <br>
+        </form>
+        </td>
+      </tr>
+      <tr>
+        <td> <router-link to="/healthdeclaration" tag="button" class="btn ml-3" style="margin:0"> Submit </router-link> </td>
+      </tr>
     </table>
   </div>
 </template>
@@ -35,5 +44,20 @@ div {
 .center {
   margin-left: auto;
   margin-right: auto;
+}
+.btn {
+  background-color: darkblue;
+  text-align: center;
+  color: white;
+  padding: 10px;
+  border-color: white;
+  margin: auto;
+  font-family: Arial, Helvetica, sans-serif;
+  border-radius: 8px;
+}
+.btn:hover {
+  background-color: white;
+  border-color: darkblue;
+  color: darkblue;
 }
 </style>

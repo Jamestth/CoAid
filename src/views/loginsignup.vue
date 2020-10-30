@@ -5,10 +5,10 @@
             <td> <img src = "../assets/LogoIcon.png" class = "left" style = "width:50%"> </td>
         </tr>
         <tr>
-            <td> <button type="button"> Login </button> </td>
+            <td> <router-link to="/login" tag="button" class="btn ml-3" style="margin:0"> Login </router-link></td>
         </tr>
         <tr>
-            <td> <button type="button"> Signup </button> </td>
+            <td> <router-link to="/signup" tag="button" class="btn ml-3" style="margin:0"> Signup </router-link></td>
         </tr>
     </table>
   </div>
@@ -32,5 +32,20 @@ div {
 .center {
   margin-left: auto;
   margin-right: auto;
+}
+.btn {
+  background-color: darkblue;
+  text-align: center;
+  color: white;
+  padding: 10px;
+  border-color: white;
+  margin: auto;
+  font-family: Arial, Helvetica, sans-serif;
+  border-radius: 8px;
+}
+.btn:hover {
+  background-color: white;
+  border-color: darkblue;
+  color: darkblue;
 }
 </style>
