@@ -3,7 +3,7 @@
     <b-row class="text-center">
       <b-col></b-col>
       <b-col cols="8">
-        <b-row class="pl-3 pr-3">
+        <b-row class="pl-3 pr-3 pt-3">
           <h1 style="text-align:left; font-size:5vh;">
             Welcome back {{ this.userInfo.name }}
           </h1>
@@ -20,7 +20,7 @@
             Would you like to check in?
           </p>
           <router-link
-            to="/CheckInsuccess"
+            to="/healthdeclaration"
             tag="button"
             class="btn ml-3"
             style="margin:0"
@@ -199,8 +199,10 @@ export default {
               return 3;
             } else if (value == "Healthy") {
               return 1;
-            } else {
+            } else if (value == "Sick") {
               return 2;
+            } else {
+              return -1;
             }
           },
           sortable: true,
@@ -252,7 +254,7 @@ export default {
       let lastCheckIn = this.CheckIn.filter((y) => y.eId == x.eId).sort(
         (a, b) => b.checkIn - a.checkIn
       )[0];
-      let status = lastCheckIn === undefined ? "None" : lastCheckIn.status;
+      let status = lastCheckIn === undefined ? "Out of Office" : lastCheckIn.status;
       return {
         eId: x.eId,
         name: x.name,
