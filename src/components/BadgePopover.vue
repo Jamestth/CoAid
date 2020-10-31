@@ -9,7 +9,7 @@
       placement="right"
     >
       <template #title>
-        <b-avatar src="https://placekitten.com/300/300" size="2rem"></b-avatar>
+        <b-avatar :src="row.item.avatar" size="2rem"></b-avatar>
         {{ row.item.name }}
         <b-button
           variant="primary"
