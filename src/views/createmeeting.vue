@@ -1,7 +1,7 @@
 <template>
   <b-container class="meetingspage">
     <h1>
-      Create a Meeting test3
+      Create a Meeting
       <router-link to="/meetings" tag="button" class="btn ml-3" style="margin:0"
         >Back to meetings</router-link
       >
@@ -14,7 +14,7 @@
         <b-col cols = 8>
           
         <b-row>
-          <b-col>Date: </b-col>
+          <b-col> Date: </b-col>
           <b-col
             ><input type="date" id="meetingdate" name="meetingdate"
           /></b-col>
@@ -33,7 +33,15 @@
         </b-row>
         <b-row>
           <b-col>Location: </b-col>
-          <b-col><input type="text" id="location" name="location"/></b-col>
+          <b-col>
+            <b-dropdown text="Select Location" id="myDropdown" variant="outline-primary" class="dropbtn">
+            <b-dropdown-item href="#"> Meeting Room 1 </b-dropdown-item>
+            <b-dropdown-item href="#"> Meeting Room 2 </b-dropdown-item>
+            <b-dropdown-item href="#"> Meeting Room 3 </b-dropdown-item>
+            <b-dropdown-item href="#"> Meeting Room 4 </b-dropdown-item>
+            <b-dropdown-item href="#"> Meeting Room 5 </b-dropdown-item>
+            </b-dropdown>
+          </b-col>
         </b-row>
         <b-row>
           <b-col>Select Employees Involved: </b-col>
@@ -66,7 +74,6 @@
               <li> Participants must disinfect meeting location after use
               </li></ul>
               </p><br><br>
-
 
             <b-form-checkbox
               id="checkbox-1"
@@ -163,6 +170,39 @@ input {
   border-color: darkblue;
   color: darkblue;
 }
+.btn-secondary {
+  background-color: #ffffff;
+  color: black;
+
+}
+.div {
+  background-color: #ffffff;
+  color: black;
+  border-color: black;
+  text-align: left;
+
+}
+.dropbtn {
+  background-color:white;
+  border-color:black;
+  color: black;
+  padding: 0px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+.dropbtn:hover {
+  background-color: white;
+  border-color: darkblue;
+  color: darkblue;
+
+}
+
+.dropbtn-outline-primary {
+    color: #767676;
+    border-color: #767676;
+}
+
 
 label {
   margin: 0px;
