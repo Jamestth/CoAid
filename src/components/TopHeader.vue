@@ -33,15 +33,15 @@
                 ><b-nav-item
                   class="dropdown-navitems"
                   call
-                  v-bind:to="
-                    '/profile/' + this.$store.getters.getUser + '/' + true
-                  "
+                  v-bind:to="'/profile/' + eId + '/' + true"
                   ><p class="dropdown-navitems-text">Profile</p></b-nav-item
                 ></b-dropdown-item
               >
               <b-dropdown-item href="#">
-                <b-nav-item class="dropdown-navitems" call to="/"
-                  ><p class="dropdown-navitems-text">Sign Out</p></b-nav-item
+                <b-nav-item class="dropdown-navitems" call to="/login"
+                  ><p class="dropdown-navitems-text" v-on:click="signOut">
+                    Sign Out
+                  </p></b-nav-item
                 >
               </b-dropdown-item>
             </b-nav-item-dropdown>
@@ -59,18 +59,26 @@ import { auth, database } from "./../assets/firebase";
 export default {
   data() {
     return {
-      avatar: "123121312",
+      avatar:"",
+      eId:"",
     };
   },
   created() {
     this.fetchData();
   },
   methods: {
+    signOut() {
+      auth
+        .signOut()
+        .then(function() {})
+        .catch(function(error) {
+          console.log(error)
+        });
+    },
     fetchData: function() {
       var user = auth.currentUser;
-      console.log(user);
-      //this.userId = user.uid;
-      this.userId = "IAvKPChVuFfkH176PMgdkwAvdfE2"; //remove when auth works
+      this.userId = user.uid;
+      //this.userId = "IAvKPChVuFfkH176PMgdkwAvdfE2"; //remove when auth works
       database
         .collection("employees")
         .get()
@@ -78,6 +86,7 @@ export default {
           querySnapShot.forEach((employee) => {
             let employeeData = employee.data();
             this.avatar = employeeData.avatar;
+            this.eId = employee.id;
           });
         });
     },

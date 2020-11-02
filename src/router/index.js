@@ -87,12 +87,15 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   let isLoggedIn = auth.currentUser;
-  isLoggedIn = true; // remove when auth is done
+  //isLoggedIn = true; // remove when auth is done
   if (!isLoggedIn && to.path !== "/login") {
     next("/login");
   } else if (isLoggedIn && to.path === "/login") {
     next("/");
-  } else {
+  } /*else if (isLoggedIn && from.path === "/login") {
+    console.log("do nothing");
+  } */
+  else {
     next();
   }
 });

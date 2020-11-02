@@ -132,12 +132,13 @@
 import employees from "../assets/Emp.js";
 import CheckIn from "../assets/Checkin.js";
 import departments from "../assets/DepartmentDetails.js";
-import { auth, database } from "../assets/firebase";
+import { storage, auth, database } from "../assets/firebase";
 export default {
   components: {},
   data() {
     return {
-      file2: "",
+      testavatar: "",
+      file2: {},
       CheckIn: CheckIn,
       employees: employees,
       departments: departments,
@@ -171,7 +172,17 @@ export default {
   created() {
     this.fetchData();
 
-    console.log(this.totalRows);
+    storage
+      .ref()
+      .child("avatar/person002.jfif")
+      .getDownloadURL()
+      .then(function(url) {
+        console.log(url);
+      })
+      .catch(function(error) {
+        // Handle any errors
+        console.log(error);
+      });
   },
   mounted() {},
   methods: {
@@ -198,9 +209,8 @@ export default {
     },
     fetchData: function() {
       var user = auth.currentUser;
-      console.log(user);
-      //this.userId = user.uid;
-      this.userId = "IAvKPChVuFfkH176PMgdkwAvdfE2"; //remove when auth works
+      this.userId = user.uid;
+      //this.userId = "IAvKPChVuFfkH176PMgdkwAvdfE2"; //remove when auth works
       database
         .collection("employees")
         .doc(this.$route.params.id)
