@@ -27,10 +27,7 @@
             <b-nav-item-dropdown right>
               <!-- Using 'button-content' slot -->
               <template v-slot:button-content>
-                <b-avatar
-                  src="https://placekitten.com/300/300"
-                  size="2rem"
-                ></b-avatar>
+                <b-avatar :src="avatar" size="2rem"></b-avatar>
               </template>
               <b-dropdown-item
                 ><b-nav-item
@@ -58,9 +55,32 @@
 </template>
 
 <script>
+import { auth, database } from "./../assets/firebase";
 export default {
   data() {
-    return {};
+    return {
+      avatar: "123121312",
+    };
+  },
+  created() {
+    this.fetchData();
+  },
+  methods: {
+    fetchData: function() {
+      var user = auth.currentUser;
+      console.log(user);
+      //this.userId = user.uid;
+      this.userId = "IAvKPChVuFfkH176PMgdkwAvdfE2"; //remove when auth works
+      database
+        .collection("employees")
+        .get()
+        .then((querySnapShot) => {
+          querySnapShot.forEach((employee) => {
+            let employeeData = employee.data();
+            this.avatar = employeeData.avatar;
+          });
+        });
+    },
   },
 };
 </script>

@@ -8,48 +8,48 @@
             Welcome back {{ this.userInfo.name }}
           </h1>
         </b-row>
-        <b-row class="pl-3 pr-3" v-show="!check(this.userInfo)">
-          <p style="text-align:left; font-size:2.5vh;">
-            Your last check in was on
-            <strong>{{ getCheckInTime(this.userInfo) }}</strong
-            >.
-          </p>
-        </b-row>
-        <b-row class="pl-3 pr-3 pt-2 pb-3" v-show="!check(this.userInfo)">
-          <p style="text-align:left; font-size:2.5vh ">
-            Would you like to check in?
-          </p>
-          <router-link
-            to="/healthdeclaration"
-            tag="button"
-            class="btn ml-3"
-            style="margin:0"
-            v-on:click="check"
-            ><span v-on:click="this.check">Check In</span></router-link
-          >
-        </b-row>
-
-        <b-row class="pl-3 pr-3 pt-2 pb-3" v-show="check(this.userInfo)">
-          <p style="text-align:left; font-size:2.5vh ">
-            Would you like to check out?
-          </p>
-          <router-link
-            to="/CheckOutsuccess"
-            tag="button"
-            class="btn ml-3"
-            style="margin:0"
-          >
-            <span v-on:click="this.check">Check Out</span></router-link
-          >
-        </b-row>
-        <b-row class="pl-3 pr-3" v-show="check(this.userInfo)">
-          <p style="text-align:left; font-size:2.5vh;">
-            You last checked out on
-            <strong>{{ getCheckOutTime(this.userInfo) }}</strong
-            >.
-          </p>
-        </b-row>
-
+        <b-card class=" mb-3" header="Notifications">
+          <b-row class="pl-2" v-show="!check(this.userInfo)">
+            <p style="text-align:left; font-size:2.5vh;">
+              Your last check in was on
+              <strong>{{ getCheckOutTime(this.userInfo) }}</strong
+              >.
+            </p>
+          </b-row>
+          <b-row class="pl-2 pt-2" v-show="!check(this.userInfo)">
+            <p style="text-align:left; font-size:2.5vh ">
+              Would you like to check in?
+            </p>
+            <router-link
+              to="/healthdeclaration"
+              tag="button"
+              class="btn ml-3"
+              style="margin:0"
+              v-on:click="check"
+              ><span v-on:click="this.check">Check In</span></router-link
+            >
+          </b-row>
+          <b-row class="pl-2" v-show="check(this.userInfo)">
+            <p style="text-align:left; font-size:2.5vh;">
+              You last checked in on
+              <strong>{{ getCheckInTime(this.userInfo) }}</strong
+              >.
+            </p>
+          </b-row>
+          <b-row class="pl-2 pt-2" v-show="check(this.userInfo)">
+            <p style="text-align:left; font-size:2.5vh ">
+              Would you like to check out?
+            </p>
+            <router-link
+              to="/CheckOutsuccess"
+              tag="button"
+              class="btn ml-3"
+              style="margin:0"
+            >
+              <span v-on:click="this.check">Check Out</span></router-link
+            >
+          </b-row>
+        </b-card>
         <!-- User Interface controls -->
         <b-row class="mb-4">
           <b-col cols="4">
@@ -132,10 +132,7 @@
           :head-variant="headVariant"
         >
           <template v-slot:cell(avatar)="row">
-            <b-avatar
-              :src="row.item.avatar"
-              size="2rem"
-            ></b-avatar>
+            <b-avatar :src="row.item.avatar" size="2rem"></b-avatar>
             {{ row.empty }}
           </template>
           <template v-slot:cell(status)="row">
@@ -162,7 +159,7 @@ import CheckIn from "../assets/Checkin.js";
 import { DateTime } from "luxon";
 import AttendanceDonut from "../components/AttendanceDonut.vue";
 import BadgePopover from "../components/BadgePopover";
-import { database } from "../assets/firebase";
+import { auth, database } from "../assets/firebase";
 export default {
   components: { AttendanceDonut, BadgePopover },
   data() {
@@ -176,7 +173,6 @@ export default {
       CheckIn: CheckIn,
       employees: [],
       checkedIn: false,
-      userId: "cYGr7M3495GeyYroOeM0",
       userInfo: {},
       fields: [
         {
@@ -242,13 +238,20 @@ export default {
     },
   },
   created() {
-    this.fetchEmployees();
+    this.fetchData();
 
     console.log(this.totalRows);
   },
   mounted() {},
   methods: {
-    fetchEmployees: function() {
+    fetchData: function() {
+      var user = auth.currentUser;
+      console.log(user);
+      //this.userId = user.uid;
+
+      this.userId = "IAvKPChVuFfkH176PMgdkwAvdfE2"; //remove when auth works
+
+
       database
         .collection("employees")
         .get()
@@ -256,7 +259,8 @@ export default {
           querySnapShot.forEach((employee) => {
             let employeeData = employee.data();
             let records = {
-              id: employee.id,
+              eid: employee.id,
+              uid: employeeData.uid,
               name: employeeData.name,
               avatar: employeeData.avatar,
               email: employeeData.email,
@@ -292,7 +296,6 @@ export default {
                     checkIn: checkInRecord.data().checkIn,
                     checkOut: checkInRecord.data().checkOut,
                     //location: checkInRecord.data().location,
-
                     fluFlag: checkInRecord.data().fluFlag,
                     shnFlag: checkInRecord.data().shnFlag,
                     contactFlag: checkInRecord.data().contactFlag,
@@ -309,7 +312,7 @@ export default {
               });
             this.employees.push(records);
             this.userInfo = this.employees.filter(
-              (x) => x.id == this.userId
+              (x) => x.uid == this.userId
             )[0];
             this.totalRows = this.employees.length;
           });

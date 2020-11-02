@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import { auth } from "../assets/firebase";
 
 Vue.use(VueRouter);
 
@@ -64,7 +65,7 @@ const routes = [
     path: "/profile/:id/:personal",
     name: "Profile",
     component: () => import("../views/profile.vue"),
-    props: true
+    props: true,
   },
   {
     path: "/createmeeting",
@@ -82,6 +83,18 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  let isLoggedIn = auth.currentUser;
+  isLoggedIn = true; // remove when auth is done
+  if (!isLoggedIn && to.path !== "/login") {
+    next("/login");
+  } else if (isLoggedIn && to.path === "/login") {
+    next("/");
+  } else {
+    next();
+  }
 });
 
 export default router;
