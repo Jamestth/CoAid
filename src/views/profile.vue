@@ -10,6 +10,7 @@
             rounded="circle"
             width="200"
             height="200"
+
           ></b-img>
           <b-row v-if="editMode">
             <b-col> </b-col>
@@ -17,12 +18,14 @@
               <b-form-file v-model="file" class="mt-3" plain></b-form-file>
             </b-col>
             <b-col></b-col>
-          </b-row>
+          </b-row  >
           <b-form-group
+            label-cols-sm="3"
             id="input-group-1"
             label="Name:"
             label-for="input-1"
             label-align="left"
+            class="pt-5"
           >
             <b-form-input
               id="input-1"
@@ -35,6 +38,7 @@
           </b-form-group>
 
           <b-form-group
+          label-cols-sm="3"
             id="input-group-2"
             label="Email:"
             label-for="input-2"
@@ -51,6 +55,7 @@
           </b-form-group>
 
           <b-form-group
+          label-cols-sm="3"
             id="input-group-3"
             label="Department:"
             label-for="input-3"
@@ -67,6 +72,7 @@
           </b-form-group>
 
           <b-form-group
+          label-cols-sm="3"
             id="input-group-4"
             label="Unit:"
             label-for="input-4"
@@ -82,6 +88,7 @@
           </b-form-group>
 
           <b-form-group
+          label-cols-sm="3"
             id="input-group-5"
             label="Mobile Contact:"
             label-for="input-5"
@@ -93,21 +100,6 @@
               placeholder="Enter Contact details"
               required
               type="tel"
-              :disabled="!editMode"
-            ></b-form-input>
-          </b-form-group>
-
-          <b-form-group
-            id="input-group-6"
-            label="Office:"
-            label-for="input-6"
-            label-align="left"
-          >
-            <b-form-input
-              id="input-6"
-              v-model="userInfo.office"
-              placeholder="Enter office Location"
-              required
               :disabled="!editMode"
             ></b-form-input>
           </b-form-group>
@@ -129,7 +121,7 @@
 </template>
 
 <script>
-import { auth, database } from "../assets/firebase";
+import { storage, auth, database } from "../assets/firebase";
 export default {
   components: {},
   data() {
@@ -183,25 +175,38 @@ export default {
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
-      console.log("hi")
       //alert(JSON.stringify(this.userInfo));
-      console.log(this.unitsList)
-      let unitId = this.unitsList.filter(x =>(x.unit = this.userInfo.name));
-     console.log(unitId)
-     //let unitRef = database.collection("units").doc(unitId)
-      //console.log(unitRef)
-/*
-      database
-        .collection("employees")
-        .doc(this.userInfo.eid)
-        .update({
-          name: this.userInfo.name,
-          email: this.userInfo.email,
-          phone: this.userInfo.phone,
-          unit: unitId
-        });
-*/
 
+      //let extension = this.file.name.split(".").pop();
+      let filepath = "avatar/" + this.userInfo.uid;
+      var storageRef = storage.ref();
+      var fileRef = storageRef.child(filepath);
+
+      fileRef.put(this.file).then((snap) => {
+        console.log(snap, "uploaded");
+
+        fileRef.getDownloadURL().then((snap) => {
+          console.log(snap);
+          this.userInfo.avatar = snap;
+
+          let unitId = this.unitsList.filter(
+            (x) => x.unit == this.userInfo.unit
+          )[0].unitId;
+          let unitRef = database.doc("/units/" + unitId);
+          database
+            .collection("employees")
+            .doc(this.userInfo.eid)
+            .update({
+              name: this.userInfo.name,
+              email: this.userInfo.email,
+              phone: this.userInfo.phone,
+              unit: unitRef,
+              avatar: this.userInfo.avatar,
+            });
+        });
+      });
+
+      this.editMode = !this.editMode;
     },
     onReset(evt) {
       evt.preventDefault();
@@ -211,7 +216,7 @@ export default {
       this.editMode = !this.editMode;
     },
     updateUnitOptions() {
-      this.curUnitOptions = this.unitsList
+      this.curUnitOptions = JSON.parse(JSON.stringify(this.unitsList))
         .filter((x) => x.department == this.userInfo.department)
         .map((y) => y.unit);
     },
@@ -283,6 +288,7 @@ export default {
                         this.curUnitOptions.push(unit.data().name);
                       }
                     });
+
                   this.unitsList.push(unitRecords);
                 })
               );
