@@ -10,15 +10,19 @@
             rounded="circle"
             width="200"
             height="200"
-
           ></b-img>
           <b-row v-if="editMode">
             <b-col> </b-col>
             <b-col>
-              <b-form-file v-model="file" class="mt-3" plain></b-form-file>
+              <b-form-file
+                accept=".jpg, .png, .gif"
+                v-model="file"
+                class="mt-3"
+                plain
+              ></b-form-file>
             </b-col>
             <b-col></b-col>
-          </b-row  >
+          </b-row>
           <b-form-group
             label-cols-sm="3"
             id="input-group-1"
@@ -38,7 +42,7 @@
           </b-form-group>
 
           <b-form-group
-          label-cols-sm="3"
+            label-cols-sm="3"
             id="input-group-2"
             label="Email:"
             label-for="input-2"
@@ -55,7 +59,7 @@
           </b-form-group>
 
           <b-form-group
-          label-cols-sm="3"
+            label-cols-sm="3"
             id="input-group-3"
             label="Department:"
             label-for="input-3"
@@ -72,7 +76,7 @@
           </b-form-group>
 
           <b-form-group
-          label-cols-sm="3"
+            label-cols-sm="3"
             id="input-group-4"
             label="Unit:"
             label-for="input-4"
@@ -88,7 +92,7 @@
           </b-form-group>
 
           <b-form-group
-          label-cols-sm="3"
+            label-cols-sm="3"
             id="input-group-5"
             label="Mobile Contact:"
             label-for="input-5"
