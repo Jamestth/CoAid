@@ -17,7 +17,9 @@
         >
           <b-navbar-nav class="ml-auto" right>
             <b-nav-item class="pr-3 p-2" to="/">Home</b-nav-item>
-            <b-nav-item class="pr-3 p-2" to="/checkinout">Check In/Out</b-nav-item>
+            <b-nav-item class="pr-3 p-2" to="/checkinout"
+              >Check In/Out</b-nav-item
+            >
             <b-nav-item class="pr-3 p-2" to="/schedule">Schedule</b-nav-item>
             <b-nav-item class="pr-3 p-2" to="/meetings">Meetings</b-nav-item>
             <b-nav-item class="pr-3 p-2" to="/analytics">Analytics</b-nav-item>
@@ -25,19 +27,23 @@
             <b-nav-item-dropdown right>
               <!-- Using 'button-content' slot -->
               <template v-slot:button-content>
-                <b-avatar
-                  src="https://placekitten.com/300/300"
-                  size="2rem"
-                ></b-avatar>
+                <b-avatar :src="avatar" size="2rem"></b-avatar>
               </template>
-              <b-dropdown-item 
-                ><b-nav-item class = "dropdown-navitems" call 
-                v-bind:to="'/profile/' + this.$store.getters.getUser + '/' + true" 
-                ><p class = "dropdown-navitems-text">Profile</p></b-nav-item></b-dropdown-item
+              <b-dropdown-item
+                ><b-nav-item
+                  class="dropdown-navitems"
+                  call
+                  v-bind:to="'/profile/' + eId + '/' + true"
+                  ><p class="dropdown-navitems-text">Profile</p></b-nav-item
+                ></b-dropdown-item
               >
               <b-dropdown-item href="#">
-                <b-nav-item class = "dropdown-navitems" call to="/" ><p class = "dropdown-navitems-text">Sign Out</p></b-nav-item>
-                </b-dropdown-item>
+                <b-nav-item class="dropdown-navitems" call to="/login"
+                  ><p class="dropdown-navitems-text" v-on:click="signOut">
+                    Sign Out
+                  </p></b-nav-item
+                >
+              </b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>
 
@@ -49,9 +55,55 @@
 </template>
 
 <script>
+import { auth, database } from "./../assets/firebase";
 export default {
   data() {
-    return {};
+    return {
+      avatar: "",
+      eId: "",
+    };
+  },
+  created() {
+    this.fetchData();
+    console.log("hi");
+  },
+  watch: {
+        '$route' (to, from) {
+
+          if (from.params.id !== to.params.id) {
+
+            return this.fetchData()
+
+          }
+        }
+      },
+
+  methods: {
+    signOut() {
+      auth
+        .signOut()
+        .then(function() {})
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    fetchData: function() {
+      var user = auth.currentUser;
+      this.userId = user.uid;
+      //this.userId = "IAvKPChVuFfkH176PMgdkwAvdfE2"; //remove when auth works
+      database
+        .collection("employees")
+        .where("uid", "==", this.userId)
+        .limit(1)
+        .get()
+        .then((querySnapShot) => {
+          querySnapShot.forEach((employee) => {
+            let employeeData = employee.data();
+            this.avatar = employeeData.avatar;
+            this.eId = employee.id;
+          });
+        });
+    },
   },
 };
 </script>
@@ -115,32 +167,29 @@ li {
   color: white;
 }
 /deep/.navbar-light .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 255, 255, 3' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") ;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 255, 255, 3' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
-.dropdown-navitems-text  {
-color: black;
-font-size: 2vh;
-padding: 0;
-margin: 0;
-font-family: "Cabin", Helvetica, Arial;
+.dropdown-navitems-text {
+  color: black;
+  font-size: 2vh;
+  padding: 0;
+  margin: 0;
+  font-family: "Cabin", Helvetica, Arial;
 }
-/deep/ .dropdown-navitems  {
-padding: 0;
-margin: 0;
-border: 0 !important;
+/deep/ .dropdown-navitems {
+  padding: 0;
+  margin: 0;
+  border: 0 !important;
 }
 
 /deep/ .dropdown-item {
   padding: 0;
-margin: 0;
-border: 0 !important;
-
+  margin: 0;
+  border: 0 !important;
 }
-
 
 /deep/.dropdown-toggle::after {
-color : white;
+  color: white;
 }
-
 </style>

@@ -14,15 +14,22 @@
           <b-row v-if="editMode">
             <b-col> </b-col>
             <b-col>
-              <b-form-file v-model="file2" class="mt-3" plain></b-form-file>
+              <b-form-file
+                accept=".jpg, .png, .gif"
+                v-model="file"
+                class="mt-3"
+                plain
+              ></b-form-file>
             </b-col>
             <b-col></b-col>
           </b-row>
           <b-form-group
+            label-cols-sm="3"
             id="input-group-1"
             label="Name:"
             label-for="input-1"
             label-align="left"
+            class="pt-5"
           >
             <b-form-input
               id="input-1"
@@ -35,6 +42,7 @@
           </b-form-group>
 
           <b-form-group
+            label-cols-sm="3"
             id="input-group-2"
             label="Email:"
             label-for="input-2"
@@ -51,6 +59,7 @@
           </b-form-group>
 
           <b-form-group
+            label-cols-sm="3"
             id="input-group-3"
             label="Department:"
             label-for="input-3"
@@ -58,8 +67,8 @@
           >
             <b-form-select
               id="input-3"
-              v-model="curDept"
-              :options="Object.values(deptDict)"
+              v-model="userInfo.department"
+              :options="departmentOptions"
               required
               v-on:change="updateUnitOptions()"
               :disabled="!editMode"
@@ -67,6 +76,7 @@
           </b-form-group>
 
           <b-form-group
+            label-cols-sm="3"
             id="input-group-4"
             label="Unit:"
             label-for="input-4"
@@ -74,7 +84,7 @@
           >
             <b-form-select
               id="input-4"
-              v-model="curUnit"
+              v-model="userInfo.unit"
               :options="curUnitOptions"
               required
               :disabled="!editMode"
@@ -82,6 +92,7 @@
           </b-form-group>
 
           <b-form-group
+            label-cols-sm="3"
             id="input-group-5"
             label="Mobile Contact:"
             label-for="input-5"
@@ -89,7 +100,7 @@
           >
             <b-form-input
               id="input-5"
-              v-model="userInfo.contact"
+              v-model="userInfo.phone"
               placeholder="Enter Contact details"
               required
               type="tel"
@@ -97,29 +108,11 @@
             ></b-form-input>
           </b-form-group>
 
-          <b-form-group
-            id="input-group-6"
-            label="Office Contact:"
-            label-for="input-6"
-            label-align="left"
-          >
-            <b-form-input
-              id="input-6"
-              v-model="userInfo.office"
-              placeholder="Enter office Contact"
-              required
-              :disabled="!editMode"
-            ></b-form-input>
-          </b-form-group>
-
-          <b-button class = "mr-3" type="submit" v-if="editMode">Submit</b-button>
-          <b-button  class = "ml-3"   type="reset" v-if="editMode">cancel</b-button>
-    <b-row class = "mb-4"></b-row>
+          <b-button class="mr-3" type="submit" v-if="editMode">Submit</b-button>
+          <b-button class="ml-3" type="reset" v-if="editMode">cancel</b-button>
+          <b-row class="mb-4"></b-row>
         </b-form>
-        <b-button
-          type="button"
-          v-on:click="editMode = !editMode"
-          v-if="!editMode"
+        <b-button type="button" v-on:click="switchToEditMode()" v-if="!editMode"
           >Edit</b-button
         >
       </div>
@@ -132,37 +125,29 @@
 </template>
 
 <script>
-import employees from "../assets/Emp.js";
-import CheckIn from "../assets/Checkin.js";
-import departments from "../assets/DepartmentDetails.js";
+import { storage, auth, database } from "../assets/firebase";
 export default {
   components: {},
   data() {
     return {
-      CheckIn: CheckIn,
-      employees: employees,
-      departments: departments,
+      testavatar: "",
+      file: null,
       profileFound: true,
       editMode: false,
-      deptUnitDict: {},
-      unitDeptDict: {},
-      deptDict: {},
-      unitDict: {},
-      curDept: "",
+      departmentOptions: [],
+      unitsList: [],
       curUnitOptions: [],
-      curUnit: "",
-      lastCheckOut: "",
-      lastCheckIn: "",
       checkedIn: false,
       userInfo: {
-        eID: "",
-        name: "",
-        email: "",
-        uId: "",
-        office: "",
-        contact: "",
         avatar: "",
-        admin: "",
+        department: "",
+        eid: "",
+        email: "",
+        name: "",
+        office: "",
+        phone: "",
+        uid: "",
+        unit: "",
       },
       userInfoOrignal: {},
       form: {
@@ -170,53 +155,149 @@ export default {
         name: "",
         food: null,
         checked: [],
-      }
+      },
     };
   },
   computed: {},
-  mounted() {
-    var userInfo = this.employees.filter((x) => x.eID == this.$route.params.id);
-    this.userInfo = userInfo[0];
-    this.userInfoOrignal = JSON.parse(JSON.stringify(userInfo[0]));
-    if (userInfo.length == 0) {
-      this.profileFound = false;
-    } else {
-      this.departments.forEach((x) => {
-        if (this.deptUnitDict[x.department] === undefined) {
-          this.deptUnitDict[x.department] = [];
-          this.deptUnitDict[x.department].push(x.unit);
-        } else {
-          this.deptUnitDict[x.department].push(x.unit);
-        }
-        this.unitDeptDict[x.unit] = x.department;
-        this.deptDict[x.dId] = x.department;
-        this.unitDict[x.uId] = x.unit;
+  created() {
+    this.fetchData();
+    /*
+    storage
+      .ref()
+      .child("avatar/person002.jfif")
+      .getDownloadURL()
+      .then(function(url) {
+        console.log(url);
+      })
+      .catch(function(error) {
+        // Handle any errors
+        console.log(error);
       });
-    }
-    this.curUnit = this.unitDict[this.userInfo.uId];
-    this.curDept = this.unitDeptDict[this.curUnit];
-
-    this.updateUnitOptions();
-    //console.log(Array.from(this.deptUnitDict.keys()));
+      */
   },
+  mounted() {},
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
-      alert(JSON.stringify(this.form));
+      //alert(JSON.stringify(this.userInfo));
+
+      //let extension = this.file.name.split(".").pop();
+      let filepath = "avatar/" + this.userInfo.uid;
+      var storageRef = storage.ref();
+      var fileRef = storageRef.child(filepath);
+
+      fileRef.put(this.file).then((snap) => {
+        console.log(snap, "uploaded");
+
+        fileRef.getDownloadURL().then((snap) => {
+          console.log(snap);
+          this.userInfo.avatar = snap;
+
+          let unitId = this.unitsList.filter(
+            (x) => x.unit == this.userInfo.unit
+          )[0].unitId;
+          let unitRef = database.doc("/units/" + unitId);
+          database
+            .collection("employees")
+            .doc(this.userInfo.eid)
+            .update({
+              name: this.userInfo.name,
+              email: this.userInfo.email,
+              phone: this.userInfo.phone,
+              unit: unitRef,
+              avatar: this.userInfo.avatar,
+            });
+        });
+      });
+
+      this.editMode = !this.editMode;
     },
     onReset(evt) {
       evt.preventDefault();
       // Reset our form values
       this.userInfo = JSON.parse(JSON.stringify(this.userInfoOrignal)); //deepcopy
-      this.curUnit = this.unitDict[this.userInfo.uId];
-
-      this.curDept = this.unitDeptDict[this.curUnit];
       this.updateUnitOptions();
       this.editMode = !this.editMode;
-      console.log("hi");
     },
     updateUnitOptions() {
-      this.curUnitOptions = this.deptUnitDict[this.curDept];
+      this.curUnitOptions = JSON.parse(JSON.stringify(this.unitsList))
+        .filter((x) => x.department == this.userInfo.department)
+        .map((y) => y.unit);
+    },
+    switchToEditMode() {
+      this.editMode = !this.editMode;
+      this.userInfoOrignal = JSON.parse(JSON.stringify(this.userInfo));
+    },
+    fetchData: function() {
+      var user = auth.currentUser;
+      this.userId = user.uid;
+      //this.userId = "IAvKPChVuFfkH176PMgdkwAvdfE2"; //remove when auth works
+      database
+        .collection("employees")
+        .doc(this.$route.params.id)
+        .get()
+        .then((snap) => {
+          let employee = snap;
+          let employeeData = snap.data();
+          let records = {
+            eid: employee.id,
+            uid: employeeData.uid,
+            name: employeeData.name,
+            avatar: employeeData.avatar,
+            email: employeeData.email,
+            phone: employeeData.phone,
+            department: "",
+            unit: "",
+            office: "",
+          };
+          employeeData.unit.get().then((unit) => {
+            unit = unit.data();
+            records.unit = unit.name;
+
+            unit.location.get().then((location) => {
+              records.office = location.data().name;
+            });
+
+            unit.department.get().then((department) => {
+              records.department = department.data().name;
+            });
+            this.userInfo = records;
+
+            database
+              .collection("departments")
+              .get()
+              .then((snap) =>
+                snap.forEach((department) => {
+                  this.departmentOptions.push(department.data().name);
+                })
+              );
+            database
+              .collection("units")
+              .get()
+              .then((snap) =>
+                snap.forEach((unit) => {
+                  let unitRecords = {
+                    unitId: unit.id,
+                    unit: unit.data().name,
+                    department: "",
+                  };
+
+                  unit
+                    .data()
+                    .department.get()
+                    .then((department) => {
+                      unitRecords.department = department.data().name;
+
+                      if (unitRecords.department == this.userInfo.department) {
+                        this.curUnitOptions.push(unit.data().name);
+                      }
+                    });
+
+                  this.unitsList.push(unitRecords);
+                })
+              );
+          });
+        });
     },
   },
 };

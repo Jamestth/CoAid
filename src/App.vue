@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="nav">
-      <top-header></top-header>
+      <top-header v-if="auth.currentUser"></top-header>
     </div>
     <div id="app">
       <router-view />
@@ -11,10 +11,15 @@
 
 <script>
 import TopHeader from "@/components/TopHeader.vue";
-
+import { auth } from "./assets/firebase";
 export default {
   components: {
     "top-header": TopHeader,
+  },
+  data() {
+    return {
+      auth: auth,
+    };
   },
 };
 </script>
@@ -22,12 +27,12 @@ export default {
 <style lang="scss">
 @import url("https://fonts.googleapis.com/css2?family=Cabin:wght@500");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500");
-@import url("https://fonts.googleapis.com/css2?family=open+sans:wght@500");
-@import url("https://fonts.googleapis.com/css2?family=Questrial:wght@500");
+//@import url("https://fonts.googleapis.com/css2?family=open+sans:wght@500");
+//@import url("https://fonts.googleapis.com/css2?family=questrial:wght@500");
 
 #app {
   font-size: 2vh;
-  font-family: open + sans, Avenir, Helvetica, Arial, sans-serif;
+  font-family: questrial, Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -35,7 +40,6 @@ export default {
   height: 94vh;
   overflow-y: auto;
   overflow-x: hidden;
- 
 }
 
 #nav {

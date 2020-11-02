@@ -1,26 +1,32 @@
 <template>
   <div>
-    <b-badge :variant="row.item.statusType" v-bind:id="row.item.eID + ''">
+    <b-badge :variant="row.item.statusType" v-bind:id="row.item.eid + ''">
       {{ row.item.status }}</b-badge
     >
     <b-popover
-      v-bind:target="row.item.eID + ''"
+      v-bind:target="row.item.eid + ''"
       triggers="hover"
       placement="right"
     >
       <template #title>
-        <b-avatar src="https://placekitten.com/300/300" size="2rem"></b-avatar>
-        {{ row.item.name }}
-        <b-button
-          variant="primary"
-          class="float-right"
-          v-bind:to="'/profile/' + row.item.eID + '/' + false"
-        >
-          View Profile
-        </b-button>
+        <b-avatar
+          style="border-style: solid;"
+          class="align-center"
+          :src="row.item.avatar"
+          size="4rem"
+        ></b-avatar>
+        <div style="float:right;">
+          <h4>{{ row.item.name }}</h4>
+          <b-link
+            variant="primary"
+            v-bind:to="'/profile/' + row.item.eid + '/' + false"
+          >
+            View Profile
+          </b-link>
+        </div>
       </template>
 
-      <b-row v-for="(value, key) in row.item" v-bind:key="key">
+      <b-row v-for="(value, key) in infoList" v-bind:key="key">
         <b-col
           ><p>{{ key.toUpperCase() }}:</p></b-col
         >
@@ -33,8 +39,52 @@
 </template>
 
 <script>
+import { DateTime } from "luxon";
 export default {
   props: ["row"],
+  data() {
+    return {
+      avatar: this.$props.row.item.avatar,
+      status: this.statusType,
+      infoList: {
+        Phone: this.$props.row.item.phone,
+        Department: this.$props.row.item.department,
+        Office: this.$props.row.item.office,
+        Unit: this.$props.row.item.unit,
+        "Last checked in at": this.formatTime(
+          this.$props.row.item.lastCheck.checkIn
+        ),
+        "Last checked out at": this.formatTime(
+          this.$props.row.item.lastCheck.checkOut
+        ),
+      },
+    };
+  },
+  created() {
+    /*
+    this.avatar= this.$props.row.item.avatar,
+      this.infoList= {
+        Name: this.$props.row.item.name,
+        Phone: this.$props.row.item.phone,
+        Department: this.$props.row.item.department,
+        Unit: this.$props.row.item.unit,
+        "Last checked in at": this.formatTime(
+          this.$props.row.item.lastCheck.checkIn
+        ),
+        "Last checked out at": this.formatTime(
+          this.$props.row.item.lastCheck.checkOut
+        ),}
+        */
+    console.log(JSON.stringify(this.$props.row));
+  },
+  methods: {
+    formatTime(timestamp) {
+      if (timestamp) {
+        return DateTime.fromSeconds(timestamp.seconds).toFormat(`ff`);
+      }
+      return "";
+    },
+  },
 };
 </script>
 

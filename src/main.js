@@ -16,14 +16,32 @@ Vue.config.productionTip = false;
 const store = new Vuex.Store({
   state: {
     userId: 1234,
+    checkedIn: true,
   },
-  mutations: {},
-  actions: {},
+  mutations: {
+    negateCheck(state) {
+      state.checkedIn = !state.checkedIn;
+    },
+  },
+  actions: {
+    updateCheck(context) {
+      console.log("hi")
+      context.commit("negateCheck");
+    },
+  },
   getters: {
     getUser: (state) => {
       return state.userId;
     },
+    getCheckIn: (state) => {
+      return state.checkedIn;
+    }
   },
+  methods :{
+    check(){
+      
+    }
+  }
 });
 
 new Vue({

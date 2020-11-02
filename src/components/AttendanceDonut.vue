@@ -3,7 +3,7 @@
     background="white"
     foreground="#dee2e6"
     unit="vh"
-    size= 10
+    :size= 10
     :thickness="10"
     :sections="sections"
     :total="100"
