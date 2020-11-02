@@ -59,8 +59,8 @@ import { auth, database } from "./../assets/firebase";
 export default {
   data() {
     return {
-      avatar:"",
-      eId:"",
+      avatar: "",
+      eId: "",
     };
   },
   created() {
@@ -72,7 +72,7 @@ export default {
         .signOut()
         .then(function() {})
         .catch(function(error) {
-          console.log(error)
+          console.log(error);
         });
     },
     fetchData: function() {
@@ -81,6 +81,8 @@ export default {
       //this.userId = "IAvKPChVuFfkH176PMgdkwAvdfE2"; //remove when auth works
       database
         .collection("employees")
+        .where("uid", "==", this.userId)
+        .limit(1)
         .get()
         .then((querySnapShot) => {
           querySnapShot.forEach((employee) => {
