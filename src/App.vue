@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="nav">
-      <top-header></top-header>
+      <top-header v-if="auth.currentUser"></top-header>
     </div>
     <div id="app">
       <router-view />
@@ -11,10 +11,15 @@
 
 <script>
 import TopHeader from "@/components/TopHeader.vue";
-
+import { auth } from "./assets/firebase";
 export default {
   components: {
     "top-header": TopHeader,
+  },
+  data() {
+    return {
+      auth: auth,
+    };
   },
 };
 </script>

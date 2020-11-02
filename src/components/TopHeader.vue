@@ -65,7 +65,19 @@ export default {
   },
   created() {
     this.fetchData();
+    console.log("hi");
   },
+  watch: {
+        '$route' (to, from) {
+
+          if (from.params.id !== to.params.id) {
+
+            return this.fetchData()
+
+          }
+        }
+      },
+
   methods: {
     signOut() {
       auth
