@@ -136,7 +136,10 @@
             {{ row.empty }}
           </template>
           <template v-slot:cell(status)="row">
-            <BadgePopover v-bind:row="row"></BadgePopover>
+            <BadgePopover
+              v-bind:row="row"
+              v-if="row.item.lastCheck"
+            ></BadgePopover>
           </template>
         </b-table>
 
@@ -154,8 +157,6 @@
 </template>
 <script>
 import stringSimilarity from "string-similarity";
-import departments from "../assets/DepartmentDetails.js";
-import CheckIn from "../assets/Checkin.js";
 import { DateTime } from "luxon";
 import AttendanceDonut from "../components/AttendanceDonut.vue";
 import BadgePopover from "../components/BadgePopover";
@@ -169,8 +170,6 @@ export default {
         sick: [{ value: 100, color: "#ffc107", number: 10 }],
         covid: [{ value: 100, color: "#dc3545", number: 5 }],
       },
-      departments: departments,
-      CheckIn: CheckIn,
       employees: [],
       checkedIn: false,
       userInfo: null,
@@ -237,16 +236,13 @@ export default {
         });
     },
   },
-  created() {
+  mounted() {
     this.fetchData();
-
     console.log(this.totalRows);
   },
-  mounted() {},
   methods: {
     fetchData: function() {
       var user = auth.currentUser;
-      console.log(user);
       this.userId = user.uid;
 
       //this.userId = "IAvKPChVuFfkH176PMgdkwAvdfE2"; //remove when auth works
@@ -340,10 +336,9 @@ export default {
       return deptPred && namePred;
     },
     check(userInfo) {
-      if (userInfo){
+      if (userInfo) {
         return userInfo.lastCheck.checkOut === undefined;
       }
-
     },
     getStatusType(status) {
       if (status == "Unwell") {
@@ -366,9 +361,8 @@ export default {
       }
     },
     getCheckOutTime(userInfo) {
-
-      if(userInfo.lastCheck.checkOut ===undefined) {
-        return 0
+      if (userInfo.lastCheck.checkOut === undefined) {
+        return 0;
       } else {
         return DateTime.fromSeconds(
           userInfo.lastCheck.checkOut.seconds
