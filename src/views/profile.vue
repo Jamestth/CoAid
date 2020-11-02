@@ -14,7 +14,7 @@
           <b-row v-if="editMode">
             <b-col> </b-col>
             <b-col>
-              <b-form-file v-model="file2" class="mt-3" plain></b-form-file>
+              <b-form-file v-model="file" class="mt-3" plain></b-form-file>
             </b-col>
             <b-col></b-col>
           </b-row>
@@ -129,18 +129,14 @@
 </template>
 
 <script>
-import employees from "../assets/Emp.js";
-import CheckIn from "../assets/Checkin.js";
 import departments from "../assets/DepartmentDetails.js";
-import { storage, auth, database } from "../assets/firebase";
+import { auth, database } from "../assets/firebase";
 export default {
   components: {},
   data() {
     return {
       testavatar: "",
-      file2: {},
-      CheckIn: CheckIn,
-      employees: employees,
+      file: null,
       departments: departments,
       profileFound: true,
       editMode: false,
@@ -171,7 +167,7 @@ export default {
   computed: {},
   created() {
     this.fetchData();
-
+/*
     storage
       .ref()
       .child("avatar/person002.jfif")
@@ -183,6 +179,7 @@ export default {
         // Handle any errors
         console.log(error);
       });
+      */
   },
   mounted() {},
   methods: {

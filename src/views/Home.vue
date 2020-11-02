@@ -247,9 +247,9 @@ export default {
     fetchData: function() {
       var user = auth.currentUser;
       console.log(user);
-      //this.userId = user.uid;
+      this.userId = user.uid;
 
-      this.userId = "IAvKPChVuFfkH176PMgdkwAvdfE2"; //remove when auth works
+      //this.userId = "IAvKPChVuFfkH176PMgdkwAvdfE2"; //remove when auth works
 
 
       database
