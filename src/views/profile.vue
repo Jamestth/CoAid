@@ -129,7 +129,6 @@
 </template>
 
 <script>
-import departments from "../assets/DepartmentDetails.js";
 import { auth, database } from "../assets/firebase";
 export default {
   components: {},
@@ -137,7 +136,6 @@ export default {
     return {
       testavatar: "",
       file: null,
-      departments: departments,
       profileFound: true,
       editMode: false,
       departmentOptions: [],
@@ -167,7 +165,7 @@ export default {
   computed: {},
   created() {
     this.fetchData();
-/*
+    /*
     storage
       .ref()
       .child("avatar/person002.jfif")
@@ -185,7 +183,25 @@ export default {
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
-      alert(JSON.stringify(this.userInfo));
+      console.log("hi")
+      //alert(JSON.stringify(this.userInfo));
+      console.log(this.unitsList)
+      let unitId = this.unitsList.filter(x =>(x.unit = this.userInfo.name));
+     console.log(unitId)
+     //let unitRef = database.collection("units").doc(unitId)
+      //console.log(unitRef)
+/*
+      database
+        .collection("employees")
+        .doc(this.userInfo.eid)
+        .update({
+          name: this.userInfo.name,
+          email: this.userInfo.email,
+          phone: this.userInfo.phone,
+          unit: unitId
+        });
+*/
+
     },
     onReset(evt) {
       evt.preventDefault();
@@ -201,7 +217,6 @@ export default {
     },
     switchToEditMode() {
       this.editMode = !this.editMode;
-      console.log(this.editMode);
       this.userInfoOrignal = JSON.parse(JSON.stringify(this.userInfo));
     },
     fetchData: function() {
@@ -252,7 +267,8 @@ export default {
               .get()
               .then((snap) =>
                 snap.forEach((unit) => {
-                  let records = {
+                  let unitRecords = {
+                    unitId: unit.id,
                     unit: unit.data().name,
                     department: "",
                   };
@@ -261,13 +277,13 @@ export default {
                     .data()
                     .department.get()
                     .then((department) => {
-                      records.department = department.data().name;
+                      unitRecords.department = department.data().name;
 
-                      if (records.department == this.userInfo.department) {
+                      if (unitRecords.department == this.userInfo.department) {
                         this.curUnitOptions.push(unit.data().name);
                       }
                     });
-                  this.unitsList.push(records);
+                  this.unitsList.push(unitRecords);
                 })
               );
           });

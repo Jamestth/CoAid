@@ -9,14 +9,14 @@
           </h1>
         </b-row>
         <b-card class=" mb-3" header="Notifications">
-          <b-row class="pl-2" v-show="!check(this.userInfo)">
+          <b-row class="pl-2" v-if="!check(this.userInfo)">
             <p style="text-align:left; font-size:2.5vh;">
               Your last check in was on
               <strong>{{ getCheckOutTime(this.userInfo) }}</strong
               >.
             </p>
           </b-row>
-          <b-row class="pl-2 pt-2" v-show="!check(this.userInfo)">
+          <b-row class="pl-2 pt-2" v-if="!check(this.userInfo)">
             <p style="text-align:left; font-size:2.5vh ">
               Would you like to check in?
             </p>
@@ -29,14 +29,14 @@
               ><span v-on:click="this.check">Check In</span></router-link
             >
           </b-row>
-          <b-row class="pl-2" v-show="check(this.userInfo)">
+          <b-row class="pl-2" v-if="check(this.userInfo)">
             <p style="text-align:left; font-size:2.5vh;">
               You last checked in on
               <strong>{{ getCheckInTime(this.userInfo) }}</strong
               >.
             </p>
           </b-row>
-          <b-row class="pl-2 pt-2" v-show="check(this.userInfo)">
+          <b-row class="pl-2 pt-2" v-if="check(this.userInfo)">
             <p style="text-align:left; font-size:2.5vh ">
               Would you like to check out?
             </p>
@@ -173,7 +173,7 @@ export default {
       CheckIn: CheckIn,
       employees: [],
       checkedIn: false,
-      userInfo: {},
+      userInfo: null,
       fields: [
         {
           key: "avatar",
@@ -250,8 +250,6 @@ export default {
       this.userId = user.uid;
 
       //this.userId = "IAvKPChVuFfkH176PMgdkwAvdfE2"; //remove when auth works
-
-
       database
         .collection("employees")
         .get()
@@ -342,7 +340,10 @@ export default {
       return deptPred && namePred;
     },
     check(userInfo) {
-      return userInfo.lastCheck.checkOut == undefined;
+      if (userInfo){
+        return userInfo.lastCheck.checkOut === undefined;
+      }
+
     },
     getStatusType(status) {
       if (status == "Unwell") {
@@ -365,13 +366,23 @@ export default {
       }
     },
     getCheckOutTime(userInfo) {
-      try {
+
+      if(userInfo.lastCheck.checkOut ===undefined) {
+        return 0
+      } else {
         return DateTime.fromSeconds(
           userInfo.lastCheck.checkOut.seconds
         ).toFormat(`ff`);
+      }
+      /*
+      try {
+              console.log("DDASA")
+      console.log(userInfo.lastCheck)
+
       } catch (err) {
         return 0;
       }
+      */
     },
   },
 };

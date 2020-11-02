@@ -65,6 +65,7 @@ export default {
   },
   created() {
     this.fetchData();
+    console.log("hi");
   },
   methods: {
     signOut() {
