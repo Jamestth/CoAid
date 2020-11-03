@@ -59,20 +59,32 @@ import { auth, database } from "./../assets/firebase";
 export default {
   data() {
     return {
-      avatar:"",
-      eId:"",
+      avatar: "",
+      eId: "",
     };
   },
   created() {
     this.fetchData();
+    console.log("hi");
   },
+  watch: {
+        '$route' (to, from) {
+
+          if (from.params.id !== to.params.id) {
+
+            return this.fetchData()
+
+          }
+        }
+      },
+
   methods: {
     signOut() {
       auth
         .signOut()
         .then(function() {})
         .catch(function(error) {
-          console.log(error)
+          console.log(error);
         });
     },
     fetchData: function() {
@@ -81,6 +93,8 @@ export default {
       //this.userId = "IAvKPChVuFfkH176PMgdkwAvdfE2"; //remove when auth works
       database
         .collection("employees")
+        .where("uid", "==", this.userId)
+        .limit(1)
         .get()
         .then((querySnapShot) => {
           querySnapShot.forEach((employee) => {

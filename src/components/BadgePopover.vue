@@ -9,18 +9,24 @@
       placement="right"
     >
       <template #title>
-        <b-avatar :src="row.item.avatar" size="2rem"></b-avatar>
-        {{ row.item.name }}
-        <b-button
-          variant="primary"
-          class="float-right"
-          v-bind:to="'/profile/' + row.item.eid + '/' + false"
-        >
-          View Profile
-        </b-button>
+        <b-avatar
+          style="border-style: solid;"
+          class="align-center"
+          :src="row.item.avatar"
+          size="4rem"
+        ></b-avatar>
+        <div style="float:right;">
+          <h4>{{ row.item.name }}</h4>
+          <b-link
+            variant="primary"
+            v-bind:to="'/profile/' + row.item.eid + '/' + false"
+          >
+            View Profile
+          </b-link>
+        </div>
       </template>
 
-      <b-row v-for="(value, key) in row.item" v-bind:key="key">
+      <b-row v-for="(value, key) in infoList" v-bind:key="key">
         <b-col
           ><p>{{ key.toUpperCase() }}:</p></b-col
         >
@@ -28,14 +34,57 @@
           ><p style="font-weight:bold">{{ value }}</p></b-col
         >
       </b-row>
-      
     </b-popover>
   </div>
 </template>
 
 <script>
+import { DateTime } from "luxon";
 export default {
   props: ["row"],
+  data() {
+    return {
+      avatar: this.$props.row.item.avatar,
+      status: this.statusType,
+      infoList: {
+        Phone: this.$props.row.item.phone,
+        Department: this.$props.row.item.department,
+        Office: this.$props.row.item.office,
+        Unit: this.$props.row.item.unit,
+        "Last checked in at": this.formatTime(
+          this.$props.row.item.lastCheck.checkIn
+        ),
+        "Last checked out at": this.formatTime(
+          this.$props.row.item.lastCheck.checkOut
+        ),
+      },
+    };
+  },
+  created() {
+    /*
+    this.avatar= this.$props.row.item.avatar,
+      this.infoList= {
+        Name: this.$props.row.item.name,
+        Phone: this.$props.row.item.phone,
+        Department: this.$props.row.item.department,
+        Unit: this.$props.row.item.unit,
+        "Last checked in at": this.formatTime(
+          this.$props.row.item.lastCheck.checkIn
+        ),
+        "Last checked out at": this.formatTime(
+          this.$props.row.item.lastCheck.checkOut
+        ),}
+        */
+    //console.log(JSON.stringify(this.$props.row));
+  },
+  methods: {
+    formatTime(timestamp) {
+      if (timestamp) {
+        return DateTime.fromSeconds(timestamp.seconds).toFormat(`ff`);
+      }
+      return "";
+    },
+  },
 };
 </script>
 
