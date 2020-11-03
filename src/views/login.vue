@@ -40,6 +40,18 @@
           </router-link>
         </td>
       </tr>
+      <tr>
+        <td>
+          <router-link
+            to="/signup"
+            tag="button"
+            class="btn ml-3"
+            style="margin:0"
+          >
+            Signup
+          </router-link>
+        </td>
+      </tr>
     </table>
   </div>
 </template>
@@ -50,7 +62,7 @@ export default {
   data() {
     return {
       email: "",
-      password: "",
+      password: ""
     };
   },
   methods: {
@@ -63,12 +75,12 @@ export default {
           error;
         });
 
-      auth.onAuthStateChanged((user) => {
+      auth.onAuthStateChanged(user => {
         user;
-        this.$router.push({ path: "/" }).catch((error) => error);
+        this.$router.push({ path: "/" }).catch(error => error);
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>
