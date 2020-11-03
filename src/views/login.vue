@@ -1,6 +1,15 @@
 <template>
   <div class="login">
+    <img src = "../assets/LogoIcon.png" style = "width:50%" valign="middle"> 
     <table class="center" style="text-align: center">
+      <tr>
+            <td> 
+                <img src = "../assets/LogoIcon.png" style = "width:50%" valign="middle"> 
+            </td>
+      </tr>
+      <tr>
+          <td height="125px"></td>
+      </tr>
       <tr>
         <td>
           <form>
@@ -40,6 +49,10 @@
           </router-link>
         </td>
       </tr>
+      <tr>
+          <td height="15px"></td>
+      </tr>
+      <tr> Don't have an account? </tr>
       <tr>
         <td>
           <router-link
@@ -106,5 +119,11 @@ div {
   background-color: white;
   border-color: darkblue;
   color: darkblue;
+}
+td img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
 }
 </style>

@@ -1,8 +1,10 @@
 <template>
   <div class="signup">
+    <img src = "../assets/LogoIcon.png" class = "center" style = "width:50%"> 
     <form @submit.prevent="submit">
-      <table class="center" style="text-align: center">
+      <table class="center" style="text-align: left">
         <tr>
+          <td height="125px"></td>
           <td height="125px"></td>
         </tr>
         <tr>
@@ -51,9 +53,25 @@
           </td>
         </tr>
         <tr>
-          <button type="submit" onclick="submit">Submit</button>
+          <td height="15px"></td>
+          <td height="15px"></td>
         </tr>
       </table>
+      <table class = "center"> 
+        <tr>
+        <td> 
+        <router-link
+            to="/login"
+            tag="button"
+            class="btn ml-3"
+            style="margin:0"
+          >
+            Signup
+          </router-link>
+        </td>
+        </tr>
+      </table>
+      
     </form>
   </div>
 </template>
