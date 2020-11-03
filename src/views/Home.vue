@@ -2,7 +2,7 @@
   <b-container fluid>
     <b-row class="text-center">
       <b-col></b-col>
-      <b-col cols="8">
+      <b-col cols="12" md="8">
         <b-row class="pl-3 pr-3 pt-3">
           <h1 style="text-align:left; font-size:5vh;">
             Welcome back {{ this.userInfo.name }}
@@ -11,9 +11,8 @@
         <b-card class=" mb-3" header="Notifications">
           <b-row class="pl-2" v-if="!check(this.userInfo)">
             <p style="text-align:left; font-size:2.5vh;">
-              Your last check in was on
-              <strong>{{ getCheckOutTime(this.userInfo) }}</strong
-              >.
+              Your last check in was on:
+              <strong>{{ getCheckOutTime(this.userInfo) }}</strong>
             </p>
           </b-row>
           <b-row class="pl-2 pt-2" v-if="!check(this.userInfo)">
@@ -31,9 +30,9 @@
           </b-row>
           <b-row class="pl-2" v-if="check(this.userInfo)">
             <p style="text-align:left; font-size:2.5vh;">
-              You last checked in on
-              <strong>{{ getCheckInTime(this.userInfo) }}</strong
-              >.
+              You last checked in on:
+
+              <strong>{{ getCheckInTime(this.userInfo) }}</strong>
             </p>
           </b-row>
           <b-row class="pl-2 pt-2" v-if="check(this.userInfo)">
@@ -138,7 +137,9 @@
           <template v-slot:cell(status)="row">
             <BadgePopover
               v-bind:row="row"
-              v-if="row.item.lastCheck"
+              v-if="
+                row.item.lastCheck && row.item.office && row.item.department
+              "
             ></BadgePopover>
           </template>
         </b-table>
@@ -168,7 +169,7 @@ export default {
       attendanceStatistic: {
         healthy: [{ value: 100, color: "#28a745", number: 30 }],
         sick: [{ value: 100, color: "#ffc107", number: 10 }],
-        covid: [{ value: 100, color: "#dc3545", number: 5 }],
+        covid: [{ value: 100, color: "#dc3545", number: 5 }]
       },
       employees: [],
       checkedIn: false,
@@ -177,19 +178,19 @@ export default {
         {
           key: "avatar",
           label: "",
-          sortable: false,
+          sortable: false
         },
         {
           key: "name",
           label: "Employee",
           sortable: true,
-          sortDirection: "desc",
+          sortDirection: "desc"
         },
         {
           key: "department",
           label: "Department",
           sortable: true,
-          class: "text-center",
+          class: "text-center"
         },
         {
           key: "status",
@@ -208,8 +209,8 @@ export default {
           },
           sortable: true,
           sortByFormatted: true,
-          filterByFormatted: true,
-        },
+          filterByFormatted: true
+        }
       ],
 
       totalRows: 1,
@@ -220,21 +221,21 @@ export default {
       sortDirection: "asc",
       filter: {
         department: "All",
-        name: "",
+        name: ""
       },
       filterOptions: ["All", "HR", "Marketing", "IT", "Sales"],
-      headVariant: "dark",
+      headVariant: "dark"
     };
   },
   computed: {
     sortOptions() {
       // Create an options list from our fields
       return this.fields
-        .filter((f) => f.sortable)
-        .map((f) => {
+        .filter(f => f.sortable)
+        .map(f => {
           return { text: f.label, value: f.key };
         });
-    },
+    }
   },
   mounted() {
     this.fetchData();
@@ -249,9 +250,10 @@ export default {
       database
         .collection("employees")
         .get()
-        .then((querySnapShot) => {
-          querySnapShot.forEach((employee) => {
+        .then(querySnapShot => {
+          querySnapShot.forEach(employee => {
             let employeeData = employee.data();
+            //console.log(employee.data())
             let records = {
               eid: employee.id,
               uid: employeeData.uid,
@@ -261,19 +263,24 @@ export default {
               phone: employeeData.phone,
               department: "",
               unit: "",
-              lastCheck: "",
-              status: "",
-              office: "",
+              lastCheck: {},
+              status: "Out of Office",
+              statusType: "secondary",
+              office: ""
             };
-            employeeData.unit.get().then((unit) => {
+            this.employees.push(records);
+            this.userInfo = this.employees.filter(x => x.uid == this.userId)[0];
+            this.totalRows = this.employees.length;
+
+            employeeData.unit.get().then(unit => {
               unit = unit.data();
               records.unit = unit.name;
 
-              unit.location.get().then((location) => {
+              unit.location.get().then(location => {
                 records.office = location.data().name;
               });
 
-              unit.department.get().then((department) => {
+              unit.department.get().then(department => {
                 records.department = department.data().name;
               });
             });
@@ -284,8 +291,8 @@ export default {
               .limit(1)
               //.where("Temperature", "==",36.5)
               .get()
-              .then((snap) => {
-                snap.forEach((checkInRecord) => {
+              .then(snap => {
+                snap.forEach(checkInRecord => {
                   records.lastCheck = {
                     checkIn: checkInRecord.data().checkIn,
                     checkOut: checkInRecord.data().checkOut,
@@ -293,30 +300,35 @@ export default {
                     fluFlag: checkInRecord.data().fluFlag,
                     shnFlag: checkInRecord.data().shnFlag,
                     contactFlag: checkInRecord.data().contactFlag,
-                    temperature: checkInRecord.data().temperature,
+                    temperature: checkInRecord.data().temperature
                   };
-                  records.status = this.evaluateStatus(
-                    records.lastCheck.fluFlag,
-                    records.lastCheck.shnFlag,
-                    records.lastCheck.contactFlag,
-                    records.lastCheck.temperature
-                  );
-                  records.statusType = this.getStatusType(records.status);
+                  records.status =
+                    checkInRecord.data().checkOut === undefined
+                      ? this.evaluateStatus(
+                          records.lastCheck.fluFlag,
+                          records.lastCheck.shnFlag,
+                          records.lastCheck.contactFlag,
+                          records.lastCheck.temperature
+                        )
+                      : "Out of Office";
+                  records.statusType =
+                    checkInRecord.data().checkOut === undefined
+                      ? this.getStatusType(records.status)
+                      : "secondary";
                 });
               });
-            this.employees.push(records);
-            this.userInfo = this.employees.filter(
-              (x) => x.uid == this.userId
-            )[0];
-            this.totalRows = this.employees.length;
           });
         });
     },
     evaluateStatus(fluFlag, shnFlag, contactFlag, temperature) {
       let status = "Healthy";
-      let flags = fluFlag + shnFlag + contactFlag + temperature > 37.5;
-      status = flags == 0 ? "Healthy" : flags > 1 ? "Unwell" : "Sick";
 
+      if (fluFlag !== undefined) {
+        let flags = fluFlag + shnFlag + contactFlag + temperature > 37.5;
+        status = flags == 0 ? "Healthy" : flags > 1 ? "Unwell" : "Sick";
+      } else {
+        status = "Out of Office";
+      }
       return status;
     },
     onFiltered(filteredItems) {
@@ -327,12 +339,12 @@ export default {
     filterPredicate(item, filter) {
       var deptPred =
         filter.department == "All" || item.department == filter.department;
-      var filterlen = filter.name.length;
-      var itemSubstring = item.name.substring(0, filterlen).toUpperCase();
+      //var filterlen = filter.name.length;
+      var itemSubstring = item.name.toUpperCase(); ///item.name.substring(0, filterlen).toUpperCase();
       var searchString = filter.name.toUpperCase();
       var namePred =
         filter.name == "" ||
-        stringSimilarity.compareTwoStrings(itemSubstring, searchString) >= 0.4;
+        stringSimilarity.compareTwoStrings(itemSubstring, searchString) >= 0.2;
       return deptPred && namePred;
     },
     check(userInfo) {
@@ -377,8 +389,8 @@ export default {
         return 0;
       }
       */
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>

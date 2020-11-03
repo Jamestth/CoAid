@@ -75,7 +75,7 @@ export default {
           this.$props.row.item.lastCheck.checkOut
         ),}
         */
-    console.log(JSON.stringify(this.$props.row));
+    //console.log(JSON.stringify(this.$props.row));
   },
   methods: {
     formatTime(timestamp) {
