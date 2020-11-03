@@ -138,7 +138,7 @@
           <template v-slot:cell(status)="row">
             <BadgePopover
               v-bind:row="row"
-              v-if="row.item.lastCheck"
+              v-if="row.item.lastCheck && row.item.office && row.item.department"
             ></BadgePopover>
           </template>
         </b-table>
