@@ -2,13 +2,7 @@
   <b-container class="meetingspage">
     <h1>
       My Meetings
-      <router-link
-        to="/createmeeting"
-        tag="button"
-        class="btn ml-3"
-        style="margin:0"
-        >Create meeting</router-link
-      >
+      <router-link to="/createmeeting" tag="button" class="btn ml-3" style="margin:0">Create meeting</router-link>
     </h1>
     <div class="Meetings">
       <b-row class="text-center">
@@ -21,37 +15,62 @@
 <script>
 import meetings from "../assets/Meeting.js";
 import { DateTime } from "luxon";
+import { database, auth } from "../assets/firebase.js";
 export default {
   data() {
     return {
       meetings: meetings,
       userId: 1234,
       items: [],
+      meetingsData: []
     };
   },
+  methods: {
+    fetchData: function() {
+      let userID = auth.currentUser.uid
+      
+      database
+        .collection("meetings")
+        .get()
+        .then(snapshot =>
+          snapshot.forEach(meetingrecords => {
+            let record = {
+              employeeID: [],
+              employees: [],
+              end: DateTime.fromSeconds(meetingrecords.data().end.seconds).toFormat(`ff`),
+              start: DateTime.fromSeconds(meetingrecords.data().start.seconds).toFormat(`ff`), 
+              name: meetingrecords.data().name,
+              location: ""
+            };
+            meetingrecords.data().location.get().then(loc => record.location=loc.data().name);
+            
+            meetingrecords.data().employees.forEach(emp => {
+              emp.get().then( empdata => {
+                record.employees.push(empdata.data().name)
+                record.employeeID.push(empdata.data().uid)
+                console.log(record.employeeID)
+            if (record.employeeID.includes(userID)) {
+              let displayrecords = { name: record.name, "Start Time": record.start, "End Time": record.end, "Location": record.location}
+              this.items.push(displayrecords)
+              this.meetingsData.push(record)
+            }
+            console.log(this.meetingsData);}
+                )});
+          })
+        );
+
+    }
+  },
   mounted() {
+    this.fetchData();
     //filter meetings to only relevant to the user
-    let df = this.meetings.filter(
-      (x) => x.employeeIds.filter((y) => y["eId"] == this.userId).length == 1
-    );
-    this.items = df.map((x) => {
-      return {
-        name: x.name,
-        location: x.location,
-        start: DateTime.fromMillis(x["start"]).toFormat(`ff`),
-        end: DateTime.fromMillis(x["end"]).toFormat(`ff`),
-        stats: x.employeeIds
-          .filter((x) => x.eId == this.userId)
-          .map((y) => y.status)[0],
-      };
-    });
+    
 
     //this.meetings.filter(x => x.employeeIds.forEach( y => console.log(y["eId"] == this.userId) ));
-  },
+  }
 };
 </script>
 
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@500");
 
