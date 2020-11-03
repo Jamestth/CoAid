@@ -1,7 +1,7 @@
 <template>
   <b-row class="p-3">
     <b-col></b-col>
-    <b-col cols="6">
+    <b-col cols="12" md= "6">
       <div v-if="profileFound">
         <b-form @submit="onSubmit" @reset="onReset">
           <b-col> </b-col>
