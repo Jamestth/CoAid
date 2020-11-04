@@ -61,21 +61,6 @@ export default {
     };
   },
   created() {
-    /*
-    this.avatar= this.$props.row.item.avatar,
-      this.infoList= {
-        Name: this.$props.row.item.name,
-        Phone: this.$props.row.item.phone,
-        Department: this.$props.row.item.department,
-        Unit: this.$props.row.item.unit,
-        "Last checked in at": this.formatTime(
-          this.$props.row.item.lastCheck.checkIn
-        ),
-        "Last checked out at": this.formatTime(
-          this.$props.row.item.lastCheck.checkOut
-        ),}
-        */
-    //console.log(JSON.stringify(this.$props.row));
   },
   methods: {
     formatTime(timestamp) {
