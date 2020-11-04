@@ -175,7 +175,7 @@ export default {
       var fileRef = storageRef.child(filepath);
 
       fileRef.put(this.file).then((snap) => {
-
+        snap
         fileRef.getDownloadURL().then((snap) => {
           console.log(snap);
           this.userInfo.avatar = snap;
