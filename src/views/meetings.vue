@@ -142,10 +142,10 @@ export default {
 </script>
 
 <style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@500");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@500");
 
 h1 {
-  font-family: "Josefin Sans", sans-serif !important;
+  font-family: "DM Sans", sans-serif !important;
   padding: 15px;
   font-size: 30px;
   text-align: center;
