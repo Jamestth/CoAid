@@ -161,19 +161,7 @@ export default {
   computed: {},
   created() {
     this.fetchData();
-    /*
-    storage
-      .ref()
-      .child("avatar/person002.jfif")
-      .getDownloadURL()
-      .then(function(url) {
-        console.log(url);
-      })
-      .catch(function(error) {
-        // Handle any errors
-        console.log(error);
-      });
-      */
+
   },
   mounted() {},
   methods: {
@@ -187,7 +175,6 @@ export default {
       var fileRef = storageRef.child(filepath);
 
       fileRef.put(this.file).then((snap) => {
-        console.log(snap, "uploaded");
 
         fileRef.getDownloadURL().then((snap) => {
           console.log(snap);

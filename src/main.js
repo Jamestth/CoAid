@@ -25,7 +25,6 @@ const store = new Vuex.Store({
   },
   actions: {
     updateCheck(context) {
-      console.log("hi")
       context.commit("negateCheck");
     },
   },

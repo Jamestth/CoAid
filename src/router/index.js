@@ -107,9 +107,7 @@ router.beforeEach((to, from, next) => {
     next("/login");
   } else if (isLoggedIn && to.path === "/login") {
     next("/");
-  } /*else if (isLoggedIn && from.path === "/login") {
-    console.log("do nothing");
-  } */
+  } 
   else {
     next();
   }

@@ -72,7 +72,6 @@ export default {
         .get()
         .then(snap =>
           snap.forEach(y => {
-            console.log(row.item.status);
             if (!row.item.status) {
               row.item.accepted = row.item.accepted.filter(x => x != y.id);
               row.item.employee.filter(
