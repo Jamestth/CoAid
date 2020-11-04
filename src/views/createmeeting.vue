@@ -131,14 +131,14 @@ div {
 }
 /deep/.multiselect {
   width: 100px;
-  border-color: black;
+  border-color: #767676;
   font-size: 15px;
   width: 15vw;
 }
 /deep/.multiselect__tags {
-  border: 1px solid black;
+  border: 1px solid #767676;
   padding: 0px 40px 0 5px;
-  border-radius: 0px;
+  border-radius: px;
   background: #fff;
 }
 /deep/.multiselect,
@@ -150,6 +150,24 @@ div {
 }
 /deep/.multiselect_single {
   width: 10px;
+}
+/deep/.btn-outline-primary {
+  color: #767676;
+  border-color: #767676;
+  width: 240px;
+}
+/deep/.btn-outline-primary:hover {
+  background-color: lightgray;
+}
+/deep/.btn-outline-primary.dropdown-toggle {
+  background-color: white;
+  color: #767676;
+  border-color: #767676;
+
+}
+
+/deep/.toggle {
+  background-color: white;
 }
 input {
   width: 15vw;
@@ -191,17 +209,9 @@ input {
   border: none;
   cursor: pointer;
 }
-.dropbtn:hover {
-  background-color: white;
-  border-color: darkblue;
-  color: darkblue;
 
-}
 
-.dropbtn-outline-primary {
-    color: #767676;
-    border-color: #767676;
-}
+
 
 
 label {
