@@ -117,9 +117,9 @@ export default {
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@500");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@500");
 h1 {
-  font-family: "Josefin Sans", sans-serif !important;
+  font-family: "DM Sans", sans-serif !important;
   padding: 15px;
   font-size: 30px;
   text-align: center;
@@ -154,7 +154,7 @@ div {
 /deep/.btn-outline-primary {
   color: #767676;
   border-color: #767676;
-  width: 240px;
+  width: 15vw;
 }
 /deep/.btn-outline-primary:hover {
   background-color: lightgray;

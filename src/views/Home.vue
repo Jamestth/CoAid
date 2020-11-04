@@ -4,113 +4,113 @@
       <b-col></b-col>
       <b-col cols="12" md="8">
         <b-row class="pl-3 pr-3 pt-3">
-          <h1 style="text-align:left; font-size:5vh;">
-            Welcome back {{ this.userInfo.name }}
-          </h1>
+          <h1 style="text-align:left; font-size:5vh;">Dashboard</h1>
         </b-row>
-        <b-card class=" mb-3" header="Notifications">
-          <b-row class="pl-2" v-if="!check(this.userInfo)">
-            <p style="text-align:left; font-size:2.5vh;">
-              Your last check in was on:
-              <strong>{{ getCheckOutTime(this.userInfo) }}</strong>
-            </p>
+        <!-- Notifications -->
+        <b-container fluid>
+          <b-row class="notif">
+            <b-col>
+              <b-card class="mb-3" header="Notifications">
+                <b-row class="pl-2" v-if="!check(this.userInfo)">
+                  <p style="text-align:left; font-size:2.5vh;">
+                    Last Check In:
+                    <strong>{{ getCheckOutTime(this.userInfo) }}</strong>
+                  </p>
+                  <router-link
+                    to="/healthdeclaration"
+                    tag="button"
+                    class="btn ml-3"
+                    style="margin:0"
+                    v-on:click="check"
+                  >
+                    <span v-on:click="this.check">Check In</span>
+                  </router-link>
+                </b-row>
+                <b-row class="pl-2 pt-2" v-if="!check(this.userInfo)">
+                  <p style="text-align:left; font-size:2.5vh ">
+                    Health Status:
+                    <strong>Healthy</strong>
+                    <br />
+                    <!-- { this.userInfo.status } -->
+                    Rotation Team:
+                    <strong>A</strong>
+                    <br />
+                    <!-- { this.userInfo.rotationTeam } -->
+                    You can report to office this week
+                  </p>
+                </b-row>
+                <b-row class="pl-2" v-if="check(this.userInfo)">
+                  <p style="text-align:left; font-size:2.5vh;">
+                    You last checked in on:
+                    <strong>{{ getCheckInTime(this.userInfo) }}</strong>
+                  </p>
+                </b-row>
+                <b-row class="pl-2 pt-2" v-if="check(this.userInfo)">
+                  <p style="text-align:left; font-size:2.5vh ">Would you like to check out?</p>
+                  <router-link to="/CheckOutsuccess" tag="button" class="btn ml-3" style="margin:0">
+                    <span v-on:click="this.check">Check Out</span>
+                  </router-link>
+                </b-row>
+                <!-- Display -->
+              </b-card>
+            </b-col>
+            <b-col cols="6">
+              <b-row class="mb-4">
+                <b-col cols="6">
+                  <b-card header="Mild Symptoms">
+                    <AttendanceDonut v-bind:sections="attendanceStatistic.mild"></AttendanceDonut>
+                  </b-card>
+                </b-col>
+                <b-col cols="6">
+                  <b-card header="Sick">
+                    <AttendanceDonut v-bind:sections="attendanceStatistic.sick"></AttendanceDonut>
+                  </b-card>
+                </b-col>
+              </b-row>
+              <b-row class="pb-3">
+                <b-col></b-col>
+                <b-col cols="6" class="mr-auto">
+                  <b-form-group
+                    label="Department"
+                    label-class="font-weight-bold"
+                    label-cols-sm="4"
+                    label-align-sm="right"
+                    label-size="sm"
+                    class="mb-0"
+                  >
+                    <b-form-select
+                      v-model="filter.department"
+                      id="perPageSelect"
+                      size="sm"
+                      :options="filterOptions"
+                    ></b-form-select>
+                  </b-form-group>
+                  <b-form-group
+                    class="mb-0"
+                    label="Name"
+                    label-class="font-weight-bold"
+                    label-cols-sm="4"
+                    label-align-sm="right"
+                    label-size="sm"
+                  >
+                    <b-input-group size="sm">
+                      <b-form-input
+                        v-model="filter.name"
+                        type="search"
+                        id="filterInput"
+                        placeholder="Search by Name"
+                      ></b-form-input>
+                    </b-input-group>
+                  </b-form-group>
+                </b-col>
+              </b-row>
+            </b-col>
           </b-row>
-          <b-row class="pl-2 pt-2" v-if="!check(this.userInfo)">
-            <p style="text-align:left; font-size:2.5vh ">
-              Would you like to check in?
-            </p>
-            <router-link
-              to="/healthdeclaration"
-              tag="button"
-              class="btn ml-3"
-              style="margin:0"
-              v-on:click="check"
-              ><span v-on:click="this.check">Check In</span></router-link
-            >
-          </b-row>
-          <b-row class="pl-2" v-if="check(this.userInfo)">
-            <p style="text-align:left; font-size:2.5vh;">
-              You last checked in on:
+        </b-container>
 
-              <strong>{{ getCheckInTime(this.userInfo) }}</strong>
-            </p>
-          </b-row>
-          <b-row class="pl-2 pt-2" v-if="check(this.userInfo)">
-            <p style="text-align:left; font-size:2.5vh ">
-              Would you like to check out?
-            </p>
-            <router-link
-              to="/CheckOutsuccess"
-              tag="button"
-              class="btn ml-3"
-              style="margin:0"
-            >
-              <span v-on:click="this.check">Check Out</span></router-link
-            >
-          </b-row>
-        </b-card>
-        <!-- User Interface controls -->
-        <b-row class="mb-4">
-          <b-col cols="4">
-            <b-card header="Healthy">
-              <AttendanceDonut
-                v-bind:sections="attendanceStatistic.healthy"
-              ></AttendanceDonut>
-            </b-card>
-          </b-col>
-          <b-col cols="4">
-            <b-card header="Sick">
-              <AttendanceDonut
-                v-bind:sections="attendanceStatistic.sick"
-              ></AttendanceDonut>
-            </b-card>
-          </b-col>
-          <b-col cols="4">
-            <b-card header="Covid">
-              <AttendanceDonut
-                v-bind:sections="attendanceStatistic.covid"
-              ></AttendanceDonut>
-            </b-card>
-          </b-col>
-        </b-row>
-        <b-row class="pb-3">
-          <b-col></b-col>
-          <b-col cols="6" class="mr-auto">
-            <b-form-group
-              label="Department"
-              label-class="font-weight-bold"
-              label-cols-sm="4"
-              label-align-sm="right"
-              label-size="sm"
-              class="mb-0"
-            >
-              <b-form-select
-                v-model="filter.department"
-                id="perPageSelect"
-                size="sm"
-                :options="filterOptions"
-              ></b-form-select>
-            </b-form-group>
-            <b-form-group
-              class="mb-0"
-              label="Name"
-              label-class="font-weight-bold"
-              label-cols-sm="4"
-              label-align-sm="right"
-              label-size="sm"
-            >
-              <b-input-group size="sm">
-                <b-form-input
-                  v-model="filter.name"
-                  type="search"
-                  id="filterInput"
-                  placeholder="Search by Name"
-                ></b-form-input>
-              </b-input-group>
-            </b-form-group>
-          </b-col>
-        </b-row>
+        
         <!-- Main table element -->
+        <h2 style="text-align:left; font-size:5vh;">Colleagues</h2>
         <b-table
           show-empty
           small
@@ -167,9 +167,8 @@ export default {
   data() {
     return {
       attendanceStatistic: {
-        healthy: [{ value: 100, color: "#28a745", number: 30 }],
-        sick: [{ value: 100, color: "#ffc107", number: 10 }],
-        covid: [{ value: 100, color: "#dc3545", number: 5 }]
+        mild: [{ value: 100, color: "#ffc107", number: 3 }],
+        sick: [{ value: 100, color: "#dc3545", number: 1 }]
       },
       employees: [],
       checkedIn: false,
@@ -394,6 +393,16 @@ export default {
 };
 </script>
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@500");
+
+h1 {
+  font-family: "DM Sans", sans-serif !important;
+}
+
+h2 {
+  font-size: 10px;
+  font-family: "DM Sans", sans-serif !important;
+}
 .attendance {
   color: #28a745;
   font-size: 3vw;
@@ -434,14 +443,14 @@ small {
 .card-header {
   padding: 0.5vw;
   margin-bottom: 0;
-  background-color: #3e536a;
+  background-color: darkblue;
   font-size: 2vh;
   color: white !important;
   font-weight: bold;
 }
 /deep/ .table .thead-dark th {
   color: #fff;
-  background-color: #3e536a !important;
+  background-color: darkblue !important;
 }
 /deep/ .page-item.active .page-link {
   background-color: #3e536a !important;
