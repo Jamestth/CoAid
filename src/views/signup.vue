@@ -1,11 +1,14 @@
 <template>
   <div class="signup">
-    <img src = "../assets/LogoIcon.png" class = "center" style = "width:50%"> 
+    <table class = "center">
+    <tr><td height = "15px"></td></tr>
+    <tr><td align = "center"><img src = "../assets/LogoIcon2.png" style = "width:50%"></td></tr>
+    </table>
     <form @submit.prevent="submit">
       <table class="center" style="text-align: left">
         <tr>
-          <td height="125px"></td>
-          <td height="125px"></td>
+          <td height="50px"></td>
+          <td height="50px"></td>
         </tr>
         <tr>
           <td><label for="name"> Name: </label></td>
