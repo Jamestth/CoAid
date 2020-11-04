@@ -42,13 +42,13 @@ export default {
           sortDirection: "desc"
         },
         {
-          key: "start",
-          label: "Start",
+          key: "location",
+          label: "Location",
           sortable: true
         },
         {
-          key: "location",
-          label: "Location",
+          key: "start",
+          label: "Start",
           sortable: true
         },
         {
@@ -105,7 +105,13 @@ export default {
 
             meetingrecords.data().employees.forEach(emp => {
               emp.get().then(empdata => {
-                record.employees.push(empdata.data().name);
+                let empRecords = {
+                  name: empdata.data().name,
+                  avatar: empdata.data().avatar,
+                  employeeId: empdata.id,
+                  isAccepted: record.accepted.includes(empdata.id)
+                };
+                record.employees.push(empRecords);
                 record.employeeID.push(empdata.id);
 
                 let endTime = DateTime.fromSeconds(
@@ -134,9 +140,6 @@ export default {
   },
   mounted() {
     this.fetchData();
-    //filter meetings to only relevant to the user
-
-    //this.meetings.filter(x => x.employeeIds.forEach( y => console.log(y["eId"] == this.userId) ));
   }
 };
 </script>

@@ -3,11 +3,11 @@
     <b-row class="text-center">
       <b-col></b-col>
       <b-col cols="12" md="8">
-        <b-row class="pl-3 pr-3 pt-3">
-          <h1 style="text-align:left; font-size:5vh;">Dashboard</h1>
-        </b-row>
         <!-- Notifications -->
         <b-container fluid>
+          <b-row class="pl-3 pr-3 pt-3">
+            <h1 style="text-align:left; font-size:5vh;">Dashboard</h1>
+          </b-row>
           <b-row class="notif">
             <b-col>
               <b-card class="mb-3" header="Notifications">
@@ -19,7 +19,7 @@
                   <router-link
                     to="/healthdeclaration"
                     tag="button"
-                    class="btn ml-3"
+                    class="btn"
                     style="margin:0"
                     v-on:click="check"
                   >
@@ -46,8 +46,15 @@
                   </p>
                 </b-row>
                 <b-row class="pl-2 pt-2" v-if="check(this.userInfo)">
-                  <p style="text-align:left; font-size:2.5vh ">Would you like to check out?</p>
-                  <router-link to="/CheckOutsuccess" tag="button" class="btn ml-3" style="margin:0">
+                  <p style="text-align:left; font-size:2.5vh ">
+                    Would you like to check out?
+                  </p>
+                  <router-link
+                    to="/CheckOutsuccess"
+                    tag="button"
+                    class="btn"
+                    style="margin:0"
+                  >
                     <span v-on:click="this.check">Check Out</span>
                   </router-link>
                 </b-row>
@@ -58,99 +65,105 @@
               <b-row class="mb-4">
                 <b-col cols="6">
                   <b-card header="Mild Symptoms">
-                    <AttendanceDonut v-bind:sections="attendanceStatistic.mild"></AttendanceDonut>
+                    <AttendanceDonut
+                      v-bind:sections="attendanceStatistic.mild"
+                    ></AttendanceDonut>
                   </b-card>
                 </b-col>
                 <b-col cols="6">
                   <b-card header="Sick">
-                    <AttendanceDonut v-bind:sections="attendanceStatistic.sick"></AttendanceDonut>
+                    <AttendanceDonut
+                      v-bind:sections="attendanceStatistic.sick"
+                    ></AttendanceDonut>
                   </b-card>
-                </b-col>
-              </b-row>
-              <b-row class="pb-3">
-                <b-col></b-col>
-                <b-col cols="6" class="mr-auto">
-                  <b-form-group
-                    label="Department"
-                    label-class="font-weight-bold"
-                    label-cols-sm="4"
-                    label-align-sm="right"
-                    label-size="sm"
-                    class="mb-0"
-                  >
-                    <b-form-select
-                      v-model="filter.department"
-                      id="perPageSelect"
-                      size="sm"
-                      :options="filterOptions"
-                    ></b-form-select>
-                  </b-form-group>
-                  <b-form-group
-                    class="mb-0"
-                    label="Name"
-                    label-class="font-weight-bold"
-                    label-cols-sm="4"
-                    label-align-sm="right"
-                    label-size="sm"
-                  >
-                    <b-input-group size="sm">
-                      <b-form-input
-                        v-model="filter.name"
-                        type="search"
-                        id="filterInput"
-                        placeholder="Search by Name"
-                      ></b-form-input>
-                    </b-input-group>
-                  </b-form-group>
                 </b-col>
               </b-row>
             </b-col>
           </b-row>
         </b-container>
 
-        
         <!-- Main table element -->
-        <h2 style="text-align:left; font-size:5vh;">Colleagues</h2>
-        <b-table
-          show-empty
-          small
-          stacked="md"
-          :items="employees"
-          :fields="fields"
-          :current-page="currentPage"
-          :per-page="perPage"
-          :filter="filter"
-          :filter-function="filterPredicate"
-          :sort-by.sync="sortBy"
-          :sort-desc.sync="sortDesc"
-          :sort-direction="sortDirection"
-          @filtered="onFiltered"
-          :striped="true"
-          :bordered="true"
-          :hover="true"
-          :head-variant="headVariant"
-        >
-          <template v-slot:cell(avatar)="row">
-            <b-avatar :src="row.item.avatar" size="2rem"></b-avatar>
-            {{ row.empty }}
-          </template>
-          <template v-slot:cell(status)="row">
-            <BadgePopover
-              v-bind:row="row"
-              v-if="
-                row.item.lastCheck && row.item.office && row.item.department
-              "
-            ></BadgePopover>
-          </template>
-        </b-table>
+        <b-container>
+          <b-row class="pb-3">
+            <b-col>
+              <h2 style="text-align:left; font-size:5vh;">Colleagues</h2></b-col
+            >
+            <b-col cols="6" class="mr-auto">
+              <b-form-group
+                label="Department"
+                label-class="font-weight-bold"
+                label-cols-sm="4"
+                label-align-sm="right"
+                label-size="sm"
+                class="mb-0"
+              >
+                <b-form-select
+                  v-model="filter.department"
+                  id="perPageSelect"
+                  size="sm"
+                  :options="filterOptions"
+                ></b-form-select>
+              </b-form-group>
+              <b-form-group
+                class="mb-0"
+                label="Name"
+                label-class="font-weight-bold"
+                label-cols-sm="4"
+                label-align-sm="right"
+                label-size="sm"
+              >
+                <b-input-group size="sm">
+                  <b-form-input
+                    v-model="filter.name"
+                    type="search"
+                    id="filterInput"
+                    placeholder="Search by Name"
+                  ></b-form-input>
+                </b-input-group>
+              </b-form-group>
+            </b-col>
+          </b-row>
+          <b-table
+            show-empty
+            small
+            stacked="md"
+            :items="employees"
+            :fields="fields"
+            :current-page="currentPage"
+            :per-page="perPage"
+            :filter="filter"
+            :filter-function="filterPredicate"
+            :sort-by.sync="sortBy"
+            :sort-desc.sync="sortDesc"
+            :sort-direction="sortDirection"
+            @filtered="onFiltered"
+            :striped="true"
+            :bordered="true"
+            :hover="true"
+            :head-variant="headVariant"
+          >
+            <template v-slot:cell(avatar)="row">
+              <b-avatar :src="row.item.avatar" size="2rem"></b-avatar>
+              {{ row.empty }}
+            </template>
+            <template v-slot:cell(status)="row">
+              <BadgePopover
+                v-bind:row="row"
+                v-if="
+                  row.item.lastCheck && row.item.office && row.item.department
+                "
+              ></BadgePopover>
+            </template>
+          </b-table>
 
-        <b-pagination
-          v-model="currentPage"
-          :total-rows="totalRows"
-          :per-page="perPage"
-          align="center"
-          class="pb-4"
-        ></b-pagination>
+          <b-pagination
+            v-model="currentPage"
+            :total-rows="totalRows"
+            :per-page="perPage"
+            align="center"
+            class="pb-4"
+          ></b-pagination>
+        </b-container>
       </b-col>
       <b-col></b-col>
     </b-row>
