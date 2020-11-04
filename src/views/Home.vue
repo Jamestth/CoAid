@@ -251,7 +251,6 @@ export default {
   },
   mounted() {
     this.fetchData();
-    console.log(this.totalRows);
   },
   methods: {
     fetchData: function() {
@@ -392,15 +391,7 @@ export default {
           userInfo.lastCheck.checkOut.seconds
         ).toFormat(`ff`);
       }
-      /*
-      try {
-              console.log("DDASA")
-      console.log(userInfo.lastCheck)
-
-      } catch (err) {
-        return 0;
-      }
-      */
+      
     }
   }
 };

@@ -65,7 +65,6 @@ export default {
   },
   created() {
     this.fetchData();
-    console.log("hi");
   },
   watch: {
         '$route' (to, from) {
