@@ -1,32 +1,48 @@
 <template>
   <div class="checkinout">
-    <table class = "center" style="text-align: center">
-      <tr> 
-        <td height = "125px"> </td>
-        <td height = "125px"> </td>
+    <table class="center" style="text-align: center">
+      <tr>
+        <td height="125px"></td>
+        <td height="125px"></td>
       </tr>
       <tr>
         <td>
-          <img src = "../assets/checkin.jpg" class = "left" style = "width:50%">
+          <img src="../assets/checkin.jpg" class="left" style="width:50%" />
         </td>
         <td>
-          <img src = "../assets/checkout.jpg" class = "right" style = "width:50%">
+          <img src="../assets/checkout.jpg" class="right" style="width:10vw" />
         </td>
       </tr>
       <tr>
-        <td> <router-link to="/healthdeclaration" tag="button" class="btn ml-3" style="margin:0"> Check In </router-link> </td>
-        <td> <router-link to="/checkoutsuccess" tag="button" class="btn ml-3" style="margin:0"> Check Out </router-link> </td>
+        <td>
+          <router-link
+            to="/healthdeclaration"
+            tag="button"
+            class="btn ml-3"
+            style="margin:0"
+          >
+            Check In
+          </router-link>
+        </td>
+        <td>
+          <router-link
+            to="/checkoutsuccess"
+            tag="button"
+            class="btn ml-3"
+            style="margin:0"
+          >
+            Check Out
+          </router-link>
+        </td>
       </tr>
     </table>
-    
   </div>
 </template>
 
 <script>
 export default {
   data() {
-    return {
-    };
+    return {};
   }
 };
 </script>
