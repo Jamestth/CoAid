@@ -145,6 +145,7 @@ export default {
       database
         .collection("employees")
         .where("uid", "==", userId)
+        .limit(1)
         .get()
         .then(emps =>
           emps.forEach(emp => {
@@ -156,7 +157,7 @@ export default {
               employee: emp.id,
               fluFlag: this.fluFlag,
               shnFlag: this.shnFlag,
-              temperature: this.temperature
+              temperature: parseFloat(this.temperature)
             };
             if (
               data.checkIn == null ||
@@ -185,7 +186,6 @@ export default {
 };
 </script>
 
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
 .custom-control-inline {
   display: inline-flex;
