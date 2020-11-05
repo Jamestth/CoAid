@@ -1,21 +1,28 @@
 <template>
   <div class="login">
-    <img src = "../assets/LogoIcon.png" style = "width:50%" valign="middle"> 
+    <img src="../assets/LogoIcon.png" style="width:50%" valign="middle" />
     <table class="center" style="text-align: center">
       <tr>
-            <td> 
-                <img src = "../assets/LogoIcon.png" style = "width:50%" valign="middle"> 
-            </td>
+        <td>
+          <img src="../assets/LogoIcon.png" style="width:50%" valign="middle" />
+        </td>
       </tr>
       <tr>
-          <td height="125px"></td>
+        <td height="125px"></td>
       </tr>
       <tr>
         <td>
           <form>
             <label for="Email"> Email: </label>
             &nbsp;
-            <input type="text" id="Email" name="Email" v-model="email" /> <br />
+            <input
+              type="text"
+              id="Email"
+              name="Email"
+              v-model="email"
+              required
+            />
+            <br />
             <br />
           </form>
         </td>
@@ -30,6 +37,7 @@
               id="password"
               name="password"
               v-model="password"
+              required
             />
             <br />
             <br />
@@ -50,9 +58,11 @@
         </td>
       </tr>
       <tr>
-          <td height="15px"></td>
+        <td height="15px"></td>
       </tr>
-      <tr> Don't have an account? </tr>
+      <tr>
+        Don't have an account?
+      </tr>
       <tr>
         <td>
           <router-link
@@ -120,10 +130,9 @@ div {
   border-color: darkblue;
   color: darkblue;
 }
-td img{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-
+td img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
