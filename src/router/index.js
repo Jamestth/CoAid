@@ -49,6 +49,24 @@ const routes = [
     meta: { requiresAuth: false },
   },
   {
+    path: "/setroster",
+    name: "setroster",
+    component: () => import("../views/admin/setroster.vue"),
+    meta: { requiresAuth: false },
+  },
+  {
+    path: "/adminanalytics",
+    name: "adminanalytics",
+    component: () => import("../views/admin/adminanalytics.vue"),
+    meta: { requiresAuth: false },
+  },
+  {
+    path: "/employeelist",
+    name: "employeelist",
+    component: () => import("../views/admin/employeelist.vue"),
+    meta: { requiresAuth: false },
+  },
+  {
     path: "/schedule",
     name: "Schedule",
     component: () => import("../views/schedule.vue"),

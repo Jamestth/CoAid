@@ -3,55 +3,30 @@
     <h1> CREATE A ROSTER </h1>
     <div class="Roster">
       <b-row class="text-center">
-        <b-col cols="12"> <!--change to adjust start point-->
+        <b-col cols="12"> 
           <h1>RosterDetails</h1>
-          <b-container fluid>
-      <b-row>
-        <b-col
-          ><label for="meetingdate"> Roster Name: </label></b-col
-        >
-        <b-col
-          ><input type="text" id="meetingdate" name="meetingdate" /></b-col
-        >
+          <b-container fluid></b-container>
+        </b-col>
       </b-row>
       <b-row>
-          <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-<label for="vehicle1"> I have a bike</label><br>
-<input type="checkbox" id="vehicle2" name="vehicle2" value="Car">
-<label for="vehicle2"> I have a car</label><br>
-<input type="checkbox" id="vehicle3" name="vehicle3" value="Boat">
-<label for="vehicle3"> I have a boat</label><br>
+        <b-col><label for="meetingdate"> Roster Name: </label></b-col>
+        <b-col><input type="text" id="meetingdate" name="meetingdate" /></b-col>
       </b-row>
-            <b-row>
-        <b-col
-          ><label for="meetingtime"> Start Date:</label></b-col
-        >
-        <b-col
-          ><input type="time" id="meetingtime" name="meetingtime" /></b-col
-        >
+      <b-row>
+        <b-col><label for="meetingtime"> Start Date:</label></b-col>
+        <b-col><input type="time" id="meetingtime" name="meetingtime"/></b-col>
       </b-row>
-      <b-col
-          ><label for="meetingtime"> EndDate:</label></b-col
-        >
-        <b-col
-          ><input type="time" id="meetingtime" name="meetingtime" /></b-col
-        >
+      <b-row>
+        <b-col><label for="meetingtime"> EndDate:</label></b-col>
+        <b-col><input type="time" id="meetingtime" name="meetingtime" /></b-col>
       </b-row>
-            <label class="typo__label">Select Employees:</label>
-            <p class="test">
-              <multiselect
-                track-by="name"
-                label="name"
-                v-model="value"
-                :options="employees"
-                multiple
-                >Employees Involved</multiselect
-              >
-              <!--ugly!-->
-            </p>
-            <br/>
-            </b-container>    
-
+        <label class="typo__label">Select Employees:</label>
+        <p class="test">
+        <multiselect track-by="name" label="name" v-model="value" :options="employees" multiple>Employees Involved</multiselect>
+        </p>
+      <br/>
+      </div>
+    </b-container>    
 </template>
 
 <script>
