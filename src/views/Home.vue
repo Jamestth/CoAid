@@ -64,11 +64,33 @@
             <b-col cols="6">
               <b-row class="mb-4">
                 <b-col cols="6">
-                  <b-card header="Mild Symptoms">
+                  <b-card header="Mild Symptoms" id="mild Symptoms">
                     <AttendanceDonut
                       v-bind:sections="attendanceStatistic.mild"
                     ></AttendanceDonut>
                   </b-card>
+                  <b-popover
+                    target="mild Symptoms"
+                    triggers="hover"
+                    placement="top"
+                  >
+                    <template #title>Popover Title</template>
+
+                    <b-list-group>
+                      <b-list-group-item
+                        v-for="emp in this.employees"
+                        :key="emp.employeeId"
+                      >
+                        <b-avatar
+                          :src="emp.avatar"
+                          style="float:left; "
+                        ></b-avatar>
+
+                      <p>{{emp}}</p>
+
+                      </b-list-group-item>
+                    </b-list-group>
+                  </b-popover>
                 </b-col>
                 <b-col cols="6">
                   <b-card header="Sick">
@@ -332,11 +354,12 @@ export default {
         });
     },
     evaluateStatus(fluFlag, shnFlag, contactFlag, temperature) {
-      let status = "Healthy";
+      let status = "???";
 
       if (fluFlag !== undefined) {
+        
         let flags = fluFlag + shnFlag + contactFlag + temperature > 37.5;
-        status = flags == 0 ? "Healthy" : flags > 1 ? "Unwell" : "Sick";
+        status = flags == 0 ? "Healthy" : flags > 0 ? "Unwell" : "Sick";
       } else {
         status = "Out of Office";
       }
@@ -391,7 +414,6 @@ export default {
           userInfo.lastCheck.checkOut.seconds
         ).toFormat(`ff`);
       }
-      
     }
   }
 };
