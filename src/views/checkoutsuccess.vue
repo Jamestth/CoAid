@@ -1,18 +1,24 @@
 <template>
   <div class="checkoutsuccess">
-    <table class = "center" style="text-align: center">
-        <tr>
-            <td> <img src = "../assets/checkout.jpg" class = "left" style = "width:50%"> </td>
-        </tr>
-        <tr>
-            <td> Your check out was successful. </td>
-        </tr>
-        <tr>
-            <td> Have a nice day! </td>
-        </tr>
-        <tr>
-            <td> <router-link to="/" tag="button" class="btn ml-3" style="margin:0"> Home </router-link> </td>
-        </tr>
+    <table class="center" style="text-align: center">
+      <tr>
+        <td>
+          <img src="../assets/checkout.jpg" class="left" style="width:50%" />
+        </td>
+      </tr>
+      <tr>
+        <td>Your check out was successful.</td>
+      </tr>
+      <tr>
+        <td>Have a nice day!</td>
+      </tr>
+      <tr>
+        <td>
+          <router-link to="/" tag="button" class="btn ml-3" style="margin:0">
+            Home
+          </router-link>
+        </td>
+      </tr>
     </table>
   </div>
 </template>
@@ -20,8 +26,7 @@
 <script>
 export default {
   data() {
-    return {
-    };
+    return {};
   }
 };
 </script>

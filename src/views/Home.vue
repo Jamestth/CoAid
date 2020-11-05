@@ -13,7 +13,7 @@
               <b-card class="mb-3" header="Notifications">
                 <b-row class="pl-2" v-if="!check(this.userInfo)">
                   <p style="text-align:left; font-size:2.5vh;">
-                    Last Check In:
+                    Last Check Out:
                     <strong>{{ getCheckOutTime(this.userInfo) }}</strong>
                   </p>
                   <router-link
@@ -28,10 +28,6 @@
                 </b-row>
                 <b-row class="pl-2 pt-2" v-if="!check(this.userInfo)">
                   <p style="text-align:left; font-size:2.5vh ">
-                    Health Status:
-                    <strong>Healthy</strong>
-                    <br />
-                    <!-- { this.userInfo.status } -->
                     Rotation Team:
                     <strong>A</strong>
                     <br />
@@ -41,22 +37,21 @@
                 </b-row>
                 <b-row class="pl-2" v-if="check(this.userInfo)">
                   <p style="text-align:left; font-size:2.5vh;">
-                    You last checked in on:
+                    Last Check In:
                     <strong>{{ getCheckInTime(this.userInfo) }}</strong>
                   </p>
                 </b-row>
                 <b-row class="pl-2 pt-2" v-if="check(this.userInfo)">
                   <p style="text-align:left; font-size:2.5vh ">
+                    Health Status:
+                    <strong>Healthy</strong>
+                    <br />
+                    <!-- { this.userInfo.status } -->
                     Would you like to check out?
                   </p>
-                  <router-link
-                    to="/CheckOutsuccess"
-                    tag="button"
-                    class="btn"
-                    style="margin:0"
-                  >
-                    <span v-on:click="this.check">Check Out</span>
-                  </router-link>
+                  <button tag="button" class="btn" style="margin:0">
+                    <span v-on:click="this.checkOut">Check Out</span>
+                  </button>
                 </b-row>
                 <!-- Display -->
               </b-card>
@@ -86,8 +81,7 @@
                           style="float:left; "
                         ></b-avatar>
 
-                      <p>{{emp}}</p>
-
+                        <p>{{ emp }}</p>
                       </b-list-group-item>
                     </b-list-group>
                   </b-popover>
@@ -196,7 +190,7 @@ import stringSimilarity from "string-similarity";
 import { DateTime } from "luxon";
 import AttendanceDonut from "../components/AttendanceDonut.vue";
 import BadgePopover from "../components/BadgePopover";
-import { auth, database } from "../assets/firebase";
+import { firebase, auth, database } from "../assets/firebase";
 export default {
   components: { AttendanceDonut, BadgePopover },
   data() {
@@ -357,9 +351,12 @@ export default {
       let status = "???";
 
       if (fluFlag !== undefined) {
-        
-        let flags = fluFlag + shnFlag + contactFlag + temperature > 37.5;
-        status = flags == 0 ? "Healthy" : flags > 0 ? "Unwell" : "Sick";
+        let flags =
+          Number(fluFlag) +
+          Number(shnFlag) +
+          Number(contactFlag) +
+          Number(temperature > 37.5);
+        status = flags == 0 ? "Safe" : flags < 3 ? "Risky" : "Danger";
       } else {
         status = "Out of Office";
       }
@@ -387,11 +384,11 @@ export default {
       }
     },
     getStatusType(status) {
-      if (status == "Unwell") {
+      if (status == "Risky") {
         return "warning";
-      } else if (status == "Healthy") {
+      } else if (status == "Safe") {
         return "success";
-      } else if (status == "Sick") {
+      } else if (status == "Danger") {
         return "danger";
       } else {
         return "secondary";
@@ -414,6 +411,40 @@ export default {
           userInfo.lastCheck.checkOut.seconds
         ).toFormat(`ff`);
       }
+    },
+    checkOut() {
+      let userId = auth.currentUser.uid;
+      database
+        .collection("employees")
+        .where("uid", "==", userId)
+        .limit(1)
+        .get()
+        .then(emps =>
+          emps.forEach(emp => {
+            database
+              .collection("checkIn")
+              .where("employee", "==", emp.id)
+              .get()
+              .then(checkins =>
+                checkins.forEach(checkin => {
+                  let checkinid = checkin.id;
+                  let curTime = firebase.firestore.FieldValue.serverTimestamp();
+                  database
+                    .collection("checkIn")
+                    .doc(checkinid)
+                    .update({
+                      checkOut: curTime
+                    })
+                    .then(x => {
+                      x;
+                      this.$router
+                        .push({ path: "/checkoutsuccess" })
+                        .catch(error => error);
+                    });
+                })
+              );
+          })
+        );
     }
   }
 };
