@@ -1,14 +1,12 @@
 <template>
   <div class="login">
-    <img src="../assets/LogoIcon.png" style="width:50%" valign="middle" />
+    <table class = "center">
+    <tr><td height = "15px"></td></tr>
+    <tr><td align = "center"><img src = "../assets/LogoIcon2.png" style = "width:50%"></td></tr>
+    </table>
     <table class="center" style="text-align: center">
       <tr>
-        <td>
-          <img src="../assets/LogoIcon.png" style="width:50%" valign="middle" />
-        </td>
-      </tr>
-      <tr>
-        <td height="125px"></td>
+          <td height="50px"></td>
       </tr>
       <tr>
         <td>
