@@ -85,7 +85,7 @@
               id="department"
               v-model="curSelectedDept"
               style="width:100%"
-              :onchange="updateUnit()"
+              @change="updateUnit()"
               required
               :v-if="this.departmentOptions[0]"
             >
@@ -147,7 +147,7 @@ export default {
       departmentOptions: [],
       unitsList: [],
       curUnitOptions: [],
-      curSelectedDept: "Marketing",
+      curSelectedDept: null,
       curSelectedUnit: null
     };
   },
@@ -156,6 +156,7 @@ export default {
   },
   methods: {
     updateUnit() {
+      
       this.curUnitOptions = this.unitsList
         .filter(x => x.department == this.curSelectedDept)
         .map(y => y.unit);
