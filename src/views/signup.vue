@@ -1,87 +1,67 @@
 <template>
   <div class="signup">
-    <table class="center">
-      <tr>
-        <td height="15px"></td>
-      </tr>
-      <tr>
-        <td align="center">
-          <img src="../assets/LogoIcon2.png" style="width:50%" />
-        </td>
-      </tr>
+    <table class = "center">
+    <tr><td height = "15px"></td></tr>
+    <tr><td align = "center"><img src = "../assets/logomainpage.png" style = "width:20%"></td></tr>
+    <tr><td align = "center"><img src = "../assets/coaidname.png" style = "width:20%"></td></tr>
     </table>
 
     <form @submit.prevent="submit">
-      <table class="center" style="text-align: left">
-        <tr>
-          <td height="50px"></td>
-          <td height="50px"></td>
-        </tr>
-        <tr>
-          <td><label for="name"> Name: </label></td>
-          <td>
-            <input
+      <b-container fluid>
+        <b-row class="justify-content-md-center">
+          <b-col col lg="1"> <label for="name"> Name: </label> </b-col>
+          <b-col col lg="1"> <input
               type="text"
               id="name"
               name="name"
               v-model="form.name"
               required
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><label for="phone"> Phone Number: </label></td>
-          <td>
-            <input
+            /></b-col>
+        </b-row>
+        <b-row class="justify-content-md-center">
+          <b-col col lg="1"> <label for="phone"> Phone Number: </label> </b-col>
+          <b-col col lg="1"><input
               type="tel"
               pattern="[0-9]{8}"
               id="phone"
               name="phone"
               v-model="form.phone"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><label for="email"> Email: </label></td>
-          <td>
-            <input
+            /></b-col>
+        </b-row>
+        <b-row class="justify-content-md-center">
+          <b-col col lg="1"> <label for="email"> Email: </label> </b-col>
+          <b-col col lg="1"><input
               type="text"
               id="email"
               name="email"
               pattern="[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*"
               v-model="form.email"
               required
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><label for="password"> Password: </label></td>
-          <td>
-            <input
+            /></b-col>
+        </b-row>
+        <b-row class="justify-content-md-center">
+          <b-col col lg="1"> <label for="password"> Password: </label> </b-col>
+          <b-col col lg="1"><input
               type="password"
               id="password"
               name="password"
               v-model="form.password"
               required
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><label for="password2"> Confirm Password: </label></td>
-          <td>
-            <input
+            /></b-col>
+        </b-row>
+        <b-row class="justify-content-md-center">
+          <b-col col lg="1"> <label for="password2"> Confirm Password: </label> </b-col>
+          <b-col col lg="1"><input
               type="password"
               id="password2"
               name="password2"
               v-model="form.password2"
               required
-            />
-          </td>
-        </tr>
-        <tr>
-          <td><label for="department"> Department: </label></td>
-          <td>
-            <select
+            /></b-col>
+        </b-row>
+        <b-row class="justify-content-md-center">
+          <b-col col lg="1"> <label for="department"> Department: </label> </b-col>
+          <b-col col lg="1"><select
               id="department"
               v-model="curSelectedDept"
               style="width:100%"
@@ -94,13 +74,11 @@
                 :key="department"
                 >{{ department }}</option
               >
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td><label for="unit"> Unit: </label></td>
-          <td>
-            <select
+            </select></b-col>
+        </b-row>
+        <b-row class="justify-content-md-center">
+          <b-col col lg="1"> <label for="unit"> Unit: </label> </b-col>
+          <b-col col lg="1"><select
               id="unit"
               v-model="curSelectedUnit"
               style="width:100%"
@@ -109,15 +87,9 @@
               <option v-for="unit in this.curUnitOptions" :key="unit">{{
                 unit
               }}</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td height="15px"></td>
-          <td height="15px"></td>
-        </tr>
-      </table>
-
+            </select></b-col>
+        </b-row>
+    </b-container>
       <table class="center">
         <tr>
           <td>

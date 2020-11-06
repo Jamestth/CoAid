@@ -9,22 +9,17 @@
         <b-row class="justify-content-md-center">
           <b-col col lg="1"> Email: </b-col>
           <b-col col lg="1"
-            ><input type="email" id="email" name="email"
+            ><input type="email" id="email" name="email" v-model="email"
           /></b-col>
         </b-row>
         <b-row class="justify-content-md-center">
           <b-col col lg="1"> Password: </b-col>
           <b-col col lg="1"
-            ><input type="password" id="password" name="password"
+            ><input type="password" id="password" name="password" v-model="password"
           /></b-col>
         </b-row>
         <b-row class="justify-content-md-center">
-          <b-col col lg="2">
-            
-          </b-col>
-        </b-row>
-      </b-container>
-      <router-link
+          <b-col col lg="1"> <router-link
                   to="/"
                   tag="button"
                   class="btn ml-3"
@@ -32,7 +27,10 @@
                   @click.native="signin"
                 >
                   Sign in
-            </router-link>
+            </router-link> </b-col>
+        </b-row>
+    </b-container>
+      
       
     <table class="center" style="text-align: center">
       <tr> <!-- change to hyperlink instead of button when you click on "here"-->
