@@ -16,6 +16,7 @@
                     Last Check Out:
                     <strong>{{ getCheckOutTime(this.userInfo) }}</strong>
                   </p>
+                  
                   <router-link
                     to="/healthdeclaration"
                     tag="button"
@@ -39,19 +40,18 @@
                   <p style="text-align:left; font-size:2.5vh;">
                     Last Check In:
                     <strong>{{ getCheckInTime(this.userInfo) }}</strong>
+                    <p class="ml-3">
+                    <button tag="button" class="btn" style="margin:0">
+                    <span v-on:click="this.checkOut">Check Out</span>
+                  </button>
+                  
                   </p>
                 </b-row>
                 <b-row class="pl-2 pt-2" v-if="check(this.userInfo)">
-                  <p style="text-align:left; font-size:2.5vh ">
-                    Health Status:
-                    <strong>Healthy</strong>
-                    <br />
-                    <!-- { this.userInfo.status } -->
-                    Would you like to check out?
-                  </p>
-                  <button tag="button" class="btn" style="margin:0">
-                    <span v-on:click="this.checkOut">Check Out</span>
-                  </button>
+                  <p style="text-align:left; font-size:2.5vh ">Status:</p>
+                  <p class="ml-3" :style="statusColor"> {{this.userInfo.status}}</p>
+                  <br>
+                  
                 </b-row>
                 <!-- Display -->
               </b-card>
@@ -59,39 +59,37 @@
             <b-col cols="6">
               <b-row class="mb-4">
                 <b-col cols="6">
-                  <b-card header="Mild Symptoms" id="mild Symptoms">
-                    <AttendanceDonut
-                      v-bind:sections="attendanceStatistic.mild"
-                    ></AttendanceDonut>
+                  <b-card header="Risky" id="mild Symptoms">
+                    <AttendanceDonut v-bind:sections="attendanceStatistic.mild"></AttendanceDonut>
                   </b-card>
-                  <b-popover
-                    target="mild Symptoms"
-                    triggers="hover"
-                    placement="top"
-                  >
-                    <template #title>Popover Title</template>
+                  <b-popover target="mild Symptoms" triggers="hover" placement="top">
+                    <template #title>Employees at Risk</template>
 
                     <b-list-group>
-                      <b-list-group-item
-                        v-for="emp in this.employees"
-                        :key="emp.employeeId"
-                      >
-                        <b-avatar
-                          :src="emp.avatar"
-                          style="float:left; "
-                        ></b-avatar>
+                      <b-list-group-item v-for="emp in this.employees" :key="emp.employeeId">
+                        <b-avatar :src="emp.avatar" style="float:left; "></b-avatar>
 
-                        <p>{{ emp }}</p>
+                        <p>{{ emp.name }}</p>
                       </b-list-group-item>
                     </b-list-group>
                   </b-popover>
                 </b-col>
                 <b-col cols="6">
-                  <b-card header="Sick">
-                    <AttendanceDonut
-                      v-bind:sections="attendanceStatistic.sick"
-                    ></AttendanceDonut>
+                  <b-card header="Danger">
+                    <AttendanceDonut v-bind:sections="attendanceStatistic.sick"></AttendanceDonut>
                   </b-card>
+                  <b-popover target="sick" triggers="hover" placement="top">
+                    <template #title>Employees in Danger</template>
+
+                    <b-list-group>
+                      <b-list-group-item v-for="emp in this.employees" :key="emp.employeeId">
+                        <b-avatar :src="emp.avatar" style="float:left; "></b-avatar>
+
+                        <p>{{ emp.name }}</p>
+                      </b-list-group-item>
+                    </b-list-group>
+                  </b-popover>
+                  
                 </b-col>
               </b-row>
             </b-col>
@@ -102,8 +100,8 @@
         <b-container>
           <b-row class="pb-3">
             <b-col>
-              <h2 style="text-align:left; font-size:5vh;">Colleagues</h2></b-col
-            >
+              <h2 style="text-align:left; font-size:5vh;">Colleagues</h2>
+            </b-col>
             <b-col cols="6" class="mr-auto">
               <b-form-group
                 label="Department"
@@ -192,6 +190,7 @@ import AttendanceDonut from "../components/AttendanceDonut.vue";
 import BadgePopover from "../components/BadgePopover";
 import { firebase, auth, database } from "../assets/firebase";
 export default {
+  
   components: { AttendanceDonut, BadgePopover },
   data() {
     return {
@@ -263,6 +262,33 @@ export default {
         .map(f => {
           return { text: f.label, value: f.key };
         });
+    },
+    statusColor() {
+      if (this.userInfo.status == "Safe") {
+        return {
+          color: "#008000",
+          "text-align": "left",
+          "font-size": "2.5vh",
+        };
+      } else if (this.userInfo.status == "Risky") {
+        return {
+          color: "#FFA500",
+          "text-align": "left",
+          "font-size": "2.5vh",
+        };
+      } else if (this.userInfo.status == "Danger") {
+        return {
+          color: "#FF0000",
+          "text-align": "left",
+          "font-size": "2.5vh",
+        };
+      } else {
+        return {
+          color: "#000000",
+          "text-align": "left",
+          "font-size": "2.5vh",
+        };
+      }
     }
   },
   mounted() {
