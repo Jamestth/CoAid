@@ -1,9 +1,16 @@
 <template>
   <div class="signup">
-    <table class = "center">
-    <tr><td height = "15px"></td></tr>
-    <tr><td align = "center"><img src = "../assets/LogoIcon2.png" style = "width:50%"></td></tr>
+    <table class="center">
+      <tr>
+        <td height="15px"></td>
+      </tr>
+      <tr>
+        <td align="center">
+          <img src="../assets/LogoIcon2.png" style="width:50%" />
+        </td>
+      </tr>
     </table>
+
     <form @submit.prevent="submit">
       <table class="center" style="text-align: left">
         <tr>
@@ -13,46 +20,96 @@
         <tr>
           <td><label for="name"> Name: </label></td>
           <td>
-            <input type="text" id="name" name="name" v-model="form.name" />
+            <input
+              type="text"
+              id="name"
+              name="name"
+              v-model="form.name"
+              required
+            />
           </td>
         </tr>
         <tr>
           <td><label for="phone"> Phone Number: </label></td>
           <td>
-            <input type="text" id="phone" name="phone" v-model="form.phone" />
+            <input
+              type="tel"
+              pattern="[0-9]{8}"
+              id="phone"
+              name="phone"
+              v-model="form.phone"
+            />
           </td>
         </tr>
         <tr>
           <td><label for="email"> Email: </label></td>
           <td>
-            <input type="text" id="email" name="email" v-model="form.email" />
+            <input
+              type="text"
+              id="email"
+              name="email"
+              pattern="[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*"
+              v-model="form.email"
+              required
+            />
           </td>
         </tr>
         <tr>
           <td><label for="password"> Password: </label></td>
           <td>
             <input
-              type="text"
+              type="password"
               id="password"
               name="password"
               v-model="form.password"
+              required
             />
           </td>
         </tr>
         <tr>
           <td><label for="password2"> Confirm Password: </label></td>
-          <td><input type="text" id="password2" name="password2" /></td>
-        </tr>
-        <tr>
-          <td><label for="orgcode"> Department: </label></td>
           <td>
-            <input type="text" id="orgcode" name="orgcode" />
+            <input
+              type="password"
+              id="password2"
+              name="password2"
+              v-model="form.password2"
+              required
+            />
           </td>
         </tr>
         <tr>
-          <td><label for="dept"> Unit code: </label></td>
+          <td><label for="department"> Department: </label></td>
           <td>
-            <input type="text" id="unit" name="unit" v-model="form.unit" />
+            <select
+              id="department"
+              v-model="curSelectedDept"
+              style="width:100%"
+              :onchange="updateUnit()"
+              required
+              :v-if="this.departmentOptions[0]"
+            >
+              <option
+                v-for="department in this.departmentOptions"
+                :key="department"
+                >{{ department }}</option
+              >
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td><label for="unit"> Unit: </label></td>
+          <td>
+            <select
+              id="unit"
+              v-model="curSelectedUnit"
+              style="width:100%"
+              required
+            >
+              <option v-for="unit in this.curUnitOptions" :key="unit">{{
+                unit
+              }}</option>
+            </select>
           </td>
         </tr>
         <tr>
@@ -60,21 +117,14 @@
           <td height="15px"></td>
         </tr>
       </table>
-      <table class = "center"> 
+
+      <table class="center">
         <tr>
-        <td> 
-        <router-link
-            to="/login"
-            tag="button"
-            class="btn ml-3"
-            style="margin:0"
-          >
-            Signup
-          </router-link>
-        </td>
+          <td>
+            <input type="submit" class="btn" />
+          </td>
         </tr>
       </table>
-      
     </form>
   </div>
 </template>
@@ -90,44 +140,89 @@ export default {
         phone: "",
         email: "",
         password: "",
+        password2: "",
         unit: "",
         uid: ""
-      }
+      },
+      departmentOptions: [],
+      unitsList: [],
+      curUnitOptions: [],
+      curSelectedDept: "Marketing",
+      curSelectedUnit: null
     };
   },
+  created() {
+    this.fetchData();
+  },
   methods: {
+    updateUnit() {
+      this.curUnitOptions = this.unitsList
+        .filter(x => x.department == this.curSelectedDept)
+        .map(y => y.unit);
+    },
+    fetchData() {
+      database
+        .collection("units")
+        .get()
+        .then(units =>
+          units.forEach(unit => {
+            let unitRecord = {
+              unitId: unit.id,
+              unit: unit.data().name,
+              department: ""
+            };
+            unit
+              .data()
+              .department.get()
+              .then(department => {
+                unitRecord.department = department.data().name;
+
+                this.unitsList.push(unitRecord);
+                this.departmentOptions.push(department.data().name);
+              });
+          })
+        );
+    },
     submit() {
       const name = this.form.name;
       const phone = this.form.phone;
       const email = this.form.email;
-      const unit = this.form.unit;
-
-      auth
-        .createUserWithEmailAndPassword(this.form.email, this.form.password)
-        .then(function(data) {
-          database
-            .collection("employees")
-            .add({
-              name: name,
-              phone: phone,
-              email: email,
-              uid: data.user.uid,
-              unit: unit,
-              avatar: ""
-            })
-            .then(function() {
-              console.log("Document successfully written!");
-            })
-            .catch(function(error) {
-              console.error("Error writing document: ", error);
-            });
-        })
-        .catch(function(error) {
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          alert(errorCode);
-          alert(errorMessage);
-        });
+      const unitId = this.unitsList
+        .filter(x => x.unit == this.curSelectedUnit)
+        .map(y => y.unitId)[0];
+      const unitRef = database.doc("/units/" + unitId);
+      if (this.form.password == this.form.password2) {
+        auth
+          .createUserWithEmailAndPassword(this.form.email, this.form.password)
+          .then(function(data) {
+            database
+              .collection("employees")
+              .add({
+                name: name,
+                phone: phone,
+                email: email,
+                uid: data.user.uid,
+                unit: unitRef,
+                avatar:
+                  "https://ui-avatars.com/api/?name=" +
+                  name.replaceAll(" ", "+")
+              })
+              .then(function() {
+                console.log("Document successfully written!");
+              })
+              .catch(function(error) {
+                console.error("Error writing document: ", error);
+              });
+          })
+          .catch(function(error) {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            alert(errorCode);
+            alert(errorMessage);
+          });
+      } else {
+        alert("Password does not match");
+      }
 
       // database
       //   .collection("employees")

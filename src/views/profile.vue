@@ -150,12 +150,6 @@ export default {
         unit: "",
       },
       userInfoOrignal: {},
-      form: {
-        email: "",
-        name: "",
-        food: null,
-        checked: [],
-      },
     };
   },
   computed: {},

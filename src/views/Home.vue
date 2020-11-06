@@ -380,7 +380,11 @@ export default {
     },
     check(userInfo) {
       if (userInfo) {
-        return userInfo.lastCheck.checkOut === undefined;
+        if (Object.keys(userInfo.lastCheck).length != 0) {
+          return userInfo.lastCheck.checkOut === undefined;
+        } else {
+          return false;
+        }
       }
     },
     getStatusType(status) {
@@ -400,12 +404,12 @@ export default {
           userInfo.lastCheck.checkIn.seconds
         ).toFormat(`ff`);
       } catch (err) {
-        return 0;
+        return "None";
       }
     },
     getCheckOutTime(userInfo) {
       if (userInfo.lastCheck.checkOut === undefined) {
-        return 0;
+        return "None";
       } else {
         return DateTime.fromSeconds(
           userInfo.lastCheck.checkOut.seconds
