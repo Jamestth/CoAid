@@ -2,76 +2,44 @@
   <div class="login">
     <table class = "center">
     <tr><td height = "15px"></td></tr>
-    <tr><td align = "center"><img src = "../assets/logomainpage.png" style = "width:30%"></td></tr>
-    <tr><td align = "center"><img src = "../assets/coaidname.png" style = "width:30%"></td></tr>
+    <tr><td align = "center"><img src = "../assets/logomainpage.png" style = "width:20%"></td></tr>
+    <tr><td align = "center"><img src = "../assets/coaidname.png" style = "width:20%"></td></tr>
     </table>
-    <div>
-      <table class="center" style="text-align: center">
-        <tr>
-            <td height="50px"></td>
-        </tr>
-        <tr>
-          <td>
-            <form> <!-- align email and password, refer to create meetings page -->
-              <label for="Email"> Email: </label>
-              &nbsp;
-              <input
-                type="text"
-                id="Email"
-                name="Email"
-                v-model="email"
-                required
-              />
-              <br />
-              <br />
-            </form>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <form>
-              <label for="password"> Password: </label>
-              &nbsp;
-              <input
-                type="text"
-                id="password"
-                name="password"
-                v-model="password"
-                required
-              />
-              <br />
-              <br />
-            </form>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <router-link
-              to="/"
-              tag="button"
-              class="btn ml-3"
-              style="margin:0"
-              @click.native="signin"
-            >
-              Sign in
+    <b-container fluid>
+        <b-row class="justify-content-md-center">
+          <b-col col lg="1"> Email: </b-col>
+          <b-col col lg="1"
+            ><input type="email" id="email" name="email"
+          /></b-col>
+        </b-row>
+        <b-row class="justify-content-md-center">
+          <b-col col lg="1"> Password: </b-col>
+          <b-col col lg="1"
+            ><input type="password" id="password" name="password"
+          /></b-col>
+        </b-row>
+        <b-row class="justify-content-md-center">
+          <b-col col lg="2">
+            
+          </b-col>
+        </b-row>
+      </b-container>
+      <router-link
+                  to="/"
+                  tag="button"
+                  class="btn ml-3"
+                  style="margin:0"
+                  @click.native="signin"
+                >
+                  Sign in
             </router-link>
-          </td>
-        </tr>
-        </table>
-      </div>
+      
     <table class="center" style="text-align: center">
-      <tr>
-        <td height="15px"></td>
-      </tr>
       <tr> <!-- change to hyperlink instead of button when you click on "here"-->
-        <i> Create an account here </i> <router-link
+        <i> Create an account <router-link
             to="/signup"
-            tag="button"
-            class="btn ml-3"
             style="margin:0"
-          >
-            Signup
-          </router-link>
+          > here </router-link> </i>
       </tr>
       <tr>
       </tr>
