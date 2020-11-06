@@ -2,68 +2,69 @@
   <div class="login">
     <table class = "center">
     <tr><td height = "15px"></td></tr>
-    <tr><td align = "center"><img src = "../assets/LogoIcon2.png" style = "width:50%"></td></tr>
+    <tr><td align = "center"><img src = "../assets/logomainpage.png" style = "width:30%"></td></tr>
+    <tr><td align = "center"><img src = "../assets/coaidname.png" style = "width:30%"></td></tr>
     </table>
+    <div>
+      <table class="center" style="text-align: center">
+        <tr>
+            <td height="50px"></td>
+        </tr>
+        <tr>
+          <td>
+            <form> <!-- align email and password, refer to create meetings page -->
+              <label for="Email"> Email: </label>
+              &nbsp;
+              <input
+                type="text"
+                id="Email"
+                name="Email"
+                v-model="email"
+                required
+              />
+              <br />
+              <br />
+            </form>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <form>
+              <label for="password"> Password: </label>
+              &nbsp;
+              <input
+                type="text"
+                id="password"
+                name="password"
+                v-model="password"
+                required
+              />
+              <br />
+              <br />
+            </form>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <router-link
+              to="/"
+              tag="button"
+              class="btn ml-3"
+              style="margin:0"
+              @click.native="signin"
+            >
+              Sign in
+            </router-link>
+          </td>
+        </tr>
+        </table>
+      </div>
     <table class="center" style="text-align: center">
-      <tr>
-          <td height="50px"></td>
-      </tr>
-      <tr>
-        <td>
-          <form>
-            <label for="Email"> Email: </label>
-            &nbsp;
-            <input
-              type="text"
-              id="Email"
-              name="Email"
-              v-model="email"
-              required
-            />
-            <br />
-            <br />
-          </form>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <form>
-            <label for="password"> Password: </label>
-            &nbsp;
-            <input
-              type="text"
-              id="password"
-              name="password"
-              v-model="password"
-              required
-            />
-            <br />
-            <br />
-          </form>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <router-link
-            to="/"
-            tag="button"
-            class="btn ml-3"
-            style="margin:0"
-            @click.native="signin"
-          >
-            Sign in
-          </router-link>
-        </td>
-      </tr>
       <tr>
         <td height="15px"></td>
       </tr>
-      <tr>
-        Don't have an account?
-      </tr>
-      <tr>
-        <td>
-          <router-link
+      <tr> <!-- change to hyperlink instead of button when you click on "here"-->
+        <i> Create an account here </i> <router-link
             to="/signup"
             tag="button"
             class="btn ml-3"
@@ -71,7 +72,8 @@
           >
             Signup
           </router-link>
-        </td>
+      </tr>
+      <tr>
       </tr>
     </table>
   </div>
@@ -105,9 +107,11 @@ export default {
 };
 </script>
 <style scoped>
+
 div {
   text-align: left;
   padding: 15px;
+  background-color:#d3edf9;
 }
 .center {
   margin-left: auto;
@@ -133,4 +137,5 @@ td img {
   margin-left: auto;
   margin-right: auto;
 }
+
 </style>
