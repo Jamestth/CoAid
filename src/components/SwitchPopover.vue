@@ -74,8 +74,8 @@ export default {
           snap.forEach(y => {
             if (!row.item.status) {
               row.item.accepted = row.item.accepted.filter(x => x != y.id);
-              row.item.employee.filter(
-                emp => emp.id == y.id
+              row.item.employees.filter(
+                emp => emp.employeeId == y.id
               )[0].isAccepted = false;
             } else {
               if (!row.item.accepted.includes(y.id)) {

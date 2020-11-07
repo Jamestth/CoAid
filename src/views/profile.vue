@@ -1,7 +1,7 @@
 <template>
   <b-row class="p-3">
     <b-col></b-col>
-    <b-col cols="12" md="6">
+    <b-col md="4">
       <div v-if="profileFound">
         <b-form @submit="onSubmit" @reset="onReset">
           <b-col> </b-col>
@@ -24,7 +24,7 @@
             <b-col></b-col>
           </b-row>
           <b-form-group
-            label-cols-sm="3"
+            label-cols="3"
             id="input-group-1"
             label="Name:"
             label-for="input-1"
@@ -94,7 +94,7 @@
           <b-form-group
             label-cols-sm="3"
             id="input-group-5"
-            label="Mobile Contact:"
+            label="Contact:"
             label-for="input-5"
             label-align="left"
           >

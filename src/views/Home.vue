@@ -269,7 +269,7 @@ export default {
       dangerList: [],
       totalRows: 1,
       currentPage: 1,
-      perPage: 10,
+      perPage: 5,
       sortBy: "",
       sortDesc: false,
       sortDirection: "asc",
