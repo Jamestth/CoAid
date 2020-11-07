@@ -66,6 +66,7 @@
                       v-bind:sections="attendanceStatistic.risky"
                     ></AttendanceDonut>
                   </b-card>
+                  <!-- risky popover -->
                   <b-popover
                     target="risky Symptoms"
                     triggers="hover"
@@ -82,21 +83,24 @@
                           :src="emp.avatar"
                           style="float:left; "
                         ></b-avatar>
-
                         <p>{{ emp.name }}</p>
                       </b-list-group-item>
                     </b-list-group>
                   </b-popover>
                 </b-col>
+                <!-- danger popover --> 
                 <b-col cols="6">
-                  <b-card header="Danger">
+                  <b-card header="Danger" id="danger">
                     <AttendanceDonut
                       v-bind:sections="attendanceStatistic.danger"
                     ></AttendanceDonut>
                   </b-card>
-                  <b-popover target="danger" triggers="hover" placement="top">
+                  <b-popover 
+                  target="danger" 
+                  triggers="hover" 
+                  placement="top"
+                  >
                     <template #title>Employees in Danger</template>
-
                     <b-list-group>
                       <b-list-group-item
                         v-for="emp in this.dangerList"
