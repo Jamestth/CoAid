@@ -13,9 +13,10 @@
               <b-card class="mb-3" header="Notifications">
                 <b-row class="pl-2" v-if="!check(this.userInfo)">
                   <p style="text-align:left; font-size:2.5vh;">
-                    Last Check In:
+                    Last Check Out:
                     <strong>{{ getCheckOutTime(this.userInfo) }}</strong>
                   </p>
+
                   <router-link
                     to="/healthdeclaration"
                     tag="button"
@@ -28,10 +29,6 @@
                 </b-row>
                 <b-row class="pl-2 pt-2" v-if="!check(this.userInfo)">
                   <p style="text-align:left; font-size:2.5vh ">
-                    Health Status:
-                    <strong>Healthy</strong>
-                    <br />
-                    <!-- { this.userInfo.status } -->
                     Rotation Team:
                     <strong>A</strong>
                     <br />
@@ -41,22 +38,22 @@
                 </b-row>
                 <b-row class="pl-2" v-if="check(this.userInfo)">
                   <p style="text-align:left; font-size:2.5vh;">
-                    You last checked in on:
+                    Last Check In:
                     <strong>{{ getCheckInTime(this.userInfo) }}</strong>
+                  </p>
+
+                  <p class="ml-3">
+                    <button tag="button" class="btn" style="margin:0">
+                      <span v-on:click="this.checkOut">Check Out</span>
+                    </button>
                   </p>
                 </b-row>
                 <b-row class="pl-2 pt-2" v-if="check(this.userInfo)">
-                  <p style="text-align:left; font-size:2.5vh ">
-                    Would you like to check out?
+                  <p style="text-align:left; font-size:2.5vh ">Status:</p>
+                  <p class="ml-3" :style="statusColor">
+                    {{ this.userInfo.status }}
                   </p>
-                  <router-link
-                    to="/CheckOutsuccess"
-                    tag="button"
-                    class="btn"
-                    style="margin:0"
-                  >
-                    <span v-on:click="this.check">Check Out</span>
-                  </router-link>
+                  <br />
                 </b-row>
                 <!-- Display -->
               </b-card>
@@ -64,18 +61,60 @@
             <b-col cols="6">
               <b-row class="mb-4">
                 <b-col cols="6">
-                  <b-card header="Mild Symptoms">
+                  <b-card header="Risky" id="risky Symptoms">
                     <AttendanceDonut
-                      v-bind:sections="attendanceStatistic.mild"
+                      v-bind:sections="attendanceStatistic.risky"
                     ></AttendanceDonut>
                   </b-card>
+                  <!-- risky popover -->
+                  <b-popover
+                    target="risky Symptoms"
+                    triggers="hover"
+                    placement="top"
+                  >
+                    <template #title>Employees at Risk</template>
+
+                    <b-list-group>
+                      <b-list-group-item
+                        v-for="emp in this.riskyList"
+                        :key="emp.employeeId"
+                      >
+                        <b-avatar
+                          :src="emp.avatar"
+                          style="float:left; "
+                        ></b-avatar>
+                        <p>{{ emp.name }}</p>
+                      </b-list-group-item>
+                    </b-list-group>
+                  </b-popover>
                 </b-col>
+                <!-- danger popover --> 
                 <b-col cols="6">
-                  <b-card header="Sick">
+                  <b-card header="Danger" id="danger">
                     <AttendanceDonut
-                      v-bind:sections="attendanceStatistic.sick"
+                      v-bind:sections="attendanceStatistic.danger"
                     ></AttendanceDonut>
                   </b-card>
+                  <b-popover 
+                  target="danger" 
+                  triggers="hover" 
+                  placement="top"
+                  >
+                    <template #title>Employees in Danger</template>
+                    <b-list-group>
+                      <b-list-group-item
+                        v-for="emp in this.dangerList"
+                        :key="emp.employeeId"
+                      >
+                        <b-avatar
+                          :src="emp.avatar"
+                          style="float:left; "
+                        ></b-avatar>
+
+                        <p>{{ emp.name }}</p>
+                      </b-list-group-item>
+                    </b-list-group>
+                  </b-popover>
                 </b-col>
               </b-row>
             </b-col>
@@ -86,8 +125,8 @@
         <b-container>
           <b-row class="pb-3">
             <b-col>
-              <h2 style="text-align:left; font-size:5vh;">Colleagues</h2></b-col
-            >
+              <h2 style="text-align:left; font-size:5vh;">Colleagues</h2>
+            </b-col>
             <b-col cols="6" class="mr-auto">
               <b-form-group
                 label="Department"
@@ -174,14 +213,14 @@ import stringSimilarity from "string-similarity";
 import { DateTime } from "luxon";
 import AttendanceDonut from "../components/AttendanceDonut.vue";
 import BadgePopover from "../components/BadgePopover";
-import { auth, database } from "../assets/firebase";
+import { firebase, auth, database } from "../assets/firebase";
 export default {
   components: { AttendanceDonut, BadgePopover },
   data() {
     return {
       attendanceStatistic: {
-        mild: [{ value: 100, color: "#ffc107", number: 3 }],
-        sick: [{ value: 100, color: "#dc3545", number: 1 }]
+        risky: [{ value: 100, color: "#ffc107", number: 0 }],
+        danger: [{ value: 100, color: "#dc3545", number: 0 }]
       },
       employees: [],
       checkedIn: false,
@@ -213,7 +252,7 @@ export default {
               return 3;
             } else if (value == "Healthy") {
               return 1;
-            } else if (value == "Sick") {
+            } else if (value == "danger") {
               return 2;
             } else {
               return -1;
@@ -224,10 +263,13 @@ export default {
           filterByFormatted: true
         }
       ],
-
+      numRisky: 0,
+      numDanger: 0,
+      riskyList: [],
+      dangerList: [],
       totalRows: 1,
       currentPage: 1,
-      perPage: 10,
+      perPage: 5,
       sortBy: "",
       sortDesc: false,
       sortDirection: "asc",
@@ -247,6 +289,33 @@ export default {
         .map(f => {
           return { text: f.label, value: f.key };
         });
+    },
+    statusColor() {
+      if (this.userInfo.status == "Safe") {
+        return {
+          color: "#008000",
+          "text-align": "left",
+          "font-size": "2.5vh"
+        };
+      } else if (this.userInfo.status == "Risky") {
+        return {
+          color: "#FFA500",
+          "text-align": "left",
+          "font-size": "2.5vh"
+        };
+      } else if (this.userInfo.status == "Danger") {
+        return {
+          color: "#FF0000",
+          "text-align": "left",
+          "font-size": "2.5vh"
+        };
+      } else {
+        return {
+          color: "#000000",
+          "text-align": "left",
+          "font-size": "2.5vh"
+        };
+      }
     }
   },
   mounted() {
@@ -326,17 +395,28 @@ export default {
                     checkInRecord.data().checkOut === undefined
                       ? this.getStatusType(records.status)
                       : "secondary";
+                  if (records.status == "Danger") {
+                    this.dangerList.push(records);
+                    this.attendanceStatistic.danger[0].number++;
+                  } else if (records.status == "Risky") {
+                    this.riskyList.push(records);
+                    this.attendanceStatistic.risky[0].number++;
+                  }
                 });
               });
           });
         });
     },
     evaluateStatus(fluFlag, shnFlag, contactFlag, temperature) {
-      let status = "Healthy";
+      let status = "???";
 
       if (fluFlag !== undefined) {
-        let flags = fluFlag + shnFlag + contactFlag + temperature > 37.5;
-        status = flags == 0 ? "Healthy" : flags > 1 ? "Unwell" : "Sick";
+        let flags =
+          Number(fluFlag) +
+          Number(shnFlag) +
+          Number(contactFlag) +
+          Number(temperature > 37.5);
+        status = flags == 0 ? "Safe" : flags < 3 ? "Risky" : "Danger";
       } else {
         status = "Out of Office";
       }
@@ -360,15 +440,19 @@ export default {
     },
     check(userInfo) {
       if (userInfo) {
-        return userInfo.lastCheck.checkOut === undefined;
+        if (Object.keys(userInfo.lastCheck).length != 0) {
+          return userInfo.lastCheck.checkOut === undefined;
+        } else {
+          return false;
+        }
       }
     },
     getStatusType(status) {
-      if (status == "Unwell") {
+      if (status == "Risky") {
         return "warning";
-      } else if (status == "Healthy") {
+      } else if (status == "Safe") {
         return "success";
-      } else if (status == "Sick") {
+      } else if (status == "Danger") {
         return "danger";
       } else {
         return "secondary";
@@ -380,18 +464,51 @@ export default {
           userInfo.lastCheck.checkIn.seconds
         ).toFormat(`ff`);
       } catch (err) {
-        return 0;
+        return "None";
       }
     },
     getCheckOutTime(userInfo) {
       if (userInfo.lastCheck.checkOut === undefined) {
-        return 0;
+        return "None";
       } else {
         return DateTime.fromSeconds(
           userInfo.lastCheck.checkOut.seconds
         ).toFormat(`ff`);
       }
-      
+    },
+    checkOut() {
+      let userId = auth.currentUser.uid;
+      database
+        .collection("employees")
+        .where("uid", "==", userId)
+        .limit(1)
+        .get()
+        .then(emps =>
+          emps.forEach(emp => {
+            database
+              .collection("checkIn")
+              .where("employee", "==", emp.id)
+              .get()
+              .then(checkins =>
+                checkins.forEach(checkin => {
+                  let checkinid = checkin.id;
+                  let curTime = firebase.firestore.FieldValue.serverTimestamp();
+                  database
+                    .collection("checkIn")
+                    .doc(checkinid)
+                    .update({
+                      checkOut: curTime
+                    })
+                    .then(x => {
+                      x;
+                      this.$router
+                        .push({ path: "/checkoutsuccess" })
+                        .catch(error => error);
+                    });
+                })
+              );
+          })
+        );
     }
   }
 };

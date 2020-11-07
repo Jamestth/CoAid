@@ -1,41 +1,69 @@
 <template>
-  <div class="login">
-    <table class = "center">
-    <tr><td height = "15px"></td></tr>
-    <tr><td align = "center"><img src = "../assets/LogoIcon2.png" style = "width:50%"></td></tr>
+  <div style=" background-color: #d3edf9; height:100%" class="login">
+    <table class="center">
+      <tr>
+        <td height="15px"></td>
+      </tr>
+      <tr>
+        <td align="center">
+          <img src="../assets/logomainpage.png" style="width:20%" />
+        </td>
+      </tr>
+      <tr>
+        <td align="center">
+          <img src="../assets/coaidname.png" style="width:20%" />
+        </td>
+      </tr>
     </table>
-    <table class="center" style="text-align: center">
-      <tr>
-          <td height="50px"></td>
-      </tr>
-      <tr>
-        <td>
-          <form>
-            <label for="Email"> Email: </label>
-            &nbsp;
-            <input type="text" id="Email" name="Email" v-model="email" /> <br />
-            <br />
-          </form>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <form>
-            <label for="password"> Password: </label>
-            &nbsp;
-            <input
-              type="text"
-              id="password"
-              name="password"
-              v-model="password"
-            />
-            <br />
-            <br />
-          </form>
-        </td>
-      </tr>
-      <tr>
-        <td>
+
+    <b-container fluid>
+      <b-form>
+        <b-row>
+          <b-col></b-col>
+          <b-col cols="3" class="pt-5">
+            <b-form-group
+              label-cols-sm="4"
+              label-cols-md="3"
+              id="input-group-2"
+              label="Email:"
+              label-for="input-2"
+              label-align="left"
+            >
+              <b-form-input
+                id="input-2"
+                type="email"
+                v-model="email"
+                placeholder="Enter a email"
+                required
+              ></b-form-input>
+            </b-form-group>
+          </b-col>
+          <b-col></b-col>
+        </b-row>
+        <b-row>
+          <b-col> </b-col>
+          <b-col cols="3">
+            <b-form-group
+              label-cols-sm="4"
+              label-cols-md="3"
+              id="input-group-2"
+              label="Password:"
+              label-for="input-2"
+              label-align="left"
+            >
+              <b-form-input
+                id="input-3"
+                type="password"
+                v-model="password"
+                placeholder="Enter Password"
+                v-on:keyup.enter="signin"
+                required
+              ></b-form-input>
+            </b-form-group>
+          </b-col>
+          <b-col> </b-col>
+        </b-row>
+        <b-row class="justify-content-md-center">
           <router-link
             to="/"
             tag="button"
@@ -45,24 +73,19 @@
           >
             Sign in
           </router-link>
-        </td>
-      </tr>
+        </b-row>
+      </b-form>
+    </b-container>
+
+    <table class="center" style="text-align: center">
       <tr>
-          <td height="15px"></td>
+        <!-- change to hyperlink instead of button when you click on "here"-->
+        <i>
+          Create an account
+          <router-link to="/signup" style="margin:0"> here </router-link>
+        </i>
       </tr>
-      <tr> Don't have an account? </tr>
-      <tr>
-        <td>
-          <router-link
-            to="/signup"
-            tag="button"
-            class="btn ml-3"
-            style="margin:0"
-          >
-            Signup
-          </router-link>
-        </td>
-      </tr>
+      <tr></tr>
     </table>
   </div>
 </template>
@@ -80,16 +103,21 @@ export default {
     signin() {
       //let email = "geo@yahoo.com";
       //let password = "MatheusAaron09052000";
-      auth
-        .signInWithEmailAndPassword(this.email, this.password)
-        .catch(function(error) {
-          error;
-        });
+      if (this.email && this.password) {
+        auth
+          .signInWithEmailAndPassword(this.email, this.password)
+          .catch(function(error) {
+            error;
+            alert("The Email/Password is not correct. Please try again.");
+          });
 
-      auth.onAuthStateChanged(user => {
-        user;
-        this.$router.push({ path: "/" }).catch(error => error);
-      });
+        auth.onAuthStateChanged(user => {
+          user;
+          this.$router.push({ path: "/" }).catch(error => error);
+        });
+      } else {
+        alert("Please enter your email and password.");
+      }
     }
   }
 };
@@ -97,7 +125,10 @@ export default {
 <style scoped>
 div {
   text-align: left;
-  padding: 15px;
+  padding: 0;
+}
+.app {
+  background-color: #d3edf9;
 }
 .center {
   margin-left: auto;
@@ -118,10 +149,9 @@ div {
   border-color: darkblue;
   color: darkblue;
 }
-td img{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-
+td img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
