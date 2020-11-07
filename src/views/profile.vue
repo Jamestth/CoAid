@@ -1,7 +1,7 @@
 <template>
   <b-row class="p-3">
     <b-col></b-col>
-    <b-col cols="12" md= "6">
+    <b-col cols="12" md="6">
       <div v-if="profileFound">
         <b-form @submit="onSubmit" @reset="onReset">
           <b-col> </b-col>
@@ -112,7 +112,10 @@
           <b-button class="ml-3" type="reset" v-if="editMode">cancel</b-button>
           <b-row class="mb-4"></b-row>
         </b-form>
-        <b-button type="button" v-on:click="switchToEditMode()" v-if="!editMode"
+        <b-button
+          type="button"
+          v-on:click="switchToEditMode()"
+          v-if="!editMode && isEditor()"
           >Edit</b-button
         >
       </div>
@@ -147,15 +150,16 @@ export default {
         office: "",
         phone: "",
         uid: "",
-        unit: "",
+        unit: ""
       },
-      userInfoOrignal: {},
+      isAdmin: null,
+      empId: null,
+      userInfoOrignal: {}
     };
   },
   computed: {},
   created() {
     this.fetchData();
-
   },
   mounted() {},
   methods: {
@@ -168,14 +172,14 @@ export default {
       var storageRef = storage.ref();
       var fileRef = storageRef.child(filepath);
 
-      fileRef.put(this.file).then((snap) => {
-        snap
-        fileRef.getDownloadURL().then((snap) => {
+      fileRef.put(this.file).then(snap => {
+        snap;
+        fileRef.getDownloadURL().then(snap => {
           console.log(snap);
           this.userInfo.avatar = snap;
 
           let unitId = this.unitsList.filter(
-            (x) => x.unit == this.userInfo.unit
+            x => x.unit == this.userInfo.unit
           )[0].unitId;
           let unitRef = database.doc("/units/" + unitId);
           database
@@ -186,13 +190,17 @@ export default {
               email: this.userInfo.email,
               phone: this.userInfo.phone,
               unit: unitRef,
-              avatar: this.userInfo.avatar,
+              avatar: this.userInfo.avatar
             });
         });
       });
 
       this.editMode = !this.editMode;
     },
+    isEditor() {
+      return this.isAdmin || this.empId == this.userInfo.eid;
+    },
+
     onReset(evt) {
       evt.preventDefault();
       // Reset our form values
@@ -202,8 +210,8 @@ export default {
     },
     updateUnitOptions() {
       this.curUnitOptions = JSON.parse(JSON.stringify(this.unitsList))
-        .filter((x) => x.department == this.userInfo.department)
-        .map((y) => y.unit);
+        .filter(x => x.department == this.userInfo.department)
+        .map(y => y.unit);
     },
     switchToEditMode() {
       this.editMode = !this.editMode;
@@ -215,9 +223,19 @@ export default {
       //this.userId = "IAvKPChVuFfkH176PMgdkwAvdfE2"; //remove when auth works
       database
         .collection("employees")
+        .where("uid", "==", auth.currentUser.uid)
+        .get()
+        .then(emps =>
+          emps.forEach(emp => {
+            this.isAdmin = emp.data().admin;
+            this.empId = emp.id;
+          })
+        );
+      database
+        .collection("employees")
         .doc(this.$route.params.id)
         .get()
-        .then((snap) => {
+        .then(snap => {
           let employee = snap;
           let employeeData = snap.data();
           let records = {
@@ -229,17 +247,17 @@ export default {
             phone: employeeData.phone,
             department: "",
             unit: "",
-            office: "",
+            office: ""
           };
-          employeeData.unit.get().then((unit) => {
+          employeeData.unit.get().then(unit => {
             unit = unit.data();
             records.unit = unit.name;
 
-            unit.location.get().then((location) => {
+            unit.location.get().then(location => {
               records.office = location.data().name;
             });
 
-            unit.department.get().then((department) => {
+            unit.department.get().then(department => {
               records.department = department.data().name;
             });
             this.userInfo = records;
@@ -247,26 +265,26 @@ export default {
             database
               .collection("departments")
               .get()
-              .then((snap) =>
-                snap.forEach((department) => {
+              .then(snap =>
+                snap.forEach(department => {
                   this.departmentOptions.push(department.data().name);
                 })
               );
             database
               .collection("units")
               .get()
-              .then((snap) =>
-                snap.forEach((unit) => {
+              .then(snap =>
+                snap.forEach(unit => {
                   let unitRecords = {
                     unitId: unit.id,
                     unit: unit.data().name,
-                    department: "",
+                    department: ""
                   };
 
                   unit
                     .data()
                     .department.get()
-                    .then((department) => {
+                    .then(department => {
                       unitRecords.department = department.data().name;
 
                       if (unitRecords.department == this.userInfo.department) {
@@ -279,8 +297,8 @@ export default {
               );
           });
         });
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>
