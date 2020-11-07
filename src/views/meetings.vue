@@ -32,14 +32,12 @@ export default {
   },
   data() {
     return {
-      userId: 1234,
       meetingsData: [],
       fields: [
         {
           key: "name",
           label: "Name",
-          sortable: true,
-          sortDirection: "desc"
+          sortable: true
         },
         {
           key: "location",
@@ -49,7 +47,8 @@ export default {
         {
           key: "start",
           label: "Start",
-          sortable: true
+          sortable: true,
+          sortDirection: "desc",
         },
         {
           key: "end",
@@ -60,8 +59,7 @@ export default {
         {
           key: "status",
           label: "Status",
-          sortable: true,
-          sortByFormatted: true
+          sortable: true
         }
       ]
     };
@@ -148,13 +146,13 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@500");
 
 h1 {
-  font-family: "DM Sans", sans-serif !important;
+  /*font-family: "DM Sans", sans-serif !important;*/
   padding: 15px;
   font-size: 30px;
   text-align: center;
 }
 div {
-  font-family: omnes-pro;
+  /*font-family: omnes-pro;*/
   text-align: center;
   padding: 15px;
 }
@@ -202,5 +200,9 @@ div {
 
 label {
   margin: 10px;
+}
+/deep/ .table th {
+  color: #fff;
+  background-color: darkblue !important;
 }
 </style>
