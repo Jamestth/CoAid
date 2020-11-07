@@ -55,15 +55,21 @@ const routes = [
     meta: { requiresAuth: false },
   },
   {
+    path: "/adminhome",
+    name: "adminhome",
+    component: () => import("../views/admin/adminhome.vue"),
+    meta: { requiresAuth: false },
+  },
+  {
     path: "/adminanalytics",
     name: "adminanalytics",
     component: () => import("../views/admin/adminanalytics.vue"),
     meta: { requiresAuth: false },
   },
   {
-    path: "/employeelist",
-    name: "employeelist",
-    component: () => import("../views/admin/employeelist.vue"),
+    path: "/rosterlist",
+    name: "rosterlist",
+    component: () => import("../views/admin/rosterlist.vue"),
     meta: { requiresAuth: false },
   },
   {
