@@ -1,103 +1,157 @@
 <template>
   <div class="signup">
-    <table class = "center">
-    <tr><td height = "15px"></td></tr>
-    <tr><td align = "center"><img src = "../assets/logomainpage.png" style = "width:20%"></td></tr>
-    <tr><td align = "center"><img src = "../assets/coaidname.png" style = "width:20%"></td></tr>
-    </table>
-
-    <form @submit.prevent="submit">
-      <b-container fluid>
-        <b-row class="justify-content-md-center">
-          <b-col col lg="1"> <label for="name"> Name: </label> </b-col>
-          <b-col col lg="1"> <input
-              type="text"
-              id="name"
-              name="name"
+    <b-row>
+      <b-col></b-col>
+      <b-col cols="3">
+        <b-row>
+          <table class="center">
+            <tr>
+              <td height="15px"></td>
+            </tr>
+            <tr>
+              <td class="d-flex justify-content-center">
+                <img src="../assets/logomainpage.png" style="width:20vh" />
+              </td>
+            </tr>
+            <tr>
+              <td align="center" style="padding-bottom:1vh">
+                <img src="../assets/coaidname.png" style="width:20vh" />
+              </td>
+            </tr>
+          </table>
+        </b-row>
+        <b-row> </b-row>
+      </b-col>
+      <b-col></b-col>
+    </b-row>
+    <b-form @submit.prevent="submit">
+      <b-row>
+        <b-col></b-col>
+        <b-col cols="3">
+          <b-form-group label-cols="3" label="Name:" label-align="left">
+            <b-form-input
               v-model="form.name"
               required
-            /></b-col>
-        </b-row>
-        <b-row class="justify-content-md-center">
-          <b-col col lg="1"> <label for="phone"> Phone Number: </label> </b-col>
-          <b-col col lg="1"><input
-              type="tel"
-              pattern="[0-9]{8}"
-              id="phone"
-              name="phone"
+              placeholder="Enter a name"
+            >
+            </b-form-input>
+          </b-form-group>
+        </b-col>
+        <b-col></b-col>
+      </b-row>
+      <b-row>
+        <b-col></b-col>
+        <b-col md="3">
+          <b-form-group label-cols="3" label="Contact:" label-align="left">
+            <b-form-input
               v-model="form.phone"
-            /></b-col>
-        </b-row>
-        <b-row class="justify-content-md-center">
-          <b-col col lg="1"> <label for="email"> Email: </label> </b-col>
-          <b-col col lg="1"><input
-              type="text"
-              id="email"
-              name="email"
-              pattern="[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*"
+              pattern="[0-9]{8}"
+              type="tel"
+              required
+              placeholder="Enter a Phone No."
+            >
+            </b-form-input>
+          </b-form-group>
+        </b-col>
+        <b-col></b-col>
+      </b-row>
+      <b-row>
+        <b-col></b-col>
+        <b-col md="3">
+          <b-form-group label-cols="3" label="Email:" label-align="left">
+            <b-form-input
               v-model="form.email"
+              type="email"
+              pattern="[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*"
               required
-            /></b-col>
-        </b-row>
-        <b-row class="justify-content-md-center">
-          <b-col col lg="1"> <label for="password"> Password: </label> </b-col>
-          <b-col col lg="1"><input
-              type="password"
-              id="password"
-              name="password"
+              placeholder="Enter an email"
+            >
+            </b-form-input>
+          </b-form-group>
+        </b-col>
+        <b-col></b-col>
+      </b-row>
+      <b-row>
+        <b-col></b-col>
+        <b-col md="3">
+          <b-form-group label-cols="3" label="Password:" label-align="left">
+            <b-form-input
               v-model="form.password"
-              required
-            /></b-col>
-        </b-row>
-        <b-row class="justify-content-md-center">
-          <b-col col lg="1"> <label for="password2"> Confirm Password: </label> </b-col>
-          <b-col col lg="1"><input
               type="password"
-              id="password2"
-              name="password2"
-              v-model="form.password2"
               required
-            /></b-col>
-        </b-row>
-        <b-row class="justify-content-md-center">
-          <b-col col lg="1"> <label for="department"> Department: </label> </b-col>
-          <b-col col lg="1"><select
-              id="department"
+              placeholder="Enter an Password"
+            >
+            </b-form-input>
+          </b-form-group>
+        </b-col>
+        <b-col></b-col>
+      </b-row>
+      <b-row>
+        <b-col></b-col>
+        <b-col md="3">
+          <b-form-group label-cols="3" label="Confirm:" label-align="left">
+            <b-form-input
+              v-model="form.password2"
+              type="password"
+              required
+              placeholder="Re-enter the Password"
+            >
+            </b-form-input>
+          </b-form-group>
+        </b-col>
+        <b-col></b-col>
+      </b-row>
+      <b-row>
+        <b-col></b-col>
+        <b-col md="3">
+          <b-form-group label-cols="3" label="Department:" label-align="left">
+            <b-form-select
               v-model="curSelectedDept"
-              style="width:100%"
-              @change="updateUnit()"
+              :options="this.departmentOptions"
               required
               :v-if="this.departmentOptions[0]"
-            >
-              <option
-                v-for="department in this.departmentOptions"
-                :key="department"
-                >{{ department }}</option
-              >
-            </select></b-col>
-        </b-row>
-        <b-row class="justify-content-md-center">
-          <b-col col lg="1"> <label for="unit"> Unit: </label> </b-col>
-          <b-col col lg="1"><select
-              id="unit"
+              v-on:change="updateUnit()"
+            ></b-form-select>
+          </b-form-group>
+        </b-col>
+        <b-col></b-col>
+      </b-row>
+
+      <b-row>
+        <b-col></b-col>
+        <b-col md="3">
+          <b-form-group label-cols="3" label="Unit:" label-align="left">
+            <b-form-select
               v-model="curSelectedUnit"
-              style="width:100%"
+              :options="this.curUnitOptions"
               required
-            >
-              <option v-for="unit in this.curUnitOptions" :key="unit">{{
-                unit
-              }}</option>
-            </select></b-col>
-        </b-row>
-    </b-container>
-      <table class="center">
-        <tr>
-          <td>
-            <input type="submit" class="btn" />
-          </td>
-        </tr>
-      </table>
-    </form>
+            ></b-form-select>
+          </b-form-group>
+        </b-col>
+        <b-col></b-col>
+      </b-row>
+      <b-row>
+        <b-col></b-col>
+        <b-col md="3">
+          <table class="center">
+            <tr>
+              <td class="d-flex justify-content-center">
+                <button class="btn">Submit</button>
+              </td>
+              <td class="d-flex justify-content-center">
+                <router-link
+                  to="/login"
+                  style="display: flex; align-items: center;"
+                >
+                  <a>Return to login</a></router-link
+                >
+              </td>
+            </tr>
+          </table>
+        </b-col>
+        <b-col></b-col>
+      </b-row>
+    </b-form>
   </div>
 </template>
 
@@ -128,7 +182,6 @@ export default {
   },
   methods: {
     updateUnit() {
-      
       this.curUnitOptions = this.unitsList
         .filter(x => x.department == this.curSelectedDept)
         .map(y => y.unit);
@@ -167,7 +220,7 @@ export default {
       if (this.form.password == this.form.password2) {
         auth
           .createUserWithEmailAndPassword(this.form.email, this.form.password)
-          .then(function(data) {
+          .then(data => {
             database
               .collection("employees")
               .add({
@@ -176,12 +229,15 @@ export default {
                 email: email,
                 uid: data.user.uid,
                 unit: unitRef,
+                admin: false,
                 avatar:
                   "https://ui-avatars.com/api/?name=" +
                   name.replaceAll(" ", "+")
               })
-              .then(function() {
+              .then(x => {
+                x;
                 console.log("Document successfully written!");
+                this.$router.push({ path: "/" }).catch(error => error);
               })
               .catch(function(error) {
                 console.error("Error writing document: ", error);
@@ -220,9 +276,25 @@ export default {
 </script>
 
 <style scoped>
-div {
-  text-align: left;
-  padding: 15px;
+a {
+  display: block;
+  text-decoration: none;
+  font-weight: 600;
+  transition-property: color, background;
+  transition-duration: 0.3s;
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
+/*
+input {
+  width: 10vw;
+  height: 3vh;
+}
+*/
+.signup {
+  background-color: #d3edf9;
+  height: 100%;
 }
 .center {
   margin-left: auto;
