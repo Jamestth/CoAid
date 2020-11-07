@@ -7,7 +7,7 @@
       </tr>
       <tr>
         <td>
-          <img src="../assets/checkin.jpg" class="left" style="width:50%" />
+          <img src="../assets/checkin.jpg" class="left" style="width:15vw" />
         </td>
       </tr>
       <tr>
@@ -34,8 +34,6 @@ export default {
   }
 };
 </script>
-
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
 div {
   text-align: left;

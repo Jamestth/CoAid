@@ -3,7 +3,7 @@
     <table class="center" style="text-align: center">
       <tr>
         <td>
-          <img src="../assets/checkout.jpg" class="left" style="width:50%" />
+          <img src="../assets/checkout.jpg" class="left" style="width:14vw" />
         </td>
       </tr>
       <tr>
