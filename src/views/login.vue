@@ -1,5 +1,5 @@
 <template>
-  <div style=" background-color: #d3edf9; height:100%" class="login">
+  <div class="login">
     <table class="center">
       <tr>
         <td height="15px"></td>
@@ -20,10 +20,10 @@
       <b-form>
         <b-row>
           <b-col></b-col>
-          <b-col cols="3" class="pt-5">
+          <b-col class="pt-5">
             <b-form-group
-              label-cols-sm="4"
-              label-cols-md="3"
+              label-cols-sm="5"
+              label-cols-md="4"
               id="input-group-2"
               label="Email:"
               label-for="input-2"
@@ -42,10 +42,10 @@
         </b-row>
         <b-row>
           <b-col> </b-col>
-          <b-col cols="3">
+          <b-col>
             <b-form-group
-              label-cols-sm="4"
-              label-cols-md="3"
+              label-cols-sm="5"
+              label-cols-md="4"
               id="input-group-2"
               label="Password:"
               label-for="input-2"
@@ -63,7 +63,7 @@
           </b-col>
           <b-col> </b-col>
         </b-row>
-        <b-row class="justify-content-md-center">
+        <b-row class="d-flex justify-content-center">
           <router-link
             to="/"
             tag="button"
@@ -127,8 +127,14 @@ div {
   text-align: left;
   padding: 0;
 }
-.app {
+.login {
+  height: 100%;
   background-color: #d3edf9;
+}
+
+html,
+body {
+  height: 100%;
 }
 .center {
   margin-left: auto;

@@ -1,5 +1,5 @@
 <template>
-  <b-row v-if="this.lastCheck">
+  <b-row>
     <b-col></b-col>
     <b-col cols="4" class="d-flex justify-content-center">
       <b-row>
@@ -59,15 +59,18 @@ export default {
 
   methods: {
     checkedIn() {
-      console.log("hi");
-      if (this.lastCheck.checkIn) {
-        if (this.lastCheck.checkOut) {
-          return false;
-        } else {
-          return true;
-        }
-      } else {
+      if (!this.lastCheck) {
         return false;
+      } else {
+        if (this.lastCheck.checkIn) {
+          if (this.lastCheck.checkOut) {
+            return false;
+          } else {
+            return true;
+          }
+        } else {
+          return false;
+        }
       }
     },
     fetchData() {

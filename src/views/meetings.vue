@@ -48,7 +48,7 @@ export default {
           key: "start",
           label: "Start",
           sortable: true,
-          sortDirection: "desc",
+          sortDirection: "desc"
         },
         {
           key: "end",
@@ -119,12 +119,12 @@ export default {
                 if (empdata.data().uid == userID) {
                   if (
                     currentTime < endTime &&
-                    record.accepted.includes(empdata.id)
+                    record.employees.includes(empdata.id)
                   ) {
                     record.status = true;
                   } else if (
-                    currentTime >= endTime &&
-                    record.accepted.includes(empdata.id)
+                    currentTime >= endTime
+                    //record.employees.includes(empdata.id)
                   ) {
                     record.isEnded = true;
                   }

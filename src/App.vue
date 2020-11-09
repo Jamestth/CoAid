@@ -6,6 +6,7 @@
     <div id="app">
       <router-view />
     </div>
+    <div id="backgroundcolorfooter" v-if="!auth.currentUser"></div>
   </div>
 </template>
 
@@ -14,22 +15,18 @@ import TopHeader from "@/components/TopHeader.vue";
 import { auth } from "./assets/firebase";
 export default {
   components: {
-    "top-header": TopHeader,
+    "top-header": TopHeader
   },
   data() {
     return {
-      auth: auth,
+      auth: auth
     };
-  },
+  }
 };
 </script>
 
 <style lang="scss">
-@import url("https://fonts.googleapis.com/css2?family=Cabin:wght@500");
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500");
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@500");
-//@import url("https://fonts.googleapis.com/css2?family=open+sans:wght@500");
-//@import url("https://fonts.googleapis.com/css2?family=questrial:wght@500");
 
 #app {
   font-size: 2vh;
@@ -38,11 +35,14 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  height: 100vh;
+  height: 96vh;
   overflow-y: auto;
   overflow-x: hidden;
 }
-
+#backgroundcolorfooter {
+  background-color: #d3edf9;
+  height: 4vh;
+}
 #nav {
   margin: 0 !important;
   padding: 0 !important;
