@@ -4,7 +4,7 @@
       <b-col></b-col>
       <b-col cols="3">
         <b-row>
-          <table class="center">
+          <table class="center pb-5">
             <tr>
               <td height="15px"></td>
             </tr>
@@ -27,8 +27,8 @@
     <b-form @submit.prevent="submit">
       <b-row>
         <b-col></b-col>
-        <b-col cols="3">
-          <b-form-group label-cols="3" label="Name:" label-align="left">
+        <b-col md="3">
+          <b-form-group label-cols="4" label="Name:" label-align="left">
             <b-form-input
               v-model="form.name"
               required
@@ -42,13 +42,13 @@
       <b-row>
         <b-col></b-col>
         <b-col md="3">
-          <b-form-group label-cols="3" label="Contact:" label-align="left">
+          <b-form-group label-cols="4" label="Contact:" label-align="left">
             <b-form-input
               v-model="form.phone"
               pattern="[0-9]{8}"
               type="tel"
               required
-              placeholder="Enter a Phone No."
+              placeholder="Enter a Contact No."
             >
             </b-form-input>
           </b-form-group>
@@ -58,7 +58,7 @@
       <b-row>
         <b-col></b-col>
         <b-col md="3">
-          <b-form-group label-cols="3" label="Email:" label-align="left">
+          <b-form-group label-cols="4" label="Email:" label-align="left">
             <b-form-input
               v-model="form.email"
               type="email"
@@ -74,7 +74,7 @@
       <b-row>
         <b-col></b-col>
         <b-col md="3">
-          <b-form-group label-cols="3" label="Password:" label-align="left">
+          <b-form-group label-cols="4" label="Password:" label-align="left">
             <b-form-input
               v-model="form.password"
               type="password"
@@ -89,7 +89,7 @@
       <b-row>
         <b-col></b-col>
         <b-col md="3">
-          <b-form-group label-cols="3" label="Confirm:" label-align="left">
+          <b-form-group label-cols="4" label="Confirm:" label-align="left">
             <b-form-input
               v-model="form.password2"
               type="password"
@@ -104,7 +104,7 @@
       <b-row>
         <b-col></b-col>
         <b-col md="3">
-          <b-form-group label-cols="3" label="Department:" label-align="left">
+          <b-form-group label-cols="4" label="Department:" label-align="left">
             <b-form-select
               v-model="curSelectedDept"
               :options="this.departmentOptions"
@@ -120,7 +120,7 @@
       <b-row>
         <b-col></b-col>
         <b-col md="3">
-          <b-form-group label-cols="3" label="Unit:" label-align="left">
+          <b-form-group label-cols="4" label="Unit:" label-align="left">
             <b-form-select
               v-model="curSelectedUnit"
               :options="this.curUnitOptions"
@@ -292,10 +292,6 @@ input {
   height: 3vh;
 }
 */
-.signup {
-  background-color: #d3edf9;
-  height: 100%;
-}
 .center {
   margin-left: auto;
   margin-right: auto;
