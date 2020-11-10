@@ -3,7 +3,7 @@
     background="white"
     foreground="#dee2e6"
     unit="vh"
-    :size= 10
+    :size="10"
     :thickness="10"
     :sections="sections"
     :total="100"
@@ -11,23 +11,20 @@
     :auto-adjust-text-size="true"
     @section-click="handleSectionClick"
   >
-    <h1>{{sections[0].number}}</h1>
+    <h1>{{ sections[0].number }}</h1>
   </vc-donut>
 </template>
 <script>
 export default {
-  props:["sections"],
+  props: ["sections"],
   data() {
-    return {
-
-    };
+    return {};
   },
   methods: {
     handleSectionClick(section, event) {
-      console.log(event)
-      console.log(`${section.label} clicked.`);
-    },
-  },
+      event;
+    }
+  }
 };
 </script>
 <style scoped>

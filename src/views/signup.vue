@@ -269,7 +269,7 @@ export default {
       //   .catch(function(error) {
       //     console.error("Error writing document: ", error);
       //   });
-      console.log("Finally!");
+      //console.log("Finally!");
     }
   }
 };

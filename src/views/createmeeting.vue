@@ -152,13 +152,13 @@
 
 <script>
 import Multiselect from "vue-multiselect";
-import {auth, firebase, database } from "../assets/firebase";
+import { auth, firebase, database } from "../assets/firebase";
 import { DateTime } from "luxon";
 export default {
   components: { Multiselect },
   data() {
     return {
-      curEmpId:null,
+      curEmpId: null,
       checked: false,
       selectedDate: null,
       selectedStartTime: null,
@@ -167,7 +167,7 @@ export default {
       employees: [],
       locations: [],
       duration: null,
-      name:null,
+      name: null,
       durationList: [
         { name: "15 Minutes", value: "15" },
         { name: "30 Minutes", value: "30" },
@@ -177,22 +177,27 @@ export default {
     };
   },
 
-
   created() {
     this.fetchdata();
     const now = new Date();
-    this.selectedDate = now.toISOString().split('T')[0];
+    this.selectedDate = now.toISOString().split("T")[0];
     this.selectedStartTime = now.toTimeString().slice(0, 5);
   },
 
-  methods: {  
+  methods: {
     checkfill() {
-      if((this.selectedDate && this.selectedStartTime && this.duration && this.selectedEmp && this.selectedLoc) !=null ){
-     this.$refs['modal'].show()
+      if (
+        (this.selectedDate &&
+          this.selectedStartTime &&
+          this.duration &&
+          this.selectedEmp &&
+          this.selectedLoc) != null
+      ) {
+        this.$refs["modal"].show();
       } else {
-        alert("Please Fill up all fields.")
+        alert("Please Fill up all fields.");
       }
-  },
+    },
     setNow() {
       const now = new Date();
       // Grab the HH:mm part of the time string
@@ -214,42 +219,45 @@ export default {
           minutes: timepart[1]
         });
 
-        let curEndDatetime = curSelectedDateTime.plus({minutes: this.duration.value})
-        let empRefs = []
-        let curAccepted = []
-        let curEmpRef = database.doc("/employees/" +this.curEmpId);
-  
-        curAccepted.push(curEmpRef)
-        empRefs.push(curEmpRef)
-        this.selectedEmp.forEach(emp => {
-           let empRef = database.doc("/employees/" + emp.eid);
-            empRefs.push(empRef)
+        let curEndDatetime = curSelectedDateTime.plus({
+          minutes: this.duration.value
+        });
+        let empRefs = [];
+        let curAccepted = [];
+        let curEmpRef = database.doc("/employees/" + this.curEmpId);
 
-        })
+        curAccepted.push(curEmpRef);
+        empRefs.push(curEmpRef);
+        this.selectedEmp.forEach(emp => {
+          let empRef = database.doc("/employees/" + emp.eid);
+          empRefs.push(empRef);
+        });
         let locRef = database.doc("/locations/" + this.selectedLoc.id);
 
         let meetingRecord = {
           accepted: curAccepted,
           employees: empRefs,
-          end: firebase.firestore.Timestamp.fromMillis(curEndDatetime.toMillis()),
-          start: firebase.firestore.Timestamp.fromMillis(curSelectedDateTime.toMillis()),
+          end: firebase.firestore.Timestamp.fromMillis(
+            curEndDatetime.toMillis()
+          ),
+          start: firebase.firestore.Timestamp.fromMillis(
+            curSelectedDateTime.toMillis()
+          ),
           location: locRef,
           name: this.name
-        }
-        database.collection("meetings").add(meetingRecord).then(
-                            this.$router
-                    .push({ path: "/meetingsuccess" })
-                    .catch(error => error)
-                
-        )
-
-
+        };
+        database
+          .collection("meetings")
+          .add(meetingRecord)
+          .then(
+            this.$router.push({ path: "/meetingsuccess" }).catch(error => error)
+          );
       } else {
         alert("Please acknowledge the Meeting Agreement.");
       }
     },
     fetchdata() {
-      let userId = auth.currentUser.uid
+      let userId = auth.currentUser.uid;
       database
         .collection("employees")
         .get()
@@ -260,11 +268,10 @@ export default {
               eid: emp.id
             };
             if (emp.data().uid != userId) {
-            this.employees.push(empRecord);
+              this.employees.push(empRecord);
             } else {
               this.curEmpId = emp.id;
             }
-
           })
         );
       database

@@ -60,22 +60,19 @@ export default {
   data() {
     return {
       avatar: "",
-      eId: "",
+      eId: ""
     };
   },
   created() {
     this.fetchData();
   },
   watch: {
-        '$route' (to, from) {
-
-          if (from.params.id !== to.params.id) {
-
-            return this.fetchData()
-
-          }
-        }
-      },
+    $route(to, from) {
+      if (from.params.id !== to.params.id) {
+        return this.fetchData();
+      }
+    }
+  },
 
   methods: {
     signOut() {
@@ -83,7 +80,7 @@ export default {
         .signOut()
         .then(function() {})
         .catch(function(error) {
-          console.log(error);
+          error;
         });
     },
     fetchData: function() {
@@ -95,15 +92,15 @@ export default {
         .where("uid", "==", this.userId)
         .limit(1)
         .get()
-        .then((querySnapShot) => {
-          querySnapShot.forEach((employee) => {
+        .then(querySnapShot => {
+          querySnapShot.forEach(employee => {
             let employeeData = employee.data();
             this.avatar = employeeData.avatar;
             this.eId = employee.id;
           });
         });
-    },
-  },
+    }
+  }
 };
 </script>
 
