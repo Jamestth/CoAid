@@ -276,6 +276,10 @@ export default {
 </script>
 
 <style scoped>
+.signup {
+  height: 100%;
+  background-color: #d3edf9;
+}
 a {
   display: block;
   text-decoration: none;
