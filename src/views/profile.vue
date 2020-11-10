@@ -175,7 +175,7 @@ export default {
       fileRef.put(this.file).then(snap => {
         snap;
         fileRef.getDownloadURL().then(snap => {
-          console.log(snap);
+          snap;
           this.userInfo.avatar = snap;
 
           let unitId = this.unitsList.filter(

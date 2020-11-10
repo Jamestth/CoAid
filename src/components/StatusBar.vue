@@ -62,6 +62,11 @@ export default {
     this.chartHeight = document.getElementsByClassName("small")[0].clientHeight;
     this.formatData();
   },
+  watch: {
+    props: function() {
+      this.formatData();
+    }
+  },
   methods: {
     onResize(event) {
       event;
@@ -69,7 +74,6 @@ export default {
       this.chartHeight = document.getElementsByClassName(
         "small"
       )[0].clientHeight;
-
     },
     formatData() {
       var i;
@@ -104,7 +108,12 @@ export default {
         let curDay = DateTime.local().minus({ days: i });
         this.dataset.labels.push(curDay.toFormat("dd LLL"));
         let curDayCheckins = this.checkIn.filter(x => {
-          return x.checkIn.diff(curDay, ["days", "hours"]).toObject().days < 0;
+          console.log(
+            curDay,
+            x.checkIn,
+            x.checkIn.diff(curDay, ["days", "hours"]).toObject().days
+          );
+          return x.checkIn.diff(curDay, ["days", "hours"]).toObject().days == 0;
         });
         if (curDayCheckins) {
           RiskyData.data.push(
