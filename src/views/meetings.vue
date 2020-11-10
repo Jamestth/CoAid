@@ -100,38 +100,39 @@ export default {
               .data()
               .location.get()
               .then(loc => (record.location = loc.data().name));
+            if (meetingrecords.size != 0) {
+              meetingrecords.data().employees.forEach(emp => {
+                emp.get().then(empdata => {
+                  let empRecords = {
+                    name: empdata.data().name,
+                    avatar: empdata.data().avatar,
+                    employeeId: empdata.id,
+                    isAccepted: record.accepted.includes(empdata.id)
+                  };
+                  record.employees.push(empRecords);
+                  record.employeeID.push(empdata.id);
 
-            meetingrecords.data().employees.forEach(emp => {
-              emp.get().then(empdata => {
-                let empRecords = {
-                  name: empdata.data().name,
-                  avatar: empdata.data().avatar,
-                  employeeId: empdata.id,
-                  isAccepted: record.accepted.includes(empdata.id)
-                };
-                record.employees.push(empRecords);
-                record.employeeID.push(empdata.id);
-
-                let endTime = DateTime.fromSeconds(
-                  meetingrecords.data().end.seconds
-                );
-                let currentTime = DateTime.local();
-                if (empdata.data().uid == userID) {
-                  if (
-                    currentTime < endTime &&
-                    record.employees.includes(empdata.id)
-                  ) {
-                    record.status = true;
-                  } else if (
-                    currentTime >= endTime
-                    //record.employees.includes(empdata.id)
-                  ) {
-                    record.isEnded = true;
+                  let endTime = DateTime.fromSeconds(
+                    meetingrecords.data().end.seconds
+                  );
+                  let currentTime = DateTime.local();
+                  if (empdata.data().uid == userID) {
+                    if (
+                      currentTime < endTime &&
+                      record.employees.includes(empdata.id)
+                    ) {
+                      record.status = true;
+                    } else if (
+                      currentTime >= endTime
+                      //record.employees.includes(empdata.id)
+                    ) {
+                      record.isEnded = true;
+                    }
+                    this.meetingsData.push(record);
                   }
-                  this.meetingsData.push(record);
-                }
+                });
               });
-            });
+            }
           })
         );
     }

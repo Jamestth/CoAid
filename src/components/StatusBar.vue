@@ -6,6 +6,7 @@
       :options="options"
       :width="chartWidth"
       :height="chartHeight"
+      :key="sizeChange"
     ></line-chart>
   </div>
 </template>
@@ -20,6 +21,7 @@ export default {
   },
   data() {
     return {
+      sizeChange: 0,
       chartWidth: 0,
       chartHeight: 0,
       checkIn: [],
@@ -65,6 +67,12 @@ export default {
   watch: {
     props: function() {
       this.formatData();
+    },
+    chartWidth: function() {
+      this.sizeChange++;
+    },
+    chartHeight: function() {
+      this.sizeChange++;
     }
   },
   methods: {
@@ -108,11 +116,6 @@ export default {
         let curDay = DateTime.local().minus({ days: i });
         this.dataset.labels.push(curDay.toFormat("dd LLL"));
         let curDayCheckins = this.checkIn.filter(x => {
-          console.log(
-            curDay,
-            x.checkIn,
-            x.checkIn.diff(curDay, ["days", "hours"]).toObject().days
-          );
           return x.checkIn.diff(curDay, ["days", "hours"]).toObject().days == 0;
         });
         if (curDayCheckins) {

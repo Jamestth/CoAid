@@ -79,7 +79,7 @@
               v-model="form.password"
               type="password"
               required
-              placeholder="Enter an Password"
+              placeholder="Enter a Password"
             >
             </b-form-input>
           </b-form-group>

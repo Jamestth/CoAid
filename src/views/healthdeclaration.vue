@@ -150,7 +150,6 @@ export default {
         .then(emps =>
           emps.forEach(emp => {
             let curTime = firebase.firestore.FieldValue.serverTimestamp();
-            console.log(curTime);
             let data = {
               checkIn: curTime,
               contactFlag: this.contactFlag,
@@ -165,13 +164,12 @@ export default {
               data.employee == null ||
               data.fluFlag == null ||
               data.shnFlag == null ||
-              data.temperature == null
+              this.temperature == null
             ) {
               alert("Please fill in all the fields before submiting");
             } else {
               database
                 .collection("checkIn")
-
                 .add(data)
                 .then(
                   this.$router

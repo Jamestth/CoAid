@@ -14,6 +14,7 @@
                 <b-row class="pl-2" v-if="!check(this.userInfo)">
                   <p style="text-align:left; font-size:2.5vh;">
                     Last Check Out:
+
                     <strong>{{ getCheckOutTime(this.userInfo) }}</strong>
                   </p>
 
@@ -88,18 +89,14 @@
                     </b-list-group>
                   </b-popover>
                 </b-col>
-                <!-- danger popover --> 
+                <!-- danger popover -->
                 <b-col cols="6">
                   <b-card header="Danger" id="danger">
                     <AttendanceDonut
                       v-bind:sections="attendanceStatistic.danger"
                     ></AttendanceDonut>
                   </b-card>
-                  <b-popover 
-                  target="danger" 
-                  triggers="hover" 
-                  placement="top"
-                  >
+                  <b-popover target="danger" triggers="hover" placement="top">
                     <template #title>Employees in Danger</template>
                     <b-list-group>
                       <b-list-group-item
@@ -187,6 +184,7 @@
             </template>
             <template v-slot:cell(status)="row">
               <BadgePopover
+                :key="currentPage"
                 v-bind:row="row"
                 v-if="
                   row.item.lastCheck && row.item.office && row.item.department
@@ -248,11 +246,11 @@ export default {
           label: "Status",
           // eslint-disable-next-line no-unused-vars
           formatter: (value, key, item) => {
-            if (value == "COVID") {
+            if (value == "Danger") {
               return 3;
-            } else if (value == "Healthy") {
+            } else if (value == "Safe") {
               return 1;
-            } else if (value == "danger") {
+            } else if (value == "Risky") {
               return 2;
             } else {
               return -1;
@@ -277,7 +275,7 @@ export default {
         department: "All",
         name: ""
       },
-      filterOptions: ["All", "HR", "Marketing", "IT", "Sales"],
+      filterOptions: ["All"],
       headVariant: "dark"
     };
   },
@@ -325,7 +323,14 @@ export default {
     fetchData: function() {
       var user = auth.currentUser;
       this.userId = user.uid;
-
+      database
+        .collection("departments")
+        .get()
+        .then(departments =>
+          departments.forEach(department =>
+            this.filterOptions.push(department.data().name)
+          )
+        );
       //this.userId = "IAvKPChVuFfkH176PMgdkwAvdfE2"; //remove when auth works
       database
         .collection("employees")
@@ -439,12 +444,17 @@ export default {
       return deptPred && namePred;
     },
     check(userInfo) {
-      if (userInfo) {
-        if (Object.keys(userInfo.lastCheck).length != 0) {
-          return userInfo.lastCheck.checkOut === undefined;
-        } else {
-          return false;
+      try {
+        if (userInfo) {
+          if (Object.keys(userInfo.lastCheck).length != 0) {
+            return userInfo.lastCheck.checkOut === undefined;
+          } else {
+            return false;
+          }
         }
+      } catch (err) {
+        err;
+        return false;
       }
     },
     getStatusType(status) {
@@ -468,12 +478,17 @@ export default {
       }
     },
     getCheckOutTime(userInfo) {
-      if (userInfo.lastCheck.checkOut === undefined) {
+      try {
+        if (userInfo.lastCheck.checkOut === undefined) {
+          return "None";
+        } else {
+          return DateTime.fromSeconds(
+            userInfo.lastCheck.checkOut.seconds
+          ).toFormat(`ff`);
+        }
+      } catch (err) {
+        err;
         return "None";
-      } else {
-        return DateTime.fromSeconds(
-          userInfo.lastCheck.checkOut.seconds
-        ).toFormat(`ff`);
       }
     },
     checkOut() {

@@ -80,7 +80,6 @@ export default {
         .get()
         .then(snap =>
           snap.forEach(y => {
-            console.log(y.id);
             this.empId = y.id;
             database
               .collection("checkIn")

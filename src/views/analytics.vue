@@ -231,7 +231,7 @@ export default {
 .chart-item {
   width: 35vw;
   height: 40vh;
-  border: 3px solid black;
+  border: 1px solid lightgray;
   align-items: center;
 }
 .break {

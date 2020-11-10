@@ -10,6 +10,7 @@
             rounded="circle"
             width="200"
             height="200"
+            :key="userInfo.avatar"
           ></b-img>
           <b-row v-if="editMode">
             <b-col> </b-col>
@@ -171,28 +172,46 @@ export default {
       let filepath = "avatar/" + this.userInfo.uid;
       var storageRef = storage.ref();
       var fileRef = storageRef.child(filepath);
-
-      fileRef.put(this.file).then(snap => {
-        snap;
-        fileRef.getDownloadURL().then(snap => {
+      if (this.file) {
+        fileRef.put(this.file).then(snap => {
           snap;
-          this.userInfo.avatar = snap;
+          fileRef.getDownloadURL().then(snap => {
+            this.userInfo.avatar = snap;
 
-          let unitId = this.unitsList.filter(
-            x => x.unit == this.userInfo.unit
-          )[0].unitId;
-          let unitRef = database.doc("/units/" + unitId);
-          database
-            .collection("employees")
-            .doc(this.userInfo.eid)
-            .update({
-              name: this.userInfo.name,
-              email: this.userInfo.email,
-              phone: this.userInfo.phone,
-              unit: unitRef,
-              avatar: this.userInfo.avatar
-            });
+            let unitId = this.unitsList.filter(
+              x => x.unit == this.userInfo.unit
+            )[0].unitId;
+            let unitRef = database.doc("/units/" + unitId);
+            database
+              .collection("employees")
+              .doc(this.userInfo.eid)
+              .update({
+                name: this.userInfo.name,
+                email: this.userInfo.email,
+                phone: this.userInfo.phone,
+                unit: unitRef,
+                avatar: this.userInfo.avatar
+              });
+          });
         });
+      }
+
+      fileRef.getDownloadURL().then(snap => {
+        this.userInfo.avatar = snap;
+
+        let unitId = this.unitsList.filter(x => x.unit == this.userInfo.unit)[0]
+          .unitId;
+        let unitRef = database.doc("/units/" + unitId);
+        database
+          .collection("employees")
+          .doc(this.userInfo.eid)
+          .update({
+            name: this.userInfo.name,
+            email: this.userInfo.email,
+            phone: this.userInfo.phone,
+            unit: unitRef,
+            avatar: this.userInfo.avatar
+          });
       });
 
       this.editMode = !this.editMode;
