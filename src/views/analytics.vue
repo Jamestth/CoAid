@@ -1,5 +1,50 @@
 <template>
-  <div class="analytics">
+  <div class="analytics pt-5">
+    <div class="charts">
+      <div class="flexbox-item">
+        <Barchart v-if="checkIn[0]" :data="checkIn"></Barchart>
+      </div>
+      <div class="flexbox-item">
+        <Barchart v-if="checkIn[0]" :data="checkIn"></Barchart>
+      </div>
+      <div class="break"></div>
+      <div class="flexbox-item">
+        <Barchart v-if="checkIn[0]" :data="checkIn"></Barchart>
+      </div>
+      <div class="flexbox-item">
+        <Barchart v-if="checkIn[0]" :data="checkIn"></Barchart>
+      </div>
+    </div>
+    <div class="filters"></div>
+    <!--<table>
+      <tr>
+        <td style="width:10vw"></td>
+        <td style="width:70vw">
+          <div style="padding-right:4vw; width:30vw; float:right">
+            <Barchart v-if="checkIn[0]" :data="checkIn"></Barchart>
+          </div>
+          <div style="padding-left:4vw; width:30vw; float:left">
+            <Barchart v-if="checkIn[0]" :data="checkIn"></Barchart>
+          </div>
+        </td>
+        <td style="width:20vw; background-color:gray"></td>
+      </tr>
+      <tr>
+        <td style="width:10vw"></td>
+        <td style="width:70vw">
+          <div style="padding-right:4vw; width:30vw; float:right">
+            <Barchart v-if="checkIn[0]" :data="checkIn"></Barchart>
+          </div>
+          <div style="padding-left:4vw; width:30vw; float:left">
+            <Barchart v-if="checkIn[0]" :data="checkIn"></Barchart>
+          </div>
+        </td>
+        <td style="width:20vw; background-color:gray"></td>
+      </tr>
+    </table>
+    -->
+
+    <!--
     <b-row style="height:3vh"></b-row>
     <b-row>
       <b-col cols="1"></b-col>
@@ -32,7 +77,7 @@
         ></b-card>
       </b-col>
       <b-col cols="3"></b-col>
-    </b-row>
+    </b-row> -->
   </div>
 </template>
 <script>
@@ -86,7 +131,6 @@ export default {
         .collection("employees")
         .get()
         .then(emps => {
-          console.log("hi");
           emps.forEach(emp => {
             let empRecord = emp.data();
             empRecord.id = emp.id;
@@ -119,14 +163,33 @@ export default {
 .test {
   height: 100% !important;
   width: 100% !important;
-  position: relative;
 }
 .card {
 }
 .card-body {
-  height: 40vh;
+}
+.analytics {
+  display: flex;
+}
+.charts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 80vw;
+
+}
+.filters {
   width: 20vw;
-  padding: 0;
-  position: relative;
+}
+.flexbox-item {
+  width: 35vw;
+  height: 40vh;
+  border: 3px solid black;
+  align-items: center;
+}
+.break {
+  flex-basis: 100%;
+  height: 0;
+  padding:2.5vh
 }
 </style>
