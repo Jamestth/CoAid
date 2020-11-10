@@ -1,108 +1,110 @@
 <template>
-    <b-container fluid>
+  <b-container fluid>
     <h1>
       Create a new Roster
     </h1>
-      <b-form>
-        <b-row>
-          <b-col></b-col>
-          <b-col cols="3" class="pt-5">
-            <b-form-group
-              label-cols-sm="4"
-              label-cols-md="3"
-              id="input-group-2"
-              label="Name: "
-              label-for="input-2"
-              label-align="left"
-            >
-              <b-form-input
-                id="input-1"
-                type="text"
-                placeholder="Enter your name"
-                required
-              ></b-form-input>
-            </b-form-group>
-          </b-col>
-          <b-col></b-col>
-        </b-row>
-        <b-row>
-          <b-col> </b-col>
-          <b-col cols="3">
-            <b-form-group
-              label-cols-sm="4"
-              label-cols-md="3"
-              id="input-group-2"
-              label="Schedule: "
-              label-for="input-2"
-              label-align="left"
-            >
-              <b-form-radio-group
-                id="input-2"
-                v-model="selected"
-                :options = "options"
-                class = "mb-3"
-                value-field="item"
-                text-field="name"
-                disabled-field="notEnabled"
-                size = "lg"
-              ></b-form-radio-group>
-            </b-form-group>
-          </b-col>
-          <b-col> </b-col>
-        </b-row>
-        <b-row>
-          <b-col> </b-col>
-          <b-col cols="3">
-            <b-form-group
-              label-cols-sm="4"
-              label-cols-md="3"
-              id="input-group-3"
-              label="Start Date:"
-              label-for="input-2"
-              label-align="left"
-            >
-              <b-form-input
-                id="input-3"
-                type="date"
-                required
-              ></b-form-input>
-            </b-form-group>
-          </b-col>
-          <b-col> </b-col>
-        </b-row>
-        <b-row>
-          <b-col> </b-col>
-          <b-col cols="3">
-            <b-form-group
-              label-cols-sm="4"
-              label-cols-md="3"
-              id="input-group-4"
-              label="End Date:"
-              label-for="input-2"
-              label-align="left"
-            >
-              <b-form-input
-                id="input-4"
-                type="date"
-                required
-              ></b-form-input>
-            </b-form-group>
-          </b-col>
-          <b-col> </b-col>
-        </b-row>
-        <b-row>
-          <b-col> </b-col>
-          <b-col cols="3">
-            <b-form-group
-              label-cols-sm="4"
-              label-cols-md="3"
-              id="input-group-5"
-              label="Team Member: "
-              label-for="input-5"
-              label-align="left"
-            >
-              <b-col
-            >
+    <b-form>
+      <b-row>
+        <b-col></b-col>
+        <b-col cols="3" class="pt-5">
+          <b-form-group
+            label-cols-sm="4"
+            label-cols-md="3"
+            id="input-group-2"
+            label="Name: "
+            label-for="input-2"
+            label-align="left"
+          >
+            <b-form-input
+              id="input-1"
+              type="text"
+              placeholder="Enter your name"
+              required
+              v-model="form.name"
+            ></b-form-input>
+          </b-form-group>
+        </b-col>
+        <b-col></b-col>
+      </b-row>
+      <b-row>
+        <b-col> </b-col>
+        <b-col cols="3">
+          <b-form-group
+            label-cols-sm="4"
+            label-cols-md="3"
+            id="input-group-2"
+            label="Schedule: "
+            label-for="input-2"
+            label-align="left"
+          >
+            <b-form-radio-group
+              id="input-2"
+              :options="options"
+              class="mb-3"
+              value-field="item"
+              text-field="name"
+              disabled-field="notEnabled"
+              size="lg"
+              v-model="form.schedule"
+            ></b-form-radio-group>
+          </b-form-group>
+        </b-col>
+        <b-col> </b-col>
+      </b-row>
+      <b-row>
+        <b-col> </b-col>
+        <b-col cols="3">
+          <b-form-group
+            label-cols-sm="4"
+            label-cols-md="3"
+            id="input-group-3"
+            label="Start Date:"
+            label-for="input-2"
+            label-align="left"
+          >
+            <b-form-input
+              id="input-3"
+              type="date"
+              v-model="form.startDate"
+              required
+            ></b-form-input>
+          </b-form-group>
+        </b-col>
+        <b-col> </b-col>
+      </b-row>
+      <b-row>
+        <b-col> </b-col>
+        <b-col cols="3">
+          <b-form-group
+            label-cols-sm="4"
+            label-cols-md="3"
+            id="input-group-4"
+            label="End Date:"
+            label-for="input-2"
+            label-align="left"
+          >
+            <b-form-input
+              id="input-4"
+              type="date"
+              v-model="form.endDate"
+              required
+            ></b-form-input>
+          </b-form-group>
+        </b-col>
+        <b-col> </b-col>
+      </b-row>
+      <b-row>
+        <b-col> </b-col>
+        <b-col cols="3">
+          <b-form-group
+            label-cols-sm="4"
+            label-cols-md="3"
+            id="input-group-5"
+            label="Team Member: "
+            label-for="input-5"
+            label-align="left"
+          >
+            <b-col>
               <multiselect
                 select-label=""
                 :show-labels="false"
@@ -113,30 +115,31 @@
                 :options="employees"
                 :close-on-select="false"
                 multiple
-                ></multiselect
-              ></b-col
-          >
-            </b-form-group>
-          </b-col>
-          <b-col> </b-col>
-        </b-row>
-         <b-row class="justify-content-md-center">
-          <router-link
-            to="/setroster"
-            tag="button"
-            class="btn ml-3"
-            style="margin:0"
-            @click.native="signin"
-          >
-            Set Roster
-          </router-link>
-        </b-row>
-      </b-form>
-    </b-container>
+              ></multiselect
+            ></b-col>
+          </b-form-group>
+        </b-col>
+        <b-col> </b-col>
+      </b-row>
+      <b-row class="justify-content-md-center">
+        <router-link
+          to="#"
+          tag="button"
+          class="btn ml-3"
+          style="margin:0"
+          @click.native="submit"
+        >
+          Set Roster
+        </router-link>
+      </b-row>
+    </b-form>
+  </b-container>
 </template>
 
 <script>
 import Multiselect from "vue-multiselect";
+import { database } from "../../assets/firebase";
+
 export default {
   components: { Multiselect },
   data() {
@@ -144,20 +147,67 @@ export default {
       status1: "not_accepted",
       status2: "not_accepted",
       status3: "not_accepted",
+      form:{
+        name: "",
+        schedule: "",
+        startDate: "",
+        endDate: "",
+      },
       value: null,
       selectedEmp: null,
-      employees: [
-        { name: "Andy (Marketing)", value: "Andy (Marketing)" },
-        { name: "Bobby (Marketing)", value: "Bobby (Marketing)" },
-        { name: "Daisy (HR)", value: "Daisy (HR)" },
-        { name: "Georgia (Tech)", value: "Georgia (Tech)" },
-        { name: "Ian (Tech)", value: "Ian (Tech)" }
-      ],
+      employees: [],
       options: [
-          { item: 'A', name: 'Odd' },
-          { item: 'B', name: 'Even' }
+          { item: 'ODD', name: 'Odd' },
+          { item: 'EVEN', name: 'Even' }
         ]
     };
+  },
+  created() {
+    this.fetchdata();
+  },
+
+  methods:{
+    fetchdata() {
+
+
+      database
+        .collection("employees")
+        .get()
+        .then(emps =>
+          emps.forEach(emp => {
+            let empRecord = {
+              name: emp.data().name,
+              eid: emp.id
+            };
+            this.employees.push(empRecord);
+          })
+        );
+    },
+    submit(){
+      console.log('This is called');
+      const name = this.form.name;
+      const schedule = this.form.schedule;
+      const startDate = this.form.startDate;
+      const endDate = this.form.endDate;
+      const selectedEmp = this.selectedEmp;
+      database
+        .collection("rosters")
+        .add({
+          name: name,
+          schedule: schedule,
+          startDate: startDate,
+          endDate: endDate,
+          selectedEmp: selectedEmp
+              })
+              .then(x => {
+                x;
+                console.log("Document successfully written!");
+                this.$router.push({ path: "/" }).catch(error => error);
+              })
+              .catch(function(error) {
+                console.error("Error writing document: ", error);
+              });
+    }
   }
 };
 </script>
