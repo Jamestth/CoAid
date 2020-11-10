@@ -11,4 +11,13 @@ export default {
     // If you want to pass options please create a local options object
     this.renderChart(this.chartData, this.options);
   },
+  watch: {
+    width: function() {
+      //console.log(this.width);
+      //console.log(this.$data._chart.chart.width);
+ 
+      this.renderChart(this.chartData, this.options);
+      //this.$data._chart.chart.width = this.width;
+    },
+  },
 };

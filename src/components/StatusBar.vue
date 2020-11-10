@@ -4,6 +4,8 @@
       v-if="dataset.datasets[0]"
       :chart-data="dataset"
       :options="options"
+      :width="chartWidth"
+      :height="chartHeight"
     ></line-chart>
   </div>
 </template>
@@ -18,16 +20,16 @@ export default {
   },
   data() {
     return {
+      chartWidth: 0,
+      chartHeight: 0,
       checkIn: [],
       dataset: {
         labels: [],
         datasets: []
       },
-      datacollection: null,
       options: {
         responsive: true,
-       // maintainAspectRatio: false,
-       AspectRatio :3,
+        maintainAspectRatio: false,
         title: {
           display: true,
           text: "Risky and Danger (Past 30 Days)",
@@ -55,10 +57,20 @@ export default {
     };
   },
   mounted() {
-    this.fillData();
+    window.addEventListener("resize", this.onResize);
+    this.chartWidth = document.getElementsByClassName("small")[0].clientWidth;
+    this.chartHeight = document.getElementsByClassName("small")[0].clientHeight;
     this.formatData();
   },
   methods: {
+    onResize(event) {
+      event;
+      this.chartWidth = document.getElementsByClassName("small")[0].clientWidth;
+      this.chartHeight = document.getElementsByClassName(
+        "small"
+      )[0].clientHeight;
+
+    },
     formatData() {
       var i;
       this.$props.data.forEach(x => {
@@ -108,8 +120,6 @@ export default {
       }
       this.dataset.datasets.push(RiskyData);
       this.dataset.datasets.push(DangerData);
-      //console.log(this.$props.data);
-      console.log(this.dataset);
     },
     evaluateStatus(fluFlag, shnFlag, contactFlag, temperature) {
       let status = "???";
@@ -125,26 +135,6 @@ export default {
         status = "Out of Office";
       }
       return status;
-    },
-    fillData() {
-      this.datacollection = {
-        labels: [this.getRandomInt(), this.getRandomInt()],
-        datasets: [
-          {
-            label: "Data One",
-            backgroundColor: "#f87979",
-            data: [this.getRandomInt(), this.getRandomInt()]
-          },
-          {
-            label: "Data One",
-            backgroundColor: "#f87979",
-            data: [this.getRandomInt(), this.getRandomInt()]
-          }
-        ]
-      };
-    },
-    getRandomInt() {
-      return Math.floor(Math.random() * (50 - 5 + 1)) + 5;
     }
   }
 };
@@ -152,9 +142,10 @@ export default {
 
 <style>
 .small {
-  height: 100%;
-  width:100%;
   padding: 0;
   position: relative;
+  display: -webkit-inline-box;
+  width: 100%;
+  height: 100%;
 }
 </style>
