@@ -1,30 +1,38 @@
 <template>
   <div class="analytics pt-5">
     <div class="charts">
+
+      <!-- 1st quadrant: Top 10 Risky & Danger List in past 30 days -->
       <div class="chart-item">
-        <Barchart
+        <DangerRiskyChart
           :data="filteredCheckIn"
           :key="fetchedCheckDeptFlag"
-        ></Barchart>
+        ></DangerRiskyChart>
       </div>
+      
+      <!-- 2nd quadrant: Risky & Danger Chart -->
       <div class="chart-item">
-        <Barchart
+        <DangerRiskyChart
           :data="filteredCheckIn"
           :key="fetchedCheckDeptFlag"
-        ></Barchart>
+        ></DangerRiskyChart>
       </div>
       <div class="break"></div>
+
+      <!-- 3rd quadrant: -->
       <div class="chart-item">
-        <Barchart
+        <DangerRiskyChart
           :data="filteredCheckIn"
           :key="fetchedCheckDeptFlag"
-        ></Barchart>
+        ></DangerRiskyChart>
       </div>
+
+      <!-- 4th quadrant -->
       <div class="chart-item">
-        <Barchart
-          :data="filteredCheckIn"
+        <MeetingLocationChart
+          :data="meetings"
           :key="fetchedCheckDeptFlag"
-        ></Barchart>
+        ></MeetingLocationChart>
       </div>
     </div>
     <div class="filters">
@@ -52,9 +60,10 @@
 <script>
 import { database } from "./../assets/firebase";
 import Multiselect from "vue-multiselect";
-import Barchart from "./../components/StatusBar.vue";
+import DangerRiskyChart from "./../components/StatusBar.vue";
+import MeetingLocationChart from "./../components/BarChart.vue"
 export default {
-  components: { Barchart, Multiselect },
+  components: { DangerRiskyChart, Multiselect,MeetingLocationChart },
   data() {
     return {
       fetchedCheckDeptFlag: 0,
@@ -120,6 +129,7 @@ export default {
             meetingRecord.employeesids = [];
             meetingRecord.acceptedids = [];
 
+            meeting.data().location.get().then(location=> meetingRecord.locationName = location.data().name)
             meeting.data().employees.forEach(emp => {
               meetingRecord.employeesids.push(emp.id);
             });
