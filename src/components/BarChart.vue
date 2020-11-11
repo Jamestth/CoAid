@@ -42,15 +42,17 @@ export default {
         scales: {
           xAxes: [
             {
-              gridLines: {
-                display: false
-              }
+              type: "category",
+              labels: []
             }
           ],
           yAxes: [
             {
               gridLines: {
                 display: false
+              },
+              ticks: {
+                beginAtZero: true
               }
             }
           ]
@@ -84,12 +86,12 @@ export default {
       )[0].clientHeight;
     },
     formatData() {
-        this.$props.data.forEach(meetings=> { 
-            if(!this.locations.includes(meetings.locationName)) {
-                this.locations.push(meetings.locationName) 
-            }
-        })
-        /*
+      this.$props.data.forEach(meetings => {
+        if (!this.locations.includes(meetings.locationName)) {
+          this.locations.push(meetings.locationName);
+        }
+      });
+      /*
         this.locations.forEach(location=> 
         {
             let locData = {
@@ -103,24 +105,37 @@ export default {
         }
         )*/
 
-  let locData = {
+      let locData = {
         data: [],
-        barPercentage: 0.5,
-        barThickness: 6,
-        maxBarThickness: 8,
-        minBarLength: 2,
+        label: [],
+        backgroundColor: []
+      };
+      let palette = [
+        "#F94144",
+        "#F3722C",
+        "#F8961E",
+        "#F9844A",
+        "#F9C74F",
+        "#90BE6D",
+        "#43AA8B",
+        "#4D908E",
+        "#577590",
+        "#277DA1"
+      ];
+      var i = 0;
+      this.locations.forEach(location => {
+        locData.data.push(
+          this.$props.data.filter(meetings => meetings.locationName == location)
+            .length
+        );
+        locData.label.push(location);
+        this.options.scales.xAxes[0].labels.push(location);
+        locData.backgroundColor.push(palette[i % 11]);
+        i++;
+      });
+      this.dataset.datasets.push(locData);
     }
-
-        this.locations.forEach(location=> 
-        {
-locData.data.push(this.$props.data.filter(meetings=> meetings.locationName == location).length)
-//          locData.label.push(location)
-            
-        }
-        )
-          this.dataset.datasets.push(locData);
-
-    }}
+  }
 };
 </script>
 
