@@ -20,7 +20,7 @@
 
       <!-- 3rd quadrant: -->
       <div class="chart-item">
-        <label class="title">In office with selected employees</label>
+        <label class="title">Possible contacts (Past 30 Days)</label>
         <div class="listbox">
           <employeeList
             :data="filteredContacts"
@@ -132,7 +132,8 @@ export default {
         }
       ],
       selectedContacts: [],
-      OldSelectedContacts: ["null"]
+      OldSelectedContacts: ["null"],
+      OldSelectedDepts: []
     };
   },
   watch: {
@@ -173,10 +174,12 @@ export default {
         this.contactOptions[0].emps = this.employees.filter(x => {
           return filteredDepts.includes(x.departmentid);
         });
-
-        this.selectedContacts = this.employees.filter(x =>
-          this.contactOptions[0].emps.includes(x)
-        );
+        if (this.OldSelectedDepts.length != this.selectedDepartments.length) {
+          this.selectedContacts = this.employees.filter(x =>
+            this.contactOptions[0].emps.includes(x)
+          );
+          this.OldSelectedDepts = this.selectedDepartments;
+        }
       }
 
       /*
@@ -370,10 +373,10 @@ export default {
   width: 18vw;
   height: 10vh;
 }
-.title{
-height: 3vh;
-vertical-align: center;
-margin: 0;
+.title {
+  height: 3vh;
+  vertical-align: center;
+  margin: 0;
 }
 .listbox {
   width: 35vw;
