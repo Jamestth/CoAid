@@ -82,9 +82,9 @@
                       >
                         <b-avatar
                           :src="emp.avatar"
-                          style="float:left; "
+                          style="float:left; padding:5px; background-color:white"
                         ></b-avatar>
-                        <p>{{ emp.name }}</p>
+                        <p style="padding:5px;">{{ emp.name }}</p>
                       </b-list-group-item>
                     </b-list-group>
                   </b-popover>
@@ -105,7 +105,7 @@
                       >
                         <b-avatar
                           :src="emp.avatar"
-                          style="float:left; "
+                          style="float:left; padding:5px; background-color:white"
                         ></b-avatar>
 
                         <p>{{ emp.name }}</p>
@@ -594,6 +594,7 @@ small {
   font-size: 1vw;
 }
 
+
 .card-header {
   padding: 0.5vw;
   margin-bottom: 0;
@@ -602,6 +603,10 @@ small {
   color: white !important;
   font-weight: bold;
 }
+/deep/ .p[data-v-fae5bece] {
+  padding: 5px;
+}
+
 /deep/ .table .thead-dark th {
   color: #fff;
   background-color: darkblue !important;
