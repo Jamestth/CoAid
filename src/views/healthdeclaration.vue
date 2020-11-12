@@ -114,7 +114,7 @@
               style="margin:0"
               v-on:click="submit()"
             >
-              submit
+              Submit
             </button>
           </div>
         </td>
