@@ -34,7 +34,7 @@ export default {
         maintainAspectRatio: false,
         title: {
           display: true,
-          text: "Risky and Danger (Past 30 Days)",
+          text: "Employees with status 'Risky' and 'Dangerous'",
           fontColor: "Black",
           fontSize: 15
         },

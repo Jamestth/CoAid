@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import LineChart from "./BarChart.js";
+import LineChart from "./HorizontalBarChart.js";
 //import { DateTime } from "luxon";
 export default {
   props: ["data"],
@@ -34,7 +34,7 @@ export default {
         maintainAspectRatio: false,
         title: {
           display: true,
-          text: "Risky and Danger (Past 30 Days)",
+          text: "Most used Meeting Locations",
           fontColor: "Black",
           fontSize: 15
         },
@@ -114,11 +114,11 @@ export default {
         backgroundColor: []
       };
       let palette = [
-        "#F94144",
-        "#F3722C",
-        "#F8961E",
-        "#F9844A",
-        "#F9C74F",
+        "#F9E79F",
+        "#82E0AA",
+        "#F8C471",
+        "#DAF7A6",
+        "#27AE60",
         "#90BE6D",
         "#43AA8B",
         "#4D908E",

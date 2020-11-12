@@ -1,6 +1,7 @@
 <template>
   <div class="analytics pt-5">
     <div class="charts">
+
       <!-- 1st quadrant: Top 10 Risky & Danger List in past 30 days -->
       <div class="chart-item">
         <DangerRiskyChart
@@ -9,18 +10,9 @@
         ></DangerRiskyChart>
       </div>
 
-      <!-- 2nd quadrant: Risky & Danger Chart -->
+      <!-- 2nd quadrant: -->
       <div class="chart-item">
-        <DangerRiskyChart
-          :data="filteredCheckIn"
-          :key="fetchedCheckDeptFlag"
-        ></DangerRiskyChart>
-      </div>
-      <div class="break"></div>
-
-      <!-- 3rd quadrant: -->
-      <div class="chart-item">
-        <label class="title">Possible contacts (Past 30 Days)</label>
+        <label class="title">Top Risky & Dangerous Employees </label>
         <div class="listbox">
           <employeeList
             :data="filteredContacts"
@@ -28,6 +20,17 @@
           ></employeeList>
         </div>
       </div>
+      <div class="break"></div>
+
+      <!-- 3rd quadrant: @Matheus: you can insert calendar feature here
+      calendar feature to include function: when clicked on specific date,
+      list of names of employees who have checked in & their contact number 
+      will appear in a pop up
+       -->
+      <div class="chart-item">
+        <p> insert calendar feature here </p>
+      </div>
+
       <!-- 4th quadrant -->
       <div class="chart-item">
         <MeetingLocationChart
@@ -97,7 +100,7 @@ import { DateTime } from "luxon";
 import { database } from "./../assets/firebase";
 import Multiselect from "vue-multiselect";
 import DangerRiskyChart from "./../components/StatusBar.vue";
-import MeetingLocationChart from "./../components/BarChart.vue";
+import MeetingLocationChart from "./../components/HorizontalBarChart.vue";
 export default {
   components: {
     employeeList,
@@ -326,6 +329,15 @@ export default {
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
+.a {
+  color: #20368f;
+}
+/deep/.label {
+  display: inline-block;
+  font-weight: bold;
+  font-size: 1.7vh;
+  font-family: "DM Sans", Avenir, Helvetica, Arial, sans-serif;
+}
 /deep/.multiselect {
   width: 18vw;
   border-color: #767676;
