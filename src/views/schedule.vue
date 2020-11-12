@@ -13,15 +13,15 @@
     <b-row>
       <b-col></b-col>
       <b-col cols="4">
-        Calendar
-        <Calendar color="blue" :attributes="attrs" is-expanded />
+        <h3> Calendar </h3>
+        <Calendar color="blue" :attributes="attrs" is-expanded is-dark/>
       </b-col>
 
       <b-col cols="4">
-        <h3>Roster Member</h3>
+        <h3> Roster Members </h3>
         <br />
         <b-list-group>
-          <b-list-group-item
+          <b-list-group-item variant="primary"
             v-for="employee in employees"
             :name="employee"
             :key="employee"
@@ -30,8 +30,9 @@
           </b-list-group-item>
         </b-list-group>
       </b-col>
+      <b-col>
 
-      <b-col></b-col>
+      </b-col>
     </b-row>
   </div>
 </template>
