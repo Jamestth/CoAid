@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import LineChart from "./HorizontalBarChart.js";
+import LineChart from "./BarChart.js";
 //import { DateTime } from "luxon";
 export default {
   props: ["data", "selectedDay"],
