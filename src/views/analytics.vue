@@ -15,20 +15,6 @@
         </div>
       </div>
 
-      <!-- 1st quadrant: Top 10 Risky & Danger List in past 30 days -->
-      <div class="chart-item">
-        <label class="title"
-          >Risky and Danger contacts ({{ selectedDay.name }})</label
-        >
-        <div class="chart-box">
-          <DangerRiskyChart
-            :data="filteredCheckIn"
-            :selectedDay="selectedDay"
-            :key="fetchedCheckDeptFlag"
-          ></DangerRiskyChart>
-        </div>
-      </div>
-
       <!-- 2nd quadrant: -->
       <div class="chart-item">
         <label class="title">Possible contacts ({{ selectedDay.name }})</label>
@@ -47,7 +33,10 @@
       will appear in a pop up
        -->
       <div class="chart-item">
-        <p> insert calendar feature here </p>
+        <label class="title">
+          insert calendar feature here ({{ selectedDay.name }})</label
+        >
+        <div class="chart-box"></div>
       </div>
 
       <!-- 4th quadrant -->
@@ -65,6 +54,27 @@
       </div>
     </div>
     <div class="filters">
+      <div class="filter-item">
+        <label class="filter-labels">Time Period</label>
+        <multiselect
+          select-label=""
+          :show-labels="false"
+          track-by="name"
+          label="name"
+          v-model="selectedDay"
+          :options="daysOptions"
+          :close-on-select="true"
+        >
+          <template slot="selection" slot-scope="{ values, search, isOpen }"
+            ><span
+              class="multiselect__single"
+              v-if="values.length &amp;&amp; !isOpen"
+              >{{ values.length }} Employee selected</span
+            ></template
+          >
+        </multiselect>
+      </div>
+      <div class="filter-break"></div>
       <div class="filter-item">
         <label class="filter-labels">Department</label>
         <multiselect
@@ -105,28 +115,6 @@
           :options="contactOptions"
           :close-on-select="false"
           multiple
-        >
-          <template slot="selection" slot-scope="{ values, search, isOpen }"
-            ><span
-              class="multiselect__single"
-              v-if="values.length &amp;&amp; !isOpen"
-              >{{ values.length }} Employee selected</span
-            ></template
-          >
-        </multiselect>
-      </div>
-
-      <div class="filter-break"></div>
-      <div class="filter-item">
-        <label class="filter-labels">In contact with</label>
-        <multiselect
-          select-label=""
-          :show-labels="false"
-          track-by="name"
-          label="name"
-          v-model="selectedDay"
-          :options="daysOptions"
-          :close-on-select="true"
         >
           <template slot="selection" slot-scope="{ values, search, isOpen }"
             ><span
