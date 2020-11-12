@@ -124,6 +124,8 @@
             <b-form-select
               v-model="curSelectedUnit"
               :options="this.curUnitOptions"
+              :disabled="!curSelectedDept" 
+              
               required
             ></b-form-select>
           </b-form-group>
