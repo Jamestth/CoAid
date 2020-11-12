@@ -33,7 +33,7 @@ export default {
         responsive: true,
         maintainAspectRatio: false,
         title: {
-          display: false,
+          display: false
         },
         legend: {
           display: false
@@ -61,7 +61,6 @@ export default {
     };
   },
   mounted() {
-
     window.addEventListener("resize", this.onResize);
     this.chartWidth = document.getElementsByClassName("small")[0].clientWidth;
     this.chartHeight = document.getElementsByClassName("small")[0].clientHeight;
@@ -124,6 +123,27 @@ export default {
         "#277DA1"
       ];
       var i = 0;
+      let sortedLocList = [];
+      this.locations.forEach(location => {
+        let locListRecord = [
+          location,
+          this.$props.data.filter(meetings => meetings.locationName == location)
+            .length
+        ];
+        sortedLocList.push(locListRecord);
+      });
+      sortedLocList = sortedLocList.sort((a, b) => {
+        console.log(a);
+        return b[1] - a[1];
+      });
+      sortedLocList.forEach(x => {
+        locData.data.push(x[1]);
+        locData.label.push(x[0]);
+        this.options.scales.xAxes[0].labels.push(x[0]);
+        locData.backgroundColor.push(palette[i % 11]);
+        i++;
+      });
+      /*
       this.locations.forEach(location => {
         locData.data.push(
           this.$props.data.filter(meetings => meetings.locationName == location)
@@ -134,6 +154,7 @@ export default {
         locData.backgroundColor.push(palette[i % 11]);
         i++;
       });
+*/
       this.dataset.datasets.push(locData);
     }
   }
