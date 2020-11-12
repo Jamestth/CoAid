@@ -15,7 +15,7 @@
 import LineChart from "./StatusBar.js";
 import { DateTime } from "luxon";
 export default {
-  props: ["data"],
+  props: ["data", "selectedDay"],
   components: {
     LineChart
   },
@@ -33,10 +33,7 @@ export default {
         responsive: true,
         maintainAspectRatio: false,
         title: {
-          display: true,
-          text: "Employees with status 'Risky' and 'Dangerous'",
-          fontColor: "Black",
-          fontSize: 15
+          display: false
         },
 
         scales: {
@@ -122,7 +119,7 @@ export default {
         data: []
       };
 
-      for (i = 30; i > 0; i--) {
+      for (i = -this.$props.selectedDay.value; i >= 0; i--) { 
         let curDay = DateTime.local().minus({ days: i });
         this.dataset.labels.push(curDay.toFormat("dd LLL"));
         let curDayCheckins = this.checkIn.filter(x => {
