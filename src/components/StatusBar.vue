@@ -1,5 +1,5 @@
 <template>
-  <div class="small">
+  <div class="LineChart">
     <line-chart
       v-if="dataset.datasets[0]"
       :chart-data="dataset"
@@ -60,8 +60,12 @@ export default {
   },
   mounted() {
     window.addEventListener("resize", this.onResize);
-    this.chartWidth = document.getElementsByClassName("small")[0].clientWidth;
-    this.chartHeight = document.getElementsByClassName("small")[0].clientHeight;
+    this.chartWidth = document.getElementsByClassName(
+      "LineChart"
+    )[0].clientWidth;
+    this.chartHeight = document.getElementsByClassName(
+      "LineChart"
+    )[0].clientHeight;
     this.formatData();
   },
   watch: {
@@ -77,11 +81,17 @@ export default {
   },
   methods: {
     onResize(event) {
-      event;
-      this.chartWidth = document.getElementsByClassName("small")[0].clientWidth;
-      this.chartHeight = document.getElementsByClassName(
-        "small"
-      )[0].clientHeight;
+      try {
+        event;
+        this.chartWidth = document.getElementsByClassName(
+          "LineChart"
+        )[0].clientWidth;
+        this.chartHeight = document.getElementsByClassName(
+          "LineChart"
+        )[0].clientHeight;
+      } catch (err) {
+        err;
+      }
     },
     formatData() {
       var i;
@@ -100,15 +110,15 @@ export default {
       let RiskyData = {
         label: "Risky",
         borderColor: "#ffc107",
-        //backgroundColor: "#ffc107",
-        fill: false,
+        backgroundColor: "rgba(255, 193, 7, 0.1)",
+        fill: true,
         data: []
       };
       let DangerData = {
         label: "Danger",
         borderColor: "#dc3545",
-        //backgroundColor: "#dc3545",
-        fill: false,
+        backgroundColor: "rgba(255, 10, 13, 0.1)",
+        fill: true,
         data: []
       };
 
@@ -153,7 +163,7 @@ export default {
 </script>
 
 <style>
-.small {
+.LineChart {
   padding: 0;
   position: relative;
   display: -webkit-inline-box;

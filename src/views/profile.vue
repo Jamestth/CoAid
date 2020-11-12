@@ -169,50 +169,39 @@ export default {
       //alert(JSON.stringify(this.userInfo));
 
       //let extension = this.file.name.split(".").pop();
-      let filepath = "avatar/" + this.userInfo.uid;
-      var storageRef = storage.ref();
-      var fileRef = storageRef.child(filepath);
-      if (this.file) {
-        fileRef.put(this.file).then(snap => {
-          snap;
-          fileRef.getDownloadURL().then(snap => {
-            this.userInfo.avatar = snap;
-
-            let unitId = this.unitsList.filter(
-              x => x.unit == this.userInfo.unit
-            )[0].unitId;
-            let unitRef = database.doc("/units/" + unitId);
-            database
-              .collection("employees")
-              .doc(this.userInfo.eid)
-              .update({
-                name: this.userInfo.name,
-                email: this.userInfo.email,
-                phone: this.userInfo.phone,
-                unit: unitRef,
-                avatar: this.userInfo.avatar
-              });
-          });
+      let unitId = this.unitsList.filter(x => x.unit == this.userInfo.unit)[0]
+        .unitId;
+      let unitRef = database.doc("/units/" + unitId);
+      database
+        .collection("employees")
+        .doc(this.userInfo.eid)
+        .update({
+          name: this.userInfo.name,
+          email: this.userInfo.email,
+          phone: this.userInfo.phone,
+          unit: unitRef
         });
-      }
-
-      fileRef.getDownloadURL().then(snap => {
-        this.userInfo.avatar = snap;
-
-        let unitId = this.unitsList.filter(x => x.unit == this.userInfo.unit)[0]
-          .unitId;
-        let unitRef = database.doc("/units/" + unitId);
-        database
-          .collection("employees")
-          .doc(this.userInfo.eid)
-          .update({
-            name: this.userInfo.name,
-            email: this.userInfo.email,
-            phone: this.userInfo.phone,
-            unit: unitRef,
-            avatar: this.userInfo.avatar
+      try {
+        let filepath = "avatar/" + this.userInfo.uid;
+        var storageRef = storage.ref();
+        var fileRef = storageRef.child(filepath);
+        if (this.file) {
+          fileRef.put(this.file).then(snap => {
+            snap;
+            fileRef.getDownloadURL().then(snap => {
+              this.userInfo.avatar = snap;
+              database
+                .collection("employees")
+                .doc(this.userInfo.eid)
+                .update({
+                  avatar: this.userInfo.avatar
+                });
+            });
           });
-      });
+        }
+      } catch (err) {
+        err;
+      }
 
       this.editMode = !this.editMode;
     },

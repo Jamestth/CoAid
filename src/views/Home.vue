@@ -2,9 +2,9 @@
   <b-container fluid>
     <b-row class="text-center">
       <b-col></b-col>
-      <b-col cols="12" md="8">
+      <b-col cols="8" md="12">
         <!-- Notifications -->
-        <b-container fluid>
+        <b-container>
           <b-row class="pl-3 pr-3 pt-3">
             <h1 style="text-align:left; font-size:5vh;">Dashboard</h1>
           </b-row>

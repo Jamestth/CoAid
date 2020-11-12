@@ -38,6 +38,9 @@ export default {
           fontColor: "Black",
           fontSize: 15
         },
+        legend: {
+          display: false
+        },
 
         scales: {
           xAxes: [

@@ -31,7 +31,7 @@
       <!-- 4th quadrant -->
       <div class="chart-item">
         <MeetingLocationChart
-          :data="meetings"
+          :data="filteredMeetings"
           :key="fetchedCheckDeptFlag"
         ></MeetingLocationChart>
       </div>
@@ -116,6 +116,7 @@ export default {
       checkIn: [],
       filteredCheckIn: [],
       filteredContacts: [],
+      filteredMeetings: [],
       employees: [],
       meetings: [],
       selectedDepartments: [],
@@ -204,6 +205,11 @@ export default {
       this.filteredContacts = this.employees.filter(x =>
         contactedAllempsId.includes(x.id)
       );
+      this.filteredMeetings = this.meetings.filter(meeting => {
+        return meeting.employeesids.some(empid =>
+          contactedAllempsId.includes(empid)
+        );
+      });
 
       //     this.filteredContacts = this.employees
 
