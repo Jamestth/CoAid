@@ -167,6 +167,8 @@ export default {
               this.temperature == null
             ) {
               alert("Please fill in all the fields before submiting");
+            } else if (this.temperature > 42 || this.temperature < 35) {
+              alert("Please enter a temperature between 35 and 42 degrees");
             } else {
               database
                 .collection("checkIn")

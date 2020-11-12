@@ -13,9 +13,8 @@
               <b-card class="mb-3" header="Notifications">
                 <b-row class="pl-2" v-if="!check(this.userInfo)">
                   <p style="text-align:left; font-size:2.5vh;">
-                    Last Seen:
-
-                    <strong>{{ getLastSeen(this.userInfo) }}</strong>
+                    Last Check Out:
+                    <strong>{{ getCheckOutTime(this.userInfo) }}</strong>
                   </p>
 
                   <router-link
@@ -39,8 +38,8 @@
                 </b-row>
                 <b-row class="pl-2" v-if="check(this.userInfo)">
                   <p style="text-align:left; font-size:2.5vh;">
-                    Last Seen:
-                    <strong>{{ getLastSeen(this.userInfo) }}</strong>
+                    Last Check In:
+                    <strong>{{ getCheckInTime(this.userInfo) }}</strong>
                   </p>
 
                   <p class="ml-3">
@@ -89,14 +88,18 @@
                     </b-list-group>
                   </b-popover>
                 </b-col>
-                <!-- danger popover -->
+                <!-- danger popover --> 
                 <b-col cols="6">
                   <b-card header="Danger" id="danger">
                     <AttendanceDonut
                       v-bind:sections="attendanceStatistic.danger"
                     ></AttendanceDonut>
                   </b-card>
-                  <b-popover target="danger" triggers="hover" placement="top">
+                  <b-popover 
+                  target="danger" 
+                  triggers="hover" 
+                  placement="top"
+                  >
                     <template #title>Employees in Danger</template>
                     <b-list-group>
                       <b-list-group-item
@@ -184,7 +187,6 @@
             </template>
             <template v-slot:cell(status)="row">
               <BadgePopover
-                :key="currentPage"
                 v-bind:row="row"
                 v-if="
                   row.item.lastCheck && row.item.office && row.item.department
@@ -209,9 +211,9 @@
 <script>
 import stringSimilarity from "string-similarity";
 import { DateTime } from "luxon";
-import AttendanceDonut from "../components/AttendanceDonut.vue";
-import BadgePopover from "../components/BadgePopover";
-import { firebase, auth, database } from "../assets/firebase";
+import AttendanceDonut from "../../components/AttendanceDonut.vue";
+import BadgePopover from "../../components/BadgePopover";
+import { firebase, auth, database } from "../../assets/firebase";
 export default {
   components: { AttendanceDonut, BadgePopover },
   data() {
@@ -246,11 +248,11 @@ export default {
           label: "Status",
           // eslint-disable-next-line no-unused-vars
           formatter: (value, key, item) => {
-            if (value == "Danger") {
+            if (value == "COVID") {
               return 3;
-            } else if (value == "Safe") {
+            } else if (value == "Healthy") {
               return 1;
-            } else if (value == "Risky") {
+            } else if (value == "danger") {
               return 2;
             } else {
               return -1;
@@ -275,7 +277,7 @@ export default {
         department: "All",
         name: ""
       },
-      filterOptions: ["All"],
+      filterOptions: ["All", "HR", "Marketing", "IT", "Sales"],
       headVariant: "dark"
     };
   },
@@ -323,14 +325,7 @@ export default {
     fetchData: function() {
       var user = auth.currentUser;
       this.userId = user.uid;
-      database
-        .collection("departments")
-        .get()
-        .then(departments =>
-          departments.forEach(department =>
-            this.filterOptions.push(department.data().name)
-          )
-        );
+
       //this.userId = "IAvKPChVuFfkH176PMgdkwAvdfE2"; //remove when auth works
       database
         .collection("employees")
@@ -378,11 +373,6 @@ export default {
               .get()
               .then(snap => {
                 snap.forEach(checkInRecord => {
-                  /*console.log(
-                    DateTime.fromSeconds(checkInRecord.data().checkIn.seconds)
-          
-                  )*/
-
                   records.lastCheck = {
                     checkIn: checkInRecord.data().checkIn,
                     checkOut: checkInRecord.data().checkOut,
@@ -392,15 +382,13 @@ export default {
                     contactFlag: checkInRecord.data().contactFlag,
                     temperature: checkInRecord.data().temperature
                   };
-
                   records.status =
                     checkInRecord.data().checkOut === undefined
                       ? this.evaluateStatus(
                           records.lastCheck.fluFlag,
                           records.lastCheck.shnFlag,
                           records.lastCheck.contactFlag,
-                          records.lastCheck.temperature,
-                          records.lastCheck.checkIn
+                          records.lastCheck.temperature
                         )
                       : "Out of Office";
                   records.statusType =
@@ -419,23 +407,18 @@ export default {
           });
         });
     },
-    evaluateStatus(fluFlag, shnFlag, contactFlag, temperature, checkIn) {
-      let status = "Out of Office";
-      if (
-        DateTime.fromISO(DateTime.fromSeconds(checkIn.seconds).toISODate())
-          .diff(DateTime.fromISO(DateTime.local().toISODate()), ["days"])
-          .toObject().days == 0
-      ) {
-        if (fluFlag !== undefined) {
-          let flags =
-            Number(fluFlag) +
-            Number(shnFlag) +
-            Number(contactFlag) +
-            Number(temperature > 37.5);
-          status = flags == 0 ? "Safe" : flags < 3 ? "Risky" : "Danger";
-        } else {
-          status = "Out of Office";
-        }
+    evaluateStatus(fluFlag, shnFlag, contactFlag, temperature) {
+      let status = "???";
+
+      if (fluFlag !== undefined) {
+        let flags =
+          Number(fluFlag) +
+          Number(shnFlag) +
+          Number(contactFlag) +
+          Number(temperature > 37.5);
+        status = flags == 0 ? "Safe" : flags < 3 ? "Risky" : "Danger";
+      } else {
+        status = "Out of Office";
       }
       return status;
     },
@@ -456,28 +439,12 @@ export default {
       return deptPred && namePred;
     },
     check(userInfo) {
-      try {
-        if (userInfo) {
-          if (
-            DateTime.fromISO(
-              DateTime.fromSeconds(
-                userInfo.lastCheck.checkIn.seconds
-              ).toISODate()
-            )
-              .diff(DateTime.fromISO(DateTime.local().toISODate()), ["days"])
-              .toObject().days != 0
-          ) {
-            return false;
-          }
-          if (Object.keys(userInfo.lastCheck).length != 0) {
-            return userInfo.lastCheck.checkOut === undefined;
-          } else {
-            return false;
-          }
+      if (userInfo) {
+        if (Object.keys(userInfo.lastCheck).length != 0) {
+          return userInfo.lastCheck.checkOut === undefined;
+        } else {
+          return false;
         }
-      } catch (err) {
-        err;
-        return false;
       }
     },
     getStatusType(status) {
@@ -491,23 +458,23 @@ export default {
         return "secondary";
       }
     },
-    getLastSeen(userInfo) {
+    getCheckInTime(userInfo) {
       try {
-        if (userInfo.lastCheck) {
-          if (userInfo.lastCheck.checkOut) {
-            return DateTime.fromSeconds(
-              userInfo.lastCheck.checkOut.seconds
-            ).toFormat(`ff`);
-          } else {
-            return DateTime.fromSeconds(
-              userInfo.lastCheck.checkIn.seconds
-            ).toFormat(`ff`);
-          }
-        }
+        return DateTime.fromSeconds(
+          userInfo.lastCheck.checkIn.seconds
+        ).toFormat(`ff`);
       } catch (err) {
-        err;
+        return "None";
       }
-      return "None";  
+    },
+    getCheckOutTime(userInfo) {
+      if (userInfo.lastCheck.checkOut === undefined) {
+        return "None";
+      } else {
+        return DateTime.fromSeconds(
+          userInfo.lastCheck.checkOut.seconds
+        ).toFormat(`ff`);
+      }
     },
     checkOut() {
       let userId = auth.currentUser.uid;

@@ -49,6 +49,30 @@ const routes = [
     meta: { requiresAuth: false },
   },
   {
+    path: "/setroster",
+    name: "setroster",
+    component: () => import("../views/admin/setroster.vue"),
+    meta: { requiresAuth: false },
+  },
+  {
+    path: "/adminhome",
+    name: "adminhome",
+    component: () => import("../views/admin/adminhome.vue"),
+    meta: { requiresAuth: false },
+  },
+  {
+    path: "/adminanalytics",
+    name: "adminanalytics",
+    component: () => import("../views/admin/adminanalytics.vue"),
+    meta: { requiresAuth: false },
+  },
+  {
+    path: "/rosterlist",
+    name: "rosterlist",
+    component: () => import("../views/admin/rosterlist.vue"),
+    meta: { requiresAuth: false },
+  },
+  {
     path: "/schedule",
     name: "Schedule",
     component: () => import("../views/schedule.vue"),
