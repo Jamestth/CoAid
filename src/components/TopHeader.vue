@@ -82,7 +82,6 @@ export default {
 
   methods: {
     isAdmin() {
-      console.log(this.admin, "hi");
       return this.admin;
     },
     signOut() {
