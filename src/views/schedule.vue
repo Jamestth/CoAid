@@ -31,7 +31,9 @@
         </b-list-group>
       </b-col>
       <b-col>
-
+        <b-dropdown id="dropdown-dropright" dropright text="Select Cluster" variant="primary" class="m-2">
+          <b-dropdown-item href="#" v-for="cluster in clusters" :name = "cluster" :key="cluster"> {{cluster}} </b-dropdown-item>
+        </b-dropdown>
       </b-col>
     </b-row>
   </div>
@@ -52,7 +54,8 @@ export default {
       name: "",
       userInfo: "",
       selectedEmp: [],
-      employees: []
+      employees: [],
+      clusters: ["A", "B", "C", "D"]
     };
   },
   created() {
