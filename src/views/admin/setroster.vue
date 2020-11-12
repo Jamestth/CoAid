@@ -147,29 +147,27 @@ export default {
       status1: "not_accepted",
       status2: "not_accepted",
       status3: "not_accepted",
-      form:{
+      form: {
         name: "",
         schedule: "",
         startDate: "",
-        endDate: "",
+        endDate: ""
       },
       value: null,
       selectedEmp: null,
       employees: [],
       options: [
-          { item: 'ODD', name: 'Odd' },
-          { item: 'EVEN', name: 'Even' }
-        ]
+        { item: "ODD", name: "Odd" },
+        { item: "EVEN", name: "Even" }
+      ]
     };
   },
   created() {
     this.fetchdata();
   },
 
-  methods:{
+  methods: {
     fetchdata() {
-
-
       database
         .collection("employees")
         .get()
@@ -177,14 +175,15 @@ export default {
           emps.forEach(emp => {
             let empRecord = {
               name: emp.data().name,
-              eid: emp.id
+              eid: emp.id,
+              ref: database.doc("/employees/" + emp.id)
             };
             this.employees.push(empRecord);
           })
         );
     },
-    submit(){
-      console.log('This is called');
+    submit() {
+      console.log("This is called");
       const name = this.form.name;
       const schedule = this.form.schedule;
       const startDate = this.form.startDate;
@@ -197,16 +196,16 @@ export default {
           schedule: schedule,
           startDate: startDate,
           endDate: endDate,
-          selectedEmp: selectedEmp
-              })
-              .then(x => {
-                x;
-                console.log("Document successfully written!");
-                this.$router.push({ path: "/" }).catch(error => error);
-              })
-              .catch(function(error) {
-                console.error("Error writing document: ", error);
-              });
+          selectedEmp: selectedEmp.map(x => x.ref)
+        })
+        .then(x => {
+          x;
+          console.log("Document successfully written!");
+          this.$router.push({ path: "/" }).catch(error => error);
+        })
+        .catch(function(error) {
+          console.error("Error writing document: ", error);
+        });
     }
   }
 };
