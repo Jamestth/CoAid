@@ -115,6 +115,12 @@ const routes = [
     component: () => import("../views/meetingsuccess.vue"),
     meta: { requiresAuth: true },
   },
+  {
+    path: "/setroster",
+    name: "Set Roster",
+    component: () => import("../views/admin/setroster.vue"),
+    meta: { requiresAuth: true },
+  },
 ];
 
 const router = new VueRouter({

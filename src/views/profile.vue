@@ -109,6 +109,24 @@
             ></b-form-input>
           </b-form-group>
 
+          <b-form-group
+            v-if="isAdmin"
+            id="input-group-6"
+            label-for="input-6"
+            label-align="left"
+          >
+            <b-form-checkbox
+              id="input-6"
+              v-model="userInfo.admin"
+              name="check-button"
+              :disabled="!editMode"
+              size="lg"
+              switch
+            >
+              Is an Admin
+            </b-form-checkbox>
+          </b-form-group>
+
           <b-button class="mr-3" type="submit" v-if="editMode">Submit</b-button>
           <b-button class="ml-3" type="reset" v-if="editMode">cancel</b-button>
           <b-row class="mb-4"></b-row>
@@ -179,8 +197,10 @@ export default {
           name: this.userInfo.name,
           email: this.userInfo.email,
           phone: this.userInfo.phone,
-          unit: unitRef
+          unit: unitRef,
+          admin: this.userInfo.admin
         });
+      this.isAdmin = this.userInfo.admin;
       try {
         let filepath = "avatar/" + this.userInfo.uid;
         var storageRef = storage.ref();
@@ -255,7 +275,8 @@ export default {
             phone: employeeData.phone,
             department: "",
             unit: "",
-            office: ""
+            office: "",
+            admin: employeeData.admin
           };
           employeeData.unit.get().then(unit => {
             unit = unit.data();
