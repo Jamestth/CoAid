@@ -3,24 +3,36 @@
     <div class="charts">
       <!-- 1st quadrant: Top 10 Risky & Danger List in past 30 days -->
       <div class="chart-item">
-        <DangerRiskyChart
-          :data="filteredCheckIn"
-          :key="fetchedCheckDeptFlag"
-        ></DangerRiskyChart>
+        <label class="title"
+          >Risky and Danger contacts ({{ selectedDay.name }})</label
+        >
+        <div class="chart-box">
+          <DangerRiskyChart
+            :data="filteredCheckIn"
+            :selectedDay="selectedDay"
+            :key="fetchedCheckDeptFlag"
+          ></DangerRiskyChart>
+        </div>
       </div>
 
       <!-- 2nd quadrant: Risky & Danger Chart -->
       <div class="chart-item">
-        <DangerRiskyChart
-          :data="filteredCheckIn"
-          :key="fetchedCheckDeptFlag"
-        ></DangerRiskyChart>
+        <label class="title"
+          >Risky and Danger contacts ({{ selectedDay.name }})</label
+        >
+        <div class="chart-box">
+          <DangerRiskyChart
+            :data="filteredCheckIn"
+            :selectedDay="selectedDay"
+            :key="fetchedCheckDeptFlag"
+          ></DangerRiskyChart>
+        </div>
       </div>
       <div class="break"></div>
 
       <!-- 3rd quadrant: -->
       <div class="chart-item">
-        <label class="title">Possible contacts (Past 30 Days)</label>
+        <label class="title">Possible contacts ({{ selectedDay.name }})</label>
         <div class="listbox">
           <employeeList
             :data="filteredContacts"
@@ -30,10 +42,16 @@
       </div>
       <!-- 4th quadrant -->
       <div class="chart-item">
-        <MeetingLocationChart
-          :data="filteredMeetings"
-          :key="fetchedCheckDeptFlag"
-        ></MeetingLocationChart>
+        <label class="title">
+          Meeting Location Usage ({{ selectedDay.name }})</label
+        >
+        <div class="chart-box">
+          <MeetingLocationChart
+            :data="filteredMeetings"
+            :selectedDay="selectedDay"
+            :key="fetchedCheckDeptFlag"
+          ></MeetingLocationChart>
+        </div>
       </div>
     </div>
     <div class="filters">
@@ -62,7 +80,7 @@
           >
         </multiselect>
       </div>
-      <div class="break"></div>
+      <div class="filter-break"></div>
       <div class="filter-item">
         <label class="filter-labels">In contact with</label>
         <multiselect
@@ -77,6 +95,28 @@
           :options="contactOptions"
           :close-on-select="false"
           multiple
+        >
+          <template slot="selection" slot-scope="{ values, search, isOpen }"
+            ><span
+              class="multiselect__single"
+              v-if="values.length &amp;&amp; !isOpen"
+              >{{ values.length }} Employee selected</span
+            ></template
+          >
+        </multiselect>
+      </div>
+
+      <div class="filter-break"></div>
+      <div class="filter-item">
+        <label class="filter-labels">In contact with</label>
+        <multiselect
+          select-label=""
+          :show-labels="false"
+          track-by="name"
+          label="name"
+          v-model="selectedDay"
+          :options="daysOptions"
+          :close-on-select="true"
         >
           <template slot="selection" slot-scope="{ values, search, isOpen }"
             ><span
@@ -107,6 +147,7 @@ export default {
   },
   data() {
     return {
+      selectedDay: { name: "Last 14 days", value: -14 },
       deptempsize: 0,
       empsDeptSize: 0,
       fetchedCheckDeptFlag: 0,
@@ -131,6 +172,12 @@ export default {
           allGroup: "All",
           emps: []
         }
+      ],
+      daysOptions: [
+        { name: "Last 7 days", value: -7 },
+        { name: "Last 14 days", value: -14 },
+        { name: "Last 30 days", value: -30 },
+        { name: "Last 90 days", value: -90 }
       ],
       selectedContacts: [],
       OldSelectedContacts: ["null"],
@@ -160,6 +207,9 @@ export default {
         this.fetchedCheckDeptFlag++;
         this.OldSelectedContacts = this.selectedContacts;
       }
+    },
+    selectedDay: function() {
+      this.fetchedCheckDeptFlag++;
     }
   },
   created() {
@@ -168,9 +218,19 @@ export default {
   methods: {
     updateFilter() {
       let filteredDepts = this.selectedDepartments.map(x => x.id);
+
       this.filteredCheckIn = this.checkIn.filter(x =>
         filteredDepts.includes(x.departmentid)
       );
+
+      this.filteredCheckIn = this.filteredCheckIn.filter(x => {
+        return (
+          DateTime.fromISO(DateTime.fromSeconds(x.checkIn.seconds).toISODate())
+            .diff(DateTime.fromISO(DateTime.local().toISODate()), ["days"])
+            .toObject().days >= this.selectedDay.value
+        );
+      });
+
       if (this.empsDeptSize == this.deptempsize) {
         this.contactOptions[0].emps = this.employees.filter(x => {
           return filteredDepts.includes(x.departmentid);
@@ -370,6 +430,10 @@ export default {
   height: 0;
   padding: 2.5vh;
 }
+.filter-break {
+  flex-basis: 100%;
+  height: 0;
+}
 
 .filters {
   width: 20vw;
@@ -390,5 +454,9 @@ export default {
   align-items: center;
   overflow-y: scroll;
   overflow-x: hidden;
+}
+.chart-box {
+  width: 35vw;
+  height: 37vh;
 }
 </style>

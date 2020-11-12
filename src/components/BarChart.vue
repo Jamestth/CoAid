@@ -15,7 +15,7 @@
 import LineChart from "./BarChart.js";
 //import { DateTime } from "luxon";
 export default {
-  props: ["data"],
+  props: ["data", "selectedDay"],
   components: {
     LineChart
   },
@@ -33,10 +33,7 @@ export default {
         responsive: true,
         maintainAspectRatio: false,
         title: {
-          display: true,
-          text: "Risky and Danger (Past 30 Days)",
-          fontColor: "Black",
-          fontSize: 15
+          display: false,
         },
         legend: {
           display: false
@@ -64,6 +61,7 @@ export default {
     };
   },
   mounted() {
+
     window.addEventListener("resize", this.onResize);
     this.chartWidth = document.getElementsByClassName("small")[0].clientWidth;
     this.chartHeight = document.getElementsByClassName("small")[0].clientHeight;
