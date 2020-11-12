@@ -21,7 +21,7 @@
         <h3> Roster Members </h3>
         <br />
         <b-list-group>
-          <b-list-group-item variant="primary"
+          <b-list-group-item variant="dark"
             v-for="employee in employees"
             :name="employee"
             :key="employee"
@@ -31,8 +31,8 @@
         </b-list-group>
       </b-col>
       <b-col>
-        <b-dropdown id="dropdown-dropright" dropright text="Select Cluster" variant="primary" class="m-2">
-          <b-dropdown-item href="#" v-for="cluster in clusters" :name = "cluster" :key="cluster"> {{cluster}} </b-dropdown-item>
+        <b-dropdown id="dropdown-dropright" text="Select Cluster" variant="dark" class="m-2">
+          <b-dropdown-item-button v-for="cluster in clusters" :name = "cluster" :key="cluster"> {{cluster}} </b-dropdown-item-button>
         </b-dropdown>
       </b-col>
     </b-row>
