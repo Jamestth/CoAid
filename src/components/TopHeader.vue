@@ -87,7 +87,9 @@ export default {
     signOut() {
       auth
         .signOut()
-        .then(function() {})
+        .then(function() {
+          this.$router.push({ path: "/login" }).catch(error => error)
+        })
         .catch(function(error) {
           error;
         });

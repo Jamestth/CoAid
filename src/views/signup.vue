@@ -240,7 +240,7 @@ export default {
               })
               .then(x => {
                 x;
-                console.log("Document successfully written!");
+                //console.log("Document successfully written!");
                 this.$router.push({ path: "/" }).catch(error => error);
               })
               .catch(function(error) {

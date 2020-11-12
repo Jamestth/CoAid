@@ -133,7 +133,6 @@ export default {
         sortedLocList.push(locListRecord);
       });
       sortedLocList = sortedLocList.sort((a, b) => {
-        console.log(a);
         return b[1] - a[1];
       });
       sortedLocList.forEach(x => {

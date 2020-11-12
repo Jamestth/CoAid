@@ -2,8 +2,10 @@
   <div class="analytics pt-5">
     <!-- <h1> test </h1> <br> -->
     <div class="filters">
-      <h1> Analytics </h1> 
-      <p style=font-size:15px> *{{ selectedDay.name }} </p><br> <br>
+      <h1>Analytics</h1>
+      <p style="font-size: 15px">*{{ selectedDay.name }}</p>
+      <br />
+      <br />
       <div class="filter-item">
         <label class="filter-labels">Time Period</label>
         <multiselect
@@ -23,7 +25,8 @@
             ></template
           >
         </multiselect>
-      </div><br><br>
+      </div>
+      <br /><br />
       <div class="filter-break"></div>
       <div class="filter-item">
         <label class="filter-labels">Department</label>
@@ -49,7 +52,8 @@
             ></template
           >
         </multiselect>
-      </div><br><br>
+      </div>
+      <br /><br />
 
       <div class="filter-break"></div>
       <div class="filter-item">
@@ -110,17 +114,13 @@
       will appear in a pop up
        -->
       <div class="chart-item">
-        <label class="title">
-          insert calendar feature here</label
-        >
+        <label class="title"> insert calendar feature here</label>
         <div class="chart-box"></div>
       </div>
 
       <!-- 4th quadrant -->
       <div class="chart-item">
-        <label class="title">
-          Most used Meeting Locations</label
-        >
+        <label class="title"> Most used Meeting Locations</label>
         <div class="chart-box">
           <MeetingLocationChart
             :data="filteredMeetings"
@@ -130,7 +130,6 @@
         </div>
       </div>
     </div>
-    
   </div>
 </template>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
@@ -146,7 +145,7 @@ export default {
     employeeList,
     DangerRiskyChart,
     Multiselect,
-    MeetingLocationChart
+    MeetingLocationChart,
   },
   data() {
     return {
@@ -167,66 +166,66 @@ export default {
       departmentOptions: [
         {
           allGroup: "All",
-          depts: []
-        }
+          depts: [],
+        },
       ],
       contactOptions: [
         {
           allGroup: "All",
-          emps: []
-        }
+          emps: [],
+        },
       ],
       daysOptions: [
         { name: "Last 7 days", value: -7 },
         { name: "Last 14 days", value: -14 },
         { name: "Last 30 days", value: -30 },
-        { name: "Last 90 days", value: -90 }
+        { name: "Last 90 days", value: -90 },
       ],
       selectedContacts: [],
       OldSelectedContacts: ["null"],
-      OldSelectedDepts: []
+      OldSelectedDepts: [],
     };
   },
   watch: {
-    fetchedCheckDeptFlag: function() {
+    fetchedCheckDeptFlag: function () {
       this.updateFilter();
     },
-    deptcheckinsize: function() {
+    deptcheckinsize: function () {
       if (this.checkinsize == this.deptcheckinsize) {
         this.fetchedCheckDeptFlag++;
       }
     },
-    empsDeptSize: function() {
+    empsDeptSize: function () {
       if (this.empsDeptSize == this.deptempsize) {
         this.fetchedCheckDeptFlag++;
       }
     },
-    selectedDepartments: function() {
+    selectedDepartments: function () {
       this.updatingFilterFlag = true;
       this.fetchedCheckDeptFlag++;
     },
-    selectedContacts: function() {
+    selectedContacts: function () {
       if (this.OldSelectedContacts.length != this.selectedContacts.length) {
         this.fetchedCheckDeptFlag++;
         this.OldSelectedContacts = this.selectedContacts;
       }
     },
-    selectedDay: function() {
+    selectedDay: function () {
       this.fetchedCheckDeptFlag++;
-    }
+    },
   },
   created() {
     this.fetchData();
   },
   methods: {
     updateFilter() {
-      let filteredDepts = this.selectedDepartments.map(x => x.id);
+      let filteredDepts = this.selectedDepartments.map((x) => x.id);
 
-      this.filteredCheckIn = this.checkIn.filter(x =>
+      this.filteredCheckIn = this.checkIn.filter((x) =>
         filteredDepts.includes(x.departmentid)
       );
 
-      this.filteredCheckIn = this.filteredCheckIn.filter(x => {
+      this.filteredCheckIn = this.filteredCheckIn.filter((x) => {
         return (
           DateTime.fromISO(DateTime.fromSeconds(x.checkIn.seconds).toISODate())
             .diff(DateTime.fromISO(DateTime.local().toISODate()), ["days"])
@@ -235,11 +234,11 @@ export default {
       });
 
       if (this.empsDeptSize == this.deptempsize) {
-        this.contactOptions[0].emps = this.employees.filter(x => {
+        this.contactOptions[0].emps = this.employees.filter((x) => {
           return filteredDepts.includes(x.departmentid);
         });
         if (this.OldSelectedDepts.length != this.selectedDepartments.length) {
-          this.selectedContacts = this.employees.filter(x =>
+          this.selectedContacts = this.employees.filter((x) =>
             this.contactOptions[0].emps.includes(x)
           );
           this.OldSelectedDepts = this.selectedDepartments;
@@ -251,25 +250,25 @@ export default {
         filteredDepts.includes(x.departmentid)
       );
       */
-      let selectedContactsId = this.selectedContacts.map(x => x.id);
-      let contactedCheckins = this.filteredCheckIn.filter(x =>
+      let selectedContactsId = this.selectedContacts.map((x) => x.id);
+      let contactedCheckins = this.filteredCheckIn.filter((x) =>
         selectedContactsId.includes(x.employee)
       );
-      let contactedCheckinDates = contactedCheckins.map(x =>
+      let contactedCheckinDates = contactedCheckins.map((x) =>
         DateTime.fromSeconds(x.checkIn.seconds).toFormat("DD")
       );
 
-      this.filteredCheckIn = this.filteredCheckIn.filter(x =>
+      this.filteredCheckIn = this.filteredCheckIn.filter((x) =>
         contactedCheckinDates.includes(
           DateTime.fromSeconds(x.checkIn.seconds).toFormat("DD")
         )
       );
-      let contactedAllempsId = this.filteredCheckIn.map(x => x.employee);
-      this.filteredContacts = this.employees.filter(x =>
+      let contactedAllempsId = this.filteredCheckIn.map((x) => x.employee);
+      this.filteredContacts = this.employees.filter((x) =>
         contactedAllempsId.includes(x.id)
       );
-      this.filteredMeetings = this.meetings.filter(meeting => {
-        return meeting.employeesids.some(empid =>
+      this.filteredMeetings = this.meetings.filter((meeting) => {
+        return meeting.employeesids.some((empid) =>
           contactedAllempsId.includes(empid)
         );
       });
@@ -283,11 +282,11 @@ export default {
       database
         .collection("departments")
         .get()
-        .then(departments =>
-          departments.forEach(department => {
+        .then((departments) =>
+          departments.forEach((department) => {
             let departmentRecord = {
               name: department.data().name,
-              id: department.id
+              id: department.id,
             };
             this.departmentOptions[0].depts.push(departmentRecord);
             this.selectedDepartments.push(departmentRecord);
@@ -296,8 +295,8 @@ export default {
       database
         .collection("meetings")
         .get()
-        .then(meetings =>
-          meetings.forEach(meeting => {
+        .then((meetings) =>
+          meetings.forEach((meeting) => {
             let meetingRecord = meeting.data();
             this.meetings.push(meetingRecord);
             meetingRecord.employeesids = [];
@@ -307,13 +306,14 @@ export default {
               .data()
               .location.get()
               .then(
-                location => (meetingRecord.locationName = location.data().name)
+                (location) =>
+                  (meetingRecord.locationName = location.data().name)
               );
-            meeting.data().employees.forEach(emp => {
+            meeting.data().employees.forEach((emp) => {
               meetingRecord.employeesids.push(emp.id);
             });
 
-            meeting.data().accepted.forEach(emp => {
+            meeting.data().accepted.forEach((emp) => {
               meetingRecord.acceptedids.push(emp.id);
             });
           })
@@ -321,10 +321,10 @@ export default {
       database
         .collection("checkIn")
         .get()
-        .then(checkIns => {
+        .then((checkIns) => {
           this.checkinsize = checkIns.size;
 
-          checkIns.forEach(checkIn => {
+          checkIns.forEach((checkIn) => {
             let checkInRecord = checkIn.data();
             checkInRecord.id = checkIn.id;
 
@@ -332,15 +332,15 @@ export default {
               .collection("employees")
               .doc(checkIn.data().employee)
               .get()
-              .then(emp =>
+              .then((emp) =>
                 emp
                   .data()
                   .unit.get()
-                  .then(unit => {
+                  .then((unit) => {
                     unit
                       .data()
                       .department.get()
-                      .then(department => {
+                      .then((department) => {
                         checkInRecord.departmentid = department.id;
                         this.deptcheckinsize++;
                       });
@@ -354,25 +354,25 @@ export default {
       database
         .collection("employees")
         .get()
-        .then(emps => {
+        .then((emps) => {
           this.deptempsize = emps.size;
-          emps.forEach(emp => {
+          emps.forEach((emp) => {
             let empRecord = emp.data();
             empRecord.id = emp.id;
-            empRecord.unit.get().then(unit => {
+            empRecord.unit.get().then((unit) => {
               empRecord.unitname = unit.data().name;
               empRecord.unitid = unit.id;
               unit
                 .data()
                 .location.get()
-                .then(loc => {
+                .then((loc) => {
                   empRecord.unitLocation = loc.data().name;
                   empRecord.unitLocationid = loc.id;
                 });
               unit
                 .data()
                 .department.get()
-                .then(dept => {
+                .then((dept) => {
                   empRecord.department = dept.data().name;
                   empRecord.departmentid = dept.id;
                   this.empsDeptSize++;
@@ -383,8 +383,8 @@ export default {
             this.selectedContacts.push(empRecord);
           });
         });
-    }
-  }
+    },
+  },
 };
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
@@ -417,7 +417,6 @@ export default {
   padding: 0px 40px 0 5px;
   border-radius: px;
   background: #fff;
-  
 }
 /deep/.multiselect,
 /deep/.multiselect_input,
