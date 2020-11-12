@@ -204,7 +204,9 @@ export default {
                 unitRecord.department = department.data().name;
 
                 this.unitsList.push(unitRecord);
-                this.departmentOptions.push(department.data().name);
+                if (!this.departmentOptions.includes(department.data().name)) {
+                  this.departmentOptions.push(department.data().name);
+                }
               });
           })
         );
