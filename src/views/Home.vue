@@ -13,9 +13,9 @@
               <b-card class="mb-3" header="Notifications">
                 <b-row class="pl-2" v-if="!check(this.userInfo)">
                   <p style="text-align:left; font-size:2.5vh;">
-                    Last Check Out:
+                    Last Seen:
 
-                    <strong>{{ getCheckOutTime(this.userInfo) }}</strong>
+                    <strong>{{ getLastSeen(this.userInfo) }}</strong>
                   </p>
 
                   <router-link
@@ -39,8 +39,8 @@
                 </b-row>
                 <b-row class="pl-2" v-if="check(this.userInfo)">
                   <p style="text-align:left; font-size:2.5vh;">
-                    Last Check In:
-                    <strong>{{ getCheckInTime(this.userInfo) }}</strong>
+                    Last Seen:
+                    <strong>{{ getLastSeen(this.userInfo) }}</strong>
                   </p>
 
                   <p class="ml-3">
@@ -378,6 +378,11 @@ export default {
               .get()
               .then(snap => {
                 snap.forEach(checkInRecord => {
+                  /*console.log(
+                    DateTime.fromSeconds(checkInRecord.data().checkIn.seconds)
+          
+                  )*/
+
                   records.lastCheck = {
                     checkIn: checkInRecord.data().checkIn,
                     checkOut: checkInRecord.data().checkOut,
@@ -387,13 +392,15 @@ export default {
                     contactFlag: checkInRecord.data().contactFlag,
                     temperature: checkInRecord.data().temperature
                   };
+
                   records.status =
                     checkInRecord.data().checkOut === undefined
                       ? this.evaluateStatus(
                           records.lastCheck.fluFlag,
                           records.lastCheck.shnFlag,
                           records.lastCheck.contactFlag,
-                          records.lastCheck.temperature
+                          records.lastCheck.temperature,
+                          records.lastCheck.checkIn
                         )
                       : "Out of Office";
                   records.statusType =
@@ -412,18 +419,23 @@ export default {
           });
         });
     },
-    evaluateStatus(fluFlag, shnFlag, contactFlag, temperature) {
-      let status = "???";
-
-      if (fluFlag !== undefined) {
-        let flags =
-          Number(fluFlag) +
-          Number(shnFlag) +
-          Number(contactFlag) +
-          Number(temperature > 37.5);
-        status = flags == 0 ? "Safe" : flags < 3 ? "Risky" : "Danger";
-      } else {
-        status = "Out of Office";
+    evaluateStatus(fluFlag, shnFlag, contactFlag, temperature, checkIn) {
+      let status = "Out of Office";
+      if (
+        DateTime.fromISO(DateTime.fromSeconds(checkIn.seconds).toISODate())
+          .diff(DateTime.fromISO(DateTime.local().toISODate()), ["days"])
+          .toObject().days == 0
+      ) {
+        if (fluFlag !== undefined) {
+          let flags =
+            Number(fluFlag) +
+            Number(shnFlag) +
+            Number(contactFlag) +
+            Number(temperature > 37.5);
+          status = flags == 0 ? "Safe" : flags < 3 ? "Risky" : "Danger";
+        } else {
+          status = "Out of Office";
+        }
       }
       return status;
     },
@@ -446,6 +458,17 @@ export default {
     check(userInfo) {
       try {
         if (userInfo) {
+          if (
+            DateTime.fromISO(
+              DateTime.fromSeconds(
+                userInfo.lastCheck.checkIn.seconds
+              ).toISODate()
+            )
+              .diff(DateTime.fromISO(DateTime.local().toISODate()), ["days"])
+              .toObject().days != 0
+          ) {
+            return false;
+          }
           if (Object.keys(userInfo.lastCheck).length != 0) {
             return userInfo.lastCheck.checkOut === undefined;
           } else {
@@ -468,28 +491,23 @@ export default {
         return "secondary";
       }
     },
-    getCheckInTime(userInfo) {
+    getLastSeen(userInfo) {
       try {
-        return DateTime.fromSeconds(
-          userInfo.lastCheck.checkIn.seconds
-        ).toFormat(`ff`);
-      } catch (err) {
-        return "None";
-      }
-    },
-    getCheckOutTime(userInfo) {
-      try {
-        if (userInfo.lastCheck.checkOut === undefined) {
-          return "None";
-        } else {
-          return DateTime.fromSeconds(
-            userInfo.lastCheck.checkOut.seconds
-          ).toFormat(`ff`);
+        if (userInfo.lastCheck) {
+          if (userInfo.lastCheck.checkOut) {
+            return DateTime.fromSeconds(
+              userInfo.lastCheck.checkOut.seconds
+            ).toFormat(`ff`);
+          } else {
+            return DateTime.fromSeconds(
+              userInfo.lastCheck.checkIn.seconds
+            ).toFormat(`ff`);
+          }
         }
       } catch (err) {
         err;
-        return "None";
       }
+      return "None";  
     },
     checkOut() {
       let userId = auth.currentUser.uid;
