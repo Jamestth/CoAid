@@ -73,15 +73,27 @@ export default {
   },
   methods: {
     fetchdata() {
+      //get empId
       let userId = auth.currentUser.uid;
-      
+      let empId = auth.currentUser.uid;
+      database
+        .collection("employees")
+        .get()
+        .then(emps =>
+          emps.forEach(emp => {
+            if (emp.data().uid == userId) {
+              empId = emp.id;
+            }
+          })
+        );
+        
       database
         .collection("rosters")
         .get()
         .then(rosters =>{
           rosters.forEach(roster => {
             let emps = roster.data().selectedEmp;
-            if(emps.map(x => x.uid).includes(userId)){
+            if(emps.map(x => x.eid).includes(empId)){
               console.log(roster.data().startDate);
               this.name = roster.data().name;
               let attr = {

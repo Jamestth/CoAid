@@ -177,7 +177,7 @@ export default {
           emps.forEach(emp => {
             let empRecord = {
               name: emp.data().name,
-              uid: emp.data().uid
+              eid: emp.id
             };
             this.employees.push(empRecord);
           })
