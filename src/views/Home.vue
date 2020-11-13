@@ -388,12 +388,28 @@ export default {
               status: "Out of Office",
               statusType: "secondary",
               office: "",
+              rosters: [],
             };
             this.employees.push(records);
             this.userInfo = this.employees.filter(
               (x) => x.uid == this.userId
             )[0];
             this.totalRows = this.employees.length;
+
+            database
+              .collection("rosters")
+              .get()
+              .then((rosters) => {
+                rosters.forEach((roster) => {
+                  roster.data().selectedEmp.forEach((emp) =>
+                    emp.get().then((x) => {
+                      if (x.id == records.eid) {
+                        records.rosters.push(roster.data());
+                      }
+                    })
+                  );
+                });
+              });
 
             employeeData.unit.get().then((unit) => {
               unit = unit.data();
