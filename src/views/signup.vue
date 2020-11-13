@@ -24,10 +24,10 @@
       </b-col>
       <b-col></b-col>
     </b-row>
-    <b-form @submit.prevent="submit">
+    <b-form class="pt-5" @submit.prevent="submit">
       <b-row>
         <b-col></b-col>
-        <b-col md="3">
+        <b-col xs= "10" md="3">
           <b-form-group label-cols="4" label="Name:" label-align="left">
             <b-form-input
               v-model="form.name"

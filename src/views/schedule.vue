@@ -6,7 +6,9 @@
         <br />
         <h2>Here's your schedule, {{ this.userInfo.data().name }}</h2>
         <br />
-        <h1 v-if="this.name != ''">You are in Roster: <b>{{ this.name }}</b></h1>
+        <h1 v-if="this.name != ''">
+          You are in Roster: <b>{{ this.name }}</b>
+        </h1>
         <h1 v-else>You are not in any roster</h1>
       </b-col>
       <b-col></b-col>
@@ -33,8 +35,8 @@
           </b-list-group-item>
         </b-list-group>
       </b-col>
-            <b-col cols="3">
-        <h2> Other Rosters</h2>
+      <b-col cols="3">
+        <h2>Other Rosters</h2>
         <b-form-select
           v-model="activeRoster"
           @change.native="updateEmp"
@@ -55,12 +57,11 @@
           </b-list-group-item>
         </b-list-group>
       </b-col>
-      <b-col/>
+      <b-col />
       <b-col></b-col>
     </b-row>
     <b-row>
-      <b-col/>
-
+      <b-col />
     </b-row>
   </div>
 </template>

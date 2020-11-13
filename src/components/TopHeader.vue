@@ -88,6 +88,7 @@ export default {
       auth
         .signOut()
         .then(function() {
+          auth.currentUser = null;
           this.$router.push({ path: "/login" }).catch(error => error)
         })
         .catch(function(error) {
