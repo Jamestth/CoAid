@@ -82,7 +82,7 @@
                       >
                         <b-avatar
                           :src="emp.avatar"
-                          style="float:left; padding:5px; background-color:white"
+                          style="float:right; padding:5px; background-color:white"
                         ></b-avatar>
                         <p style="padding:5px;">{{ emp.name }}</p>
                       </b-list-group-item>
@@ -105,7 +105,7 @@
                       >
                         <b-avatar
                           :src="emp.avatar"
-                          style="float:left; padding:5px; background-color:white"
+                          style="float:right; padding:5px; background-color:white"
                         ></b-avatar>
 
                         <p>{{ emp.name }}</p>
