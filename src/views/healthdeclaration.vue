@@ -62,7 +62,7 @@
       </tr>
       <tr>
         <td>
-          Do you have pneunomia or respiratory symptoms (e.g. fever, cough,
+          Do you have pneumonia or respiratory symptoms (e.g. fever, cough,
           <br />
           runny nose, breathing problems etc.) or feel unwell? <br />
           <div class="d-flex justify-content-center">
