@@ -10,12 +10,12 @@
     >
       <template #title>
         <b-avatar
-          style="border-style: solid;"
+          style="border-style: solid"
           class="align-center"
           :src="row.item.avatar"
           size="4rem"
         ></b-avatar>
-        <div style="float:right;">
+        <div style="float: right">
           <h4>{{ row.item.name }}</h4>
           <b-link
             variant="primary"
@@ -31,7 +31,7 @@
           ><p>{{ key.toUpperCase() }}:</p></b-col
         >
         <b-col
-          ><p style="font-weight:bold">{{ value }}</p></b-col
+          ><p style="font-weight: bold">{{ value }}</p></b-col
         >
       </b-row>
     </b-popover>
@@ -57,10 +57,22 @@ export default {
         "Last checked out at": this.formatTime(
           this.$props.row.item.lastCheck.checkOut
         ),
+        Roster: "None",
+        Schedule: "None",
       },
     };
   },
-  created() {
+  mounted() {
+    if (this.$props.row.item.rosters.length != 0) {
+      let curRoster = this.$props.row.item.rosters.sort((a, b) => {
+        let aStart = DateTime.fromISO(a.StartDate);
+        let bStart = DateTime.fromISO(b.StartDate);
+        return aStart.diff(bStart, ["days"]).toObject().days;
+      })[0];
+
+      this.infoList.Roster = curRoster.name;
+      this.infoList.Schedule = curRoster.schedule;
+    }
   },
   methods: {
     formatTime(timestamp) {
