@@ -31,9 +31,20 @@
         </b-list-group>
       </b-col>
       <b-col>
-        <b-dropdown id="dropdown-dropright" text="Select Cluster" variant="dark" class="m-2">
-          <b-dropdown-item-button v-for="cluster in clusters" :name = "cluster" :key="cluster"> {{cluster}} </b-dropdown-item-button>
-        </b-dropdown>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <b-form-select v-model="activeRoster" @change.native="updateEmp" id="cluster" text="Select Cluster" variant="dark" class="m-2" :options="rosters">
+        </b-form-select>
+        <b-list-group :key="activeRoster">
+          <b-list-group-item variant="dark"
+            v-for="employee in otherEmployees"
+            :key="employee"
+          >
+            {{ employee }}
+          </b-list-group-item>
+        </b-list-group>
       </b-col>
     </b-row>
   </div>
@@ -55,9 +66,12 @@ export default {
       userInfo: "",
       selectedEmp: [],
       employees: [],
-      clusters: ["A", "B", "C", "D"]
+      rosters: [],
+      otherEmployees:[],
+      activeRoster: "",
     };
   },
+
   created() {
     this.fetchdata();
   },
@@ -81,7 +95,13 @@ export default {
         .get()
         .then(rosters => {
           rosters.forEach(roster => {
+            let rst = {
+              value: roster.id,
+              text: roster.data().name
+            }
+            this.rosters.push(rst)
             let emps = roster.data().selectedEmp;
+
             if (emps.map(x => x.id).includes(this.userInfo.id)) {
               this.name = roster.data().name;
               emps.forEach(x => {
@@ -102,6 +122,23 @@ export default {
               this.attrs.push(attr);
             }
           });
+        });
+    },
+    updateEmp(){
+      console.log(length(this.otherEmployees));
+      this.otherEmployees = [];
+      database
+        .collection("rosters")
+        .get()
+        .then(roster => {
+          if(roster.id == this.activeRoster){
+            let emps = roster.data().selectedEmp;
+            emps.forEach(x => {
+                x.get().then(x => {
+                  this.otherEmployees.push(x.data().name);
+                });
+              });
+          }
         });
     }
   }
