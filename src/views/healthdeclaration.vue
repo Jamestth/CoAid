@@ -62,7 +62,7 @@
       </tr>
       <tr>
         <td>
-          Do you have pneunomia or respiratory symptomps (e.g. fever, cough,
+          Do you have pneumonia or respiratory symptoms (e.g. fever, cough,
           <br />
           runny nose, breathing problems etc.) or feel unwell? <br />
           <div class="d-flex justify-content-center">
@@ -114,7 +114,7 @@
               style="margin:0"
               v-on:click="submit()"
             >
-              submit
+              Submit
             </button>
           </div>
         </td>

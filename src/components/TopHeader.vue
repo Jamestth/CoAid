@@ -22,7 +22,12 @@
             >
             <b-nav-item class="pr-3 p-2" to="/schedule">Schedule</b-nav-item>
             <b-nav-item class="pr-3 p-2" to="/meetings">Meetings</b-nav-item>
-            <b-nav-item class="pr-3 p-2" to="/analytics">Analytics</b-nav-item>
+            <b-nav-item v-if="isAdmin()" class="pr-3 p-2" to="/analytics"
+              >Analytics</b-nav-item
+            >
+            <b-nav-item v-if="isAdmin()" class="pr-3 p-2" to="/setroster"
+              >Rostering</b-nav-item
+            >
 
             <b-nav-item-dropdown right>
               <!-- Using 'button-content' slot -->
@@ -60,7 +65,8 @@ export default {
   data() {
     return {
       avatar: "",
-      eId: ""
+      eId: "",
+      admin: false
     };
   },
   created() {
@@ -75,10 +81,15 @@ export default {
   },
 
   methods: {
+    isAdmin() {
+      return this.admin;
+    },
     signOut() {
       auth
         .signOut()
-        .then(function() {})
+        .then(function() {
+          this.$router.push({ path: "/login" }).catch(error => error)
+        })
         .catch(function(error) {
           error;
         });
@@ -97,6 +108,7 @@ export default {
             let employeeData = employee.data();
             this.avatar = employeeData.avatar;
             this.eId = employee.id;
+            this.admin = employeeData.admin;
           });
         });
     }

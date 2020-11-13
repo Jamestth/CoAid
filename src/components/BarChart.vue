@@ -15,7 +15,7 @@
 import LineChart from "./BarChart.js";
 //import { DateTime } from "luxon";
 export default {
-  props: ["data"],
+  props: ["data", "selectedDay"],
   components: {
     LineChart
   },
@@ -33,10 +33,7 @@ export default {
         responsive: true,
         maintainAspectRatio: false,
         title: {
-          display: true,
-          text: "Risky and Danger (Past 30 Days)",
-          fontColor: "Black",
-          fontSize: 15
+          display: false
         },
         legend: {
           display: false
@@ -114,11 +111,11 @@ export default {
         backgroundColor: []
       };
       let palette = [
-        "#F94144",
-        "#F3722C",
-        "#F8961E",
-        "#F9844A",
-        "#F9C74F",
+        "#F9E79F",
+        "#82E0AA",
+        "#F8C471",
+        "#DAF7A6",
+        "#27AE60",
         "#90BE6D",
         "#43AA8B",
         "#4D908E",
@@ -126,6 +123,26 @@ export default {
         "#277DA1"
       ];
       var i = 0;
+      let sortedLocList = [];
+      this.locations.forEach(location => {
+        let locListRecord = [
+          location,
+          this.$props.data.filter(meetings => meetings.locationName == location)
+            .length
+        ];
+        sortedLocList.push(locListRecord);
+      });
+      sortedLocList = sortedLocList.sort((a, b) => {
+        return b[1] - a[1];
+      });
+      sortedLocList.forEach(x => {
+        locData.data.push(x[1]);
+        locData.label.push(x[0]);
+        this.options.scales.xAxes[0].labels.push(x[0]);
+        locData.backgroundColor.push(palette[i % 11]);
+        i++;
+      });
+      /*
       this.locations.forEach(location => {
         locData.data.push(
           this.$props.data.filter(meetings => meetings.locationName == location)
@@ -136,6 +153,7 @@ export default {
         locData.backgroundColor.push(palette[i % 11]);
         i++;
       });
+*/
       this.dataset.datasets.push(locData);
     }
   }

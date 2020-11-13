@@ -32,7 +32,7 @@
                 style="margin:0"
                 v-on:click="checkOut()"
               >
-                CheckOut
+                Check Out
               </button>
             </b-row>
           </b-col>
