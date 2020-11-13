@@ -172,8 +172,8 @@ export default {
         { name: "15 Minutes", value: "15" },
         { name: "30 Minutes", value: "30" },
         { name: "45 Minutes", value: "45" },
-        { name: "60 Minutes", value: "60" }
-      ]
+        { name: "60 Minutes", value: "60" },
+      ],
     };
   },
 
@@ -186,7 +186,9 @@ export default {
 
   methods: {
     checkfill() {
-      if (
+      if (this.selectedEmp.length > 4) {
+        alert("Meetings should be limited to 5 people.");
+      } else if (
         (this.selectedDate &&
           this.selectedStartTime &&
           this.duration &&
@@ -216,11 +218,11 @@ export default {
           month: datapart[1],
           day: datapart[2],
           hour: timepart[0],
-          minutes: timepart[1]
+          minutes: timepart[1],
         });
 
         let curEndDatetime = curSelectedDateTime.plus({
-          minutes: this.duration.value
+          minutes: this.duration.value,
         });
         let empRefs = [];
         let curAccepted = [];
@@ -228,7 +230,7 @@ export default {
 
         curAccepted.push(curEmpRef);
         empRefs.push(curEmpRef);
-        this.selectedEmp.forEach(emp => {
+        this.selectedEmp.forEach((emp) => {
           let empRef = database.doc("/employees/" + emp.eid);
           empRefs.push(empRef);
         });
@@ -244,13 +246,15 @@ export default {
             curSelectedDateTime.toMillis()
           ),
           location: locRef,
-          name: this.name
+          name: this.name,
         };
         database
           .collection("meetings")
           .add(meetingRecord)
           .then(
-            this.$router.push({ path: "/meetingsuccess" }).catch(error => error)
+            this.$router
+              .push({ path: "/meetingsuccess" })
+              .catch((error) => error)
           );
       } else {
         alert("Please acknowledge the Meeting Agreement.");
@@ -261,11 +265,11 @@ export default {
       database
         .collection("employees")
         .get()
-        .then(emps =>
-          emps.forEach(emp => {
+        .then((emps) =>
+          emps.forEach((emp) => {
             let empRecord = {
               name: emp.data().name,
-              eid: emp.id
+              eid: emp.id,
             };
             if (emp.data().uid != userId) {
               this.employees.push(empRecord);
@@ -277,17 +281,17 @@ export default {
       database
         .collection("locations")
         .get()
-        .then(locs =>
-          locs.forEach(loc => {
+        .then((locs) =>
+          locs.forEach((loc) => {
             let locRecord = {
               name: loc.data().name,
-              id: loc.id
+              id: loc.id,
             };
             this.locations.push(locRecord);
           })
         );
-    }
-  }
+    },
+  },
 };
 </script>
 

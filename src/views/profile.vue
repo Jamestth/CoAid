@@ -3,7 +3,7 @@
     <b-col></b-col>
     <b-col md="4">
       <div v-if="profileFound">
-        <b-form @submit="onSubmit" @reset="onReset">
+        <b-form @submit.prevent="onSubmit" @reset="onReset">
           <b-col> </b-col>
           <b-img
             v-bind:src="userInfo.avatar"
@@ -54,6 +54,7 @@
               v-model="userInfo.email"
               type="email"
               placeholder="Enter a email"
+              pattern="[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*"
               required
               :disabled="!editMode"
             ></b-form-input>
@@ -104,6 +105,7 @@
               v-model="userInfo.phone"
               placeholder="Enter Contact details"
               required
+              pattern="[0-9]{8}"
               type="tel"
               :disabled="!editMode"
             ></b-form-input>

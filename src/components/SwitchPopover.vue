@@ -1,5 +1,5 @@
 <template>
-  <div style="padding:0" v-bind:id="row.item.meetingId + ''">
+  <div  style="padding:0" v-bind:id="row.item.meetingId + ''">
     <b-form-checkbox
       switch
       :disabled="row.item.isEnded"
@@ -12,8 +12,9 @@
       v-bind:target="row.item.meetingId + ''"
       triggers="hover"
       placement="right"
+      class="attendees-box"
     >
-      <template #title>
+      <template  #title>
         <h3>Attendees</h3>
         <b-list-group>
           <b-list-group-item

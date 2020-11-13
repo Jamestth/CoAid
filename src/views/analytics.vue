@@ -16,6 +16,7 @@
           v-model="selectedDay"
           :options="daysOptions"
           :close-on-select="true"
+          :max-height="150"
         >
           <template slot="selection" slot-scope="{ values, search, isOpen }"
             ><span
@@ -26,7 +27,6 @@
           >
         </multiselect>
       </div>
-      <br /><br />
       <div class="filter-break"></div>
       <div class="filter-item">
         <label class="filter-labels">Department</label>
@@ -53,7 +53,6 @@
           >
         </multiselect>
       </div>
-      <br /><br />
 
       <div class="filter-break"></div>
       <div class="filter-item">
@@ -136,7 +135,6 @@
     </div>
   </div>
 </template>
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <script>
 import employeeList from "./../components/employeeList";
 import { DateTime } from "luxon";
@@ -152,7 +150,7 @@ export default {
     DangerRiskyChart,
     Multiselect,
     MeetingLocationChart,
-    Calendar
+    Calendar,
   },
   data() {
     return {
@@ -173,68 +171,68 @@ export default {
       departmentOptions: [
         {
           allGroup: "All",
-          depts: []
-        }
+          depts: [],
+        },
       ],
       contactOptions: [
         {
           allGroup: "All",
-          emps: []
-        }
+          emps: [],
+        },
       ],
       daysOptions: [
         { name: "Last 7 days", value: -7 },
         { name: "Last 14 days", value: -14 },
         { name: "Last 30 days", value: -30 },
-        { name: "Last 90 days", value: -90 }
+        { name: "Last 90 days", value: -90 },
       ],
       selectedContacts: [],
       OldSelectedContacts: ["null"],
       OldSelectedDepts: [],
       //Calendar Attributes
-      calattr: []
+      calattr: [],
     };
   },
   watch: {
-    fetchedCheckDeptFlag: function() {
+    fetchedCheckDeptFlag: function () {
       this.updateFilter();
     },
-    deptcheckinsize: function() {
+    deptcheckinsize: function () {
       if (this.checkinsize == this.deptcheckinsize) {
         this.fetchedCheckDeptFlag++;
       }
     },
-    empsDeptSize: function() {
+    empsDeptSize: function () {
       if (this.empsDeptSize == this.deptempsize) {
         this.fetchedCheckDeptFlag++;
       }
     },
-    selectedDepartments: function() {
+    selectedDepartments: function () {
       this.updatingFilterFlag = true;
       this.fetchedCheckDeptFlag++;
     },
-    selectedContacts: function() {
+    selectedContacts: function () {
       if (this.OldSelectedContacts.length != this.selectedContacts.length) {
         this.fetchedCheckDeptFlag++;
         this.OldSelectedContacts = this.selectedContacts;
       }
     },
-    selectedDay: function() {
+    selectedDay: function () {
       this.fetchedCheckDeptFlag++;
-    }
+    },
   },
   created() {
     this.fetchData();
   },
   methods: {
     updateFilter() {
-      let filteredDepts = this.selectedDepartments.map(x => x.id);
+      let filteredDepts = this.selectedDepartments.map((x) => x.id);
 
-      this.filteredCheckIn = this.checkIn.filter(x =>
+      this.filteredCheckIn = this.checkIn.filter((x) =>
         filteredDepts.includes(x.departmentid)
       );
 
-      this.filteredCheckIn = this.filteredCheckIn.filter(x => {
+      this.filteredCheckIn = this.filteredCheckIn.filter((x) => {
         return (
           DateTime.fromISO(DateTime.fromSeconds(x.checkIn.seconds).toISODate())
             .diff(DateTime.fromISO(DateTime.local().toISODate()), ["days"])
@@ -243,11 +241,11 @@ export default {
       });
 
       if (this.empsDeptSize == this.deptempsize) {
-        this.contactOptions[0].emps = this.employees.filter(x => {
+        this.contactOptions[0].emps = this.employees.filter((x) => {
           return filteredDepts.includes(x.departmentid);
         });
         if (this.OldSelectedDepts.length != this.selectedDepartments.length) {
-          this.selectedContacts = this.employees.filter(x =>
+          this.selectedContacts = this.employees.filter((x) =>
             this.contactOptions[0].emps.includes(x)
           );
           this.OldSelectedDepts = this.selectedDepartments;
@@ -259,25 +257,25 @@ export default {
         filteredDepts.includes(x.departmentid)
       );
       */
-      let selectedContactsId = this.selectedContacts.map(x => x.id);
-      let contactedCheckins = this.filteredCheckIn.filter(x =>
+      let selectedContactsId = this.selectedContacts.map((x) => x.id);
+      let contactedCheckins = this.filteredCheckIn.filter((x) =>
         selectedContactsId.includes(x.employee)
       );
-      let contactedCheckinDates = contactedCheckins.map(x =>
+      let contactedCheckinDates = contactedCheckins.map((x) =>
         DateTime.fromSeconds(x.checkIn.seconds).toFormat("DD")
       );
 
-      this.filteredCheckIn = this.filteredCheckIn.filter(x =>
+      this.filteredCheckIn = this.filteredCheckIn.filter((x) =>
         contactedCheckinDates.includes(
           DateTime.fromSeconds(x.checkIn.seconds).toFormat("DD")
         )
       );
-      let contactedAllempsId = this.filteredCheckIn.map(x => x.employee);
-      this.filteredContacts = this.employees.filter(x =>
+      let contactedAllempsId = this.filteredCheckIn.map((x) => x.employee);
+      this.filteredContacts = this.employees.filter((x) =>
         contactedAllempsId.includes(x.id)
       );
-      this.filteredMeetings = this.meetings.filter(meeting => {
-        return meeting.employeesids.some(empid =>
+      this.filteredMeetings = this.meetings.filter((meeting) => {
+        return meeting.employeesids.some((empid) =>
           contactedAllempsId.includes(empid)
         );
       });
@@ -291,11 +289,11 @@ export default {
       database
         .collection("departments")
         .get()
-        .then(departments =>
-          departments.forEach(department => {
+        .then((departments) =>
+          departments.forEach((department) => {
             let departmentRecord = {
               name: department.data().name,
-              id: department.id
+              id: department.id,
             };
             this.departmentOptions[0].depts.push(departmentRecord);
             this.selectedDepartments.push(departmentRecord);
@@ -304,8 +302,8 @@ export default {
       database
         .collection("meetings")
         .get()
-        .then(meetings =>
-          meetings.forEach(meeting => {
+        .then((meetings) =>
+          meetings.forEach((meeting) => {
             let meetingRecord = meeting.data();
             this.meetings.push(meetingRecord);
             meetingRecord.employeesids = [];
@@ -315,13 +313,14 @@ export default {
               .data()
               .location.get()
               .then(
-                location => (meetingRecord.locationName = location.data().name)
+                (location) =>
+                  (meetingRecord.locationName = location.data().name)
               );
-            meeting.data().employees.forEach(emp => {
+            meeting.data().employees.forEach((emp) => {
               meetingRecord.employeesids.push(emp.id);
             });
 
-            meeting.data().accepted.forEach(emp => {
+            meeting.data().accepted.forEach((emp) => {
               meetingRecord.acceptedids.push(emp.id);
             });
           })
@@ -329,10 +328,10 @@ export default {
       database
         .collection("checkIn")
         .get()
-        .then(checkIns => {
+        .then((checkIns) => {
           this.checkinsize = checkIns.size;
 
-          checkIns.forEach(checkIn => {
+          checkIns.forEach((checkIn) => {
             let checkInRecord = checkIn.data();
             checkInRecord.id = checkIn.id;
 
@@ -340,15 +339,15 @@ export default {
               .collection("employees")
               .doc(checkIn.data().employee)
               .get()
-              .then(emp =>
+              .then((emp) =>
                 emp
                   .data()
                   .unit.get()
-                  .then(unit => {
+                  .then((unit) => {
                     unit
                       .data()
                       .department.get()
-                      .then(department => {
+                      .then((department) => {
                         checkInRecord.departmentid = department.id;
                         this.deptcheckinsize++;
                       });
@@ -362,25 +361,25 @@ export default {
       database
         .collection("employees")
         .get()
-        .then(emps => {
+        .then((emps) => {
           this.deptempsize = emps.size;
-          emps.forEach(emp => {
+          emps.forEach((emp) => {
             let empRecord = emp.data();
             empRecord.id = emp.id;
-            empRecord.unit.get().then(unit => {
+            empRecord.unit.get().then((unit) => {
               empRecord.unitname = unit.data().name;
               empRecord.unitid = unit.id;
               unit
                 .data()
                 .location.get()
-                .then(loc => {
+                .then((loc) => {
                   empRecord.unitLocation = loc.data().name;
                   empRecord.unitLocationid = loc.id;
                 });
               unit
                 .data()
                 .department.get()
-                .then(dept => {
+                .then((dept) => {
                   empRecord.department = dept.data().name;
                   empRecord.departmentid = dept.id;
                   this.empsDeptSize++;
@@ -395,9 +394,9 @@ export default {
       database
         .collection("checkIn")
         .get()
-        .then(entries => {
+        .then((entries) => {
           var dates = {};
-          entries.forEach(entry => {
+          entries.forEach((entry) => {
             var date = entry.data().checkIn.toDate();
             date.setHours(0, 0, 0, 0);
             dates[date] = (dates[date] || 0) + 1;
@@ -409,17 +408,17 @@ export default {
               popover: {
                 label: dates[date].toString() + " check-ins",
                 visibility: "hover",
-                hideIndicator: true
-              }
+                hideIndicator: true,
+              },
             };
-            console.log(typeof(date));
+            console.log(typeof date);
 
             this.calattr.push(attr);
           }
         });
       console.log(this.calattr);
-    }
-  }
+    },
+  },
 };
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
@@ -440,7 +439,6 @@ export default {
   padding: 30px;
 }
 /deep/.multiselect__select {
-  padding: 30px;
 }
 /deep/.multiselect {
   width: 18vw;
@@ -458,7 +456,8 @@ export default {
 /deep/.multiselect_single {
   font-family: inherit;
   font-size: 15px;
-  padding: 30px;
+  padding-right: 1vw;
+  padding-left: 1vw;
 }
 /deep/.multiselect_single {
   width: 10px;
@@ -468,19 +467,7 @@ export default {
 .analytics {
   display: flex;
 }
-.charts {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  width: 80vw;
-}
 
-.chart-item {
-  width: 35vw;
-  height: 40vh;
-  border: 1px solid lightgray;
-  align-items: center;
-}
 .break {
   flex-basis: 100%;
   height: 0;
@@ -496,7 +483,7 @@ export default {
   justify-content: space-around;
 }
 .filter-item {
-  width: 18vw;
+  width: 20vw;
   height: 10vh;
 }
 .title {
@@ -504,8 +491,22 @@ export default {
   vertical-align: center;
   margin: 0;
 }
+
+.charts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 80vw;
+}
+
+.chart-item {
+  width: 37vw;
+  height: 40vh;
+  border: 1px solid lightgray;
+  align-items: center;
+}
 .listbox {
-  width: 35vw;
+  width: 37vw;
   height: 37vh;
   align-items: center;
   overflow-y: scroll;

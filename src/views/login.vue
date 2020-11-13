@@ -6,12 +6,12 @@
       </tr>
       <tr>
         <td align="center">
-          <img src="../assets/logomainpage.png" style="width:20%" />
+          <img src="../assets/logomainpage.png" style="width:20vh" />
         </td>
       </tr>
       <tr>
         <td align="center">
-          <img src="../assets/coaidname.png" style="width:20%" />
+          <img src="../assets/coaidname.png" style="width:20vh" />
         </td>
       </tr>
     </table>

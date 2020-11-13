@@ -15,14 +15,14 @@
     </b-row>
 
     <b-row>
-      <b-col></b-col>
-      <b-col cols="4">
+      <b-col cols="1"></b-col>
+      <b-col cols="3">
         <h3>Calendar</h3>
-        <Calendar color="blue" :attributes="attrs" is-expanded is-dark />
+        <Calendar color="blue" :attributes="attrs" is-expanded is-light />
       </b-col>
 
-      <b-col cols="4">
-        <h3>Roster Members</h3>
+      <b-col cols="3">
+        <h3>Your Roster</h3>
         <br />
         <b-list-group>
           <b-list-group-item
@@ -35,12 +35,8 @@
           </b-list-group-item>
         </b-list-group>
       </b-col>
-      <b-col> </b-col>
-    </b-row>
-    <b-row>
-      <b-col />
-      <b-col cols="8">
-        <h2>Check out other rosters!</h2>
+      <b-col cols="3">
+        <h2>Other Rosters</h2>
         <b-form-select
           v-model="activeRoster"
           @change.native="updateEmp"
@@ -61,6 +57,10 @@
           </b-list-group-item>
         </b-list-group>
       </b-col>
+      <b-col />
+      <b-col></b-col>
+    </b-row>
+    <b-row>
       <b-col />
     </b-row>
   </div>
