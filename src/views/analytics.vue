@@ -84,7 +84,7 @@
     <div class="charts">
       <!-- 1st quadrant: Top 10 Risky & Danger List -->
       <div class="chart-item">
-        <label class="title">Top Risky & Dangerous Employees </label>
+        <label class="title"> Potential contacts by Filtered Employees </label>
         <div class="listbox">
           <employeeList
             :data="filteredContacts"
@@ -120,7 +120,7 @@
 
       <!-- 4th quadrant -->
       <div class="chart-item">
-        <label class="title"> Most used Meeting Locations</label>
+        <label class="title"> Most used Meeting Locations by Potential Contacts & Employees </label>
         <div class="chart-box">
           <MeetingLocationChart
             :data="filteredMeetings"
