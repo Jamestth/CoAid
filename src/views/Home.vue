@@ -458,8 +458,9 @@ export default {
         });
     },
     getRoster(employeeId) {
+      let output = null;
       try {
-        return this.rostersData
+        output = this.rostersData
           .filter((x) => x.selectedEmp.includes(employeeId))
           .filter((x) => {
             //let start = DateTime.fromISO(x.startDate)
@@ -474,6 +475,12 @@ export default {
           })[0];
       } catch (err) {
         err;
+        console.log("hi");
+        return { name: "none", schedule: "You are not assigned to a roster" };
+      }
+      if (output) {
+        return output;
+      } else {
         return { name: "none", schedule: "You are not assigned to a roster" };
       }
     },
