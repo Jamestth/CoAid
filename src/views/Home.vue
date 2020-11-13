@@ -6,13 +6,13 @@
         <!-- Notifications -->
         <b-container>
           <b-row class="pl-3 pr-3 pt-3">
-            <h1 style="text-align:left; font-size:5vh;">Dashboard</h1>
+            <h1 style="text-align: left; font-size: 5vh">Dashboard</h1>
           </b-row>
           <b-row class="notif">
             <b-col>
               <b-card class="mb-3" header="Notifications">
                 <b-row class="pl-2" v-if="!check(this.userInfo)">
-                  <p style="text-align:left; font-size:2.5vh;">
+                  <p style="text-align: left; font-size: 2.5vh">
                     Last Seen:
 
                     <strong>{{ getLastSeen(this.userInfo) }}</strong>
@@ -22,39 +22,40 @@
                     to="/healthdeclaration"
                     tag="button"
                     class="btn"
-                    style="margin:0"
+                    style="margin: 0"
                     v-on:click="check"
                   >
                     <span v-on:click="this.check">Check In</span>
                   </router-link>
                 </b-row>
-                <b-row class="pl-2 pt-2" v-if="!check(this.userInfo)">
-                  <p style="text-align:left; font-size:2.5vh ">
-                    Rotation Team:
-                    <strong>A</strong>
-                    <br />
-                    <!-- { this.userInfo.rotationTeam } -->
-                    You can report to office this week
-                  </p>
-                </b-row>
+
                 <b-row class="pl-2" v-if="check(this.userInfo)">
-                  <p style="text-align:left; font-size:2.5vh;">
+                  <p style="text-align: left; font-size: 2.5vh">
                     Last Seen:
                     <strong>{{ getLastSeen(this.userInfo) }}</strong>
                   </p>
 
                   <p class="ml-3">
-                    <button tag="button" class="btn" style="margin:0">
+                    <button tag="button" class="btn" style="margin: 0">
                       <span v-on:click="this.checkOut">Check Out</span>
                     </button>
                   </p>
                 </b-row>
                 <b-row class="pl-2 pt-2" v-if="check(this.userInfo)">
-                  <p style="text-align:left; font-size:2.5vh ">Status:</p>
+                  <p style="text-align: left; font-size: 2.5vh">Status:</p>
                   <p class="ml-3" :style="statusColor">
                     {{ this.userInfo.status }}
                   </p>
                   <br />
+                </b-row>
+                <b-row class="pl-2 pt-2" v-if="this.userInfo">
+                  <p style="text-align: left; font-size: 2.5vh">
+                    Current Rotation Team:
+                    <strong>{{ getRoster(this.userInfo.eid).name }}</strong>
+                    <br />
+                    <!-- { this.userInfo.rotationTeam } -->
+                    {{ getRoster(this.userInfo.eid).schedule }}
+                  </p>
                 </b-row>
                 <!-- Display -->
               </b-card>
@@ -82,9 +83,13 @@
                       >
                         <b-avatar
                           :src="emp.avatar"
-                          style="float:right; padding:5px; background-color:white"
+                          style="
+                            float: right;
+                            padding: 5px;
+                            background-color: white;
+                          "
                         ></b-avatar>
-                        <p style="padding:5px;">{{ emp.name }}</p>
+                        <p style="padding: 5px">{{ emp.name }}</p>
                       </b-list-group-item>
                     </b-list-group>
                   </b-popover>
@@ -105,7 +110,11 @@
                       >
                         <b-avatar
                           :src="emp.avatar"
-                          style="float:right; padding:5px; background-color:white"
+                          style="
+                            float: right;
+                            padding: 5px;
+                            background-color: white;
+                          "
                         ></b-avatar>
 
                         <p>{{ emp.name }}</p>
@@ -122,7 +131,7 @@
         <b-container>
           <b-row class="pb-3">
             <b-col>
-              <h2 style="text-align:left; font-size:5vh;">Colleagues</h2>
+              <h2 style="text-align: left; font-size: 5vh">Colleagues</h2>
             </b-col>
             <b-col cols="6" class="mr-auto">
               <b-form-group
@@ -216,9 +225,11 @@ export default {
   components: { AttendanceDonut, BadgePopover },
   data() {
     return {
+      rostersData: [],
+      rosterTeam: "None",
       attendanceStatistic: {
         risky: [{ value: 100, color: "#ffc107", number: 0 }],
-        danger: [{ value: 100, color: "#dc3545", number: 0 }]
+        danger: [{ value: 100, color: "#dc3545", number: 0 }],
       },
       employees: [],
       checkedIn: false,
@@ -227,19 +238,19 @@ export default {
         {
           key: "avatar",
           label: "",
-          sortable: false
+          sortable: false,
         },
         {
           key: "name",
           label: "Employee",
           sortable: true,
-          sortDirection: "desc"
+          sortDirection: "desc",
         },
         {
           key: "department",
           label: "Department",
           sortable: true,
-          class: "text-center"
+          class: "text-center",
         },
         {
           key: "status",
@@ -258,8 +269,8 @@ export default {
           },
           sortable: true,
           sortByFormatted: true,
-          filterByFormatted: true
-        }
+          filterByFormatted: true,
+        },
       ],
       numRisky: 0,
       numDanger: 0,
@@ -273,18 +284,18 @@ export default {
       sortDirection: "asc",
       filter: {
         department: "All",
-        name: ""
+        name: "",
       },
       filterOptions: ["All"],
-      headVariant: "dark"
+      headVariant: "dark",
     };
   },
   computed: {
     sortOptions() {
       // Create an options list from our fields
       return this.fields
-        .filter(f => f.sortable)
-        .map(f => {
+        .filter((f) => f.sortable)
+        .map((f) => {
           return { text: f.label, value: f.key };
         });
     },
@@ -293,41 +304,66 @@ export default {
         return {
           color: "#008000",
           "text-align": "left",
-          "font-size": "2.5vh"
+          "font-size": "2.5vh",
         };
       } else if (this.userInfo.status == "Risky") {
         return {
           color: "#FFA500",
           "text-align": "left",
-          "font-size": "2.5vh"
+          "font-size": "2.5vh",
         };
       } else if (this.userInfo.status == "Danger") {
         return {
           color: "#FF0000",
           "text-align": "left",
-          "font-size": "2.5vh"
+          "font-size": "2.5vh",
         };
       } else {
         return {
           color: "#000000",
           "text-align": "left",
-          "font-size": "2.5vh"
+          "font-size": "2.5vh",
         };
       }
-    }
+    },
   },
   mounted() {
     this.fetchData();
   },
   methods: {
-    fetchData: function() {
+    fetchData: function () {
       var user = auth.currentUser;
       this.userId = user.uid;
+      //get roster
+      database
+        .collection("rosters")
+        .get()
+        .then((rosters) =>
+          rosters.forEach((roster) => {
+            let rosterRecord = {
+              name: roster.data().name,
+              schedule: roster.data().schedule,
+              selectedEmp: [],
+              startDate: roster.data().startDate,
+              endDate: roster.data().endDate,
+            };
+            this.rostersData.push(rosterRecord);
+
+            roster
+              .data()
+              .selectedEmp.forEach((empRef) =>
+                empRef
+                  .get()
+                  .then((emp) => rosterRecord.selectedEmp.push(emp.id))
+              );
+          })
+        );
+
       database
         .collection("departments")
         .get()
-        .then(departments =>
-          departments.forEach(department =>
+        .then((departments) =>
+          departments.forEach((department) =>
             this.filterOptions.push(department.data().name)
           )
         );
@@ -335,8 +371,8 @@ export default {
       database
         .collection("employees")
         .get()
-        .then(querySnapShot => {
-          querySnapShot.forEach(employee => {
+        .then((querySnapShot) => {
+          querySnapShot.forEach((employee) => {
             let employeeData = employee.data();
             //console.log(employee.data())
             let records = {
@@ -351,21 +387,23 @@ export default {
               lastCheck: {},
               status: "Out of Office",
               statusType: "secondary",
-              office: ""
+              office: "",
             };
             this.employees.push(records);
-            this.userInfo = this.employees.filter(x => x.uid == this.userId)[0];
+            this.userInfo = this.employees.filter(
+              (x) => x.uid == this.userId
+            )[0];
             this.totalRows = this.employees.length;
 
-            employeeData.unit.get().then(unit => {
+            employeeData.unit.get().then((unit) => {
               unit = unit.data();
               records.unit = unit.name;
 
-              unit.location.get().then(location => {
+              unit.location.get().then((location) => {
                 records.office = location.data().name;
               });
 
-              unit.department.get().then(department => {
+              unit.department.get().then((department) => {
                 records.department = department.data().name;
               });
             });
@@ -376,8 +414,8 @@ export default {
               .limit(1)
               //.where("Temperature", "==",36.5)
               .get()
-              .then(snap => {
-                snap.forEach(checkInRecord => {
+              .then((snap) => {
+                snap.forEach((checkInRecord) => {
                   /*console.log(
                     DateTime.fromSeconds(checkInRecord.data().checkIn.seconds)
           
@@ -390,7 +428,7 @@ export default {
                     fluFlag: checkInRecord.data().fluFlag,
                     shnFlag: checkInRecord.data().shnFlag,
                     contactFlag: checkInRecord.data().contactFlag,
-                    temperature: checkInRecord.data().temperature
+                    temperature: checkInRecord.data().temperature,
                   };
 
                   records.status =
@@ -418,6 +456,26 @@ export default {
               });
           });
         });
+    },
+    getRoster(employeeId) {
+      try {
+        return this.rostersData
+          .filter((x) => x.selectedEmp.includes(employeeId))
+          .filter((x) => {
+            //let start = DateTime.fromISO(x.startDate)
+            let end = DateTime.fromISO(x.endDate);
+            let today = DateTime.fromISO(DateTime.local().toISODate());
+            return end.diff(today, ["days"]).toObject().days > 0;
+          })
+          .sort((a, b) => {
+            let aStart = DateTime.fromISO(a.StartDate);
+            let bStart = DateTime.fromISO(b.StartDate);
+            return aStart.diff(bStart, ["days"]).toObject().days;
+          })[0];
+      } catch (err) {
+        err;
+        return { name: "none", schedule: "You are not assigned to a roster" };
+      }
     },
     evaluateStatus(fluFlag, shnFlag, contactFlag, temperature, checkIn) {
       let status = "Out of Office";
@@ -507,7 +565,7 @@ export default {
       } catch (err) {
         err;
       }
-      return "None";  
+      return "None";
     },
     checkOut() {
       let userId = auth.currentUser.uid;
@@ -516,34 +574,34 @@ export default {
         .where("uid", "==", userId)
         .limit(1)
         .get()
-        .then(emps =>
-          emps.forEach(emp => {
+        .then((emps) =>
+          emps.forEach((emp) => {
             database
               .collection("checkIn")
               .where("employee", "==", emp.id)
               .get()
-              .then(checkins =>
-                checkins.forEach(checkin => {
+              .then((checkins) =>
+                checkins.forEach((checkin) => {
                   let checkinid = checkin.id;
                   let curTime = firebase.firestore.FieldValue.serverTimestamp();
                   database
                     .collection("checkIn")
                     .doc(checkinid)
                     .update({
-                      checkOut: curTime
+                      checkOut: curTime,
                     })
-                    .then(x => {
+                    .then((x) => {
                       x;
                       this.$router
                         .push({ path: "/checkoutsuccess" })
-                        .catch(error => error);
+                        .catch((error) => error);
                     });
                 })
               );
           })
         );
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
@@ -593,7 +651,6 @@ p {
 small {
   font-size: 1vw;
 }
-
 
 .card-header {
   padding: 0.5vw;

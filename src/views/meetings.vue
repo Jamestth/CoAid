@@ -59,7 +59,7 @@ export default {
         {
           key: "status",
           label: "Status",
-          sortable: true
+          sortable: false
         }
       ]
     };

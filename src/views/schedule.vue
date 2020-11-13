@@ -5,7 +5,7 @@
       <b-col cols="8">
         <h2>Here's your schedule, James</h2>
         <br />
-        <h1>You are in {{this.name}}</h1>
+        <h1>You are in {{ this.name }}</h1>
       </b-col>
       <b-col></b-col>
     </b-row>
@@ -58,14 +58,13 @@ import { auth, database } from "../assets/firebase";
 // Or just use in separate component
 export default {
   components: {
-    Calendar //,
+    Calendar, //,
     //DatePicker
   },
   data() {
     return {
       attrs: [],
       name: "",
-
     };
   },
   created() {
@@ -79,21 +78,21 @@ export default {
       database
         .collection("employees")
         .get()
-        .then(emps =>
-          emps.forEach(emp => {
+        .then((emps) =>
+          emps.forEach((emp) => {
             if (emp.data().uid == userId) {
               empId = emp.id;
             }
           })
         );
-        
+
       database
         .collection("rosters")
         .get()
-        .then(rosters =>{
-          rosters.forEach(roster => {
+        .then((rosters) => {
+          rosters.forEach((roster) => {
             let emps = roster.data().selectedEmp;
-            if(emps.map(x => x.eid).includes(empId)){
+            if (emps.map((x) => x.eid).includes(empId)) {
               console.log(roster.data().startDate);
               this.name = roster.data().name;
               let attr = {
@@ -102,15 +101,14 @@ export default {
                   start: new Date(roster.data().startDate),
                   end: new Date(roster.data().endDate),
                   weekdays: [2, 3, 4, 5, 6],
-                  weeklyInterval: 2
-                }
+                  weeklyInterval: 2,
+                },
               };
-              this.attrs.push(attr); 
+              this.attrs.push(attr);
             }
           });
-        }
-        );
-    }
-  }
+        });
+    },
+  },
 };
 </script>
