@@ -4,10 +4,9 @@
       <b-col></b-col>
       <b-col cols="8">
         <br />
-        <h2>Here's your schedule, {{ this.userInfo.data().name }}</h2>
         <br />
         <h1 v-if="this.name != ''">
-          You are in Roster: <b>{{ this.name }}</b>
+          You are in <b>{{ this.name }}</b>
         </h1>
         <h1 v-else>You are not in any roster</h1>
       </b-col>
@@ -16,13 +15,13 @@
 
     <b-row>
       <b-col cols="1"></b-col>
-      <b-col cols="3">
-        <h3>Calendar</h3>
+      <b-col cols="3"><br>
+        <h3>Schedule</h3><br>
         <Calendar color="blue" :attributes="attrs" is-expanded is-light />
       </b-col>
 
-      <b-col cols="3">
-        <h3>Your Roster</h3>
+      <b-col cols="3"><br>
+        <h3>Employees in {{ this.name }}</h3>
         <br />
         <b-list-group>
           <b-list-group-item
@@ -35,8 +34,8 @@
           </b-list-group-item>
         </b-list-group>
       </b-col>
-      <b-col cols="3">
-        <h2>Other Rosters</h2>
+      <b-col cols="3"><br>
+        <h3>Other Rosters</h3>
         <b-form-select
           v-model="activeRoster"
           @change.native="updateEmp"
@@ -200,3 +199,18 @@ export default {
   }
 };
 </script>
+
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@500");
+
+<style scoped>
+h1 {
+  font-family: "DM Sans", sans-serif !important;
+  padding: 15px;
+  font-size: 30px;
+  text-align: center;
+}
+/deep/.list-group-item-dark {
+  background-color: #ffffff;
+}
+
+</style>
