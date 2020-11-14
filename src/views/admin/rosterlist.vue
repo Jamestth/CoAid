@@ -6,8 +6,13 @@
         Create Roster
       </b-button>
     </h1>
+    <b-row>
+      <b-col></b-col>
+      <b-col cols = "8">
     <b-table hover :items="rosters" :fields="fields"></b-table>
-
+      </b-col>
+     <b-col></b-col>
+    </b-row>
     <b-modal ref="modal" title="Create a new Roster">
       <h1>
         Create a new Roster
@@ -330,5 +335,13 @@ td img {
 }
 /deep/.multiselect_single {
   width: 10px;
+}
+
+/deep/ .p[data-v-fae5bece] {
+  padding: 5px;
+}
+/deep/ .table th {
+  color: #fff;
+  background-color: darkblue !important;
 }
 </style>
