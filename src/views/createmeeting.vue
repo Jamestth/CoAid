@@ -66,7 +66,7 @@
   </b-col>
         </b-row>
         <b-row>
-          <b-col>Locations: </b-col>
+          <b-col>Location: </b-col>
           <b-col>              
             <multiselect
                         select-label=""
