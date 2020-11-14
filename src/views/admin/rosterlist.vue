@@ -9,7 +9,7 @@
     <b-row>
       <b-col></b-col>
       <b-col cols = "8">
-    <b-table hover :items="rosters" :fields="fields"></b-table>
+    <b-table hover :items="rosters" :fields="fields" :key="rosters"></b-table>
       </b-col>
      <b-col></b-col>
     </b-row>
@@ -203,6 +203,7 @@ export default {
   },
   methods: {
     fetchData: function() {
+      this.rosters = [];
       database
         .collection("rosters")
         .get()
@@ -263,7 +264,9 @@ export default {
         .then(x => {
           x;
           console.log("Document successfully written!");
-          this.$router.push({ path: "/setroster" }).catch(error => error);
+          this.$router.push({ path: "/rosterlist" }).catch(error => error);
+          this.$refs["modal"].hide();
+          this.fetchData();
         })
         .catch(function(error) {
           console.error("Error writing document: ", error);
