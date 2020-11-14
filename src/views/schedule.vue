@@ -15,8 +15,8 @@
 
     <b-row>
       <b-col cols="1"></b-col>
-      <b-col cols="3"><br>
-        <h3>Schedule</h3><br>
+      <b-col cols="3"><br><br><br><br>
+        <h3>Schedule</h3>
         <Calendar color="blue" :attributes="attrs" is-expanded is-light />
       </b-col>
 
