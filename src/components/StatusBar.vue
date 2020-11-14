@@ -17,7 +17,7 @@ import { DateTime } from "luxon";
 export default {
   props: ["data", "selectedDay"],
   components: {
-    LineChart
+    LineChart,
   },
   data() {
     return {
@@ -27,32 +27,32 @@ export default {
       checkIn: [],
       dataset: {
         labels: [],
-        datasets: []
+        datasets: [],
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
         title: {
-          display: false
+          display: false,
         },
 
         scales: {
           xAxes: [
             {
               gridLines: {
-                display: false
-              }
-            }
+                display: false,
+              },
+            },
           ],
           yAxes: [
             {
               gridLines: {
-                display: false
-              }
-            }
-          ]
-        }
-      }
+                display: false,
+              },
+            },
+          ],
+        },
+      },
     };
   },
   mounted() {
@@ -66,15 +66,15 @@ export default {
     this.formatData();
   },
   watch: {
-    props: function() {
+    props: function () {
       this.formatData();
     },
-    chartWidth: function() {
+    chartWidth: function () {
       this.sizeChange++;
     },
-    chartHeight: function() {
+    chartHeight: function () {
       this.sizeChange++;
-    }
+    },
   },
   methods: {
     onResize(event) {
@@ -92,7 +92,7 @@ export default {
     },
     formatData() {
       var i;
-      this.$props.data.forEach(x => {
+      this.$props.data.forEach((x) => {
         let record = {
           checkIn: DateTime.fromSeconds(x.checkIn.seconds),
           status: this.evaluateStatus(
@@ -100,7 +100,7 @@ export default {
             x.shnFlag,
             x.contactFlag,
             x.temperature
-          )
+          ),
         };
         this.checkIn.push(record);
       });
@@ -109,28 +109,29 @@ export default {
         borderColor: "#ffc107",
         backgroundColor: "rgba(255, 193, 7, 0.1)",
         fill: true,
-        data: []
+        data: [],
       };
       let DangerData = {
         label: "Danger",
         borderColor: "#dc3545",
         backgroundColor: "rgba(255, 10, 13, 0.1)",
         fill: true,
-        data: []
+        data: [],
       };
 
-      for (i = -this.$props.selectedDay.value; i >= 0; i--) { 
+      for (i = -this.$props.selectedDay.value; i >= 0; i--) {
         let curDay = DateTime.local().minus({ days: i });
         this.dataset.labels.push(curDay.toFormat("dd LLL"));
-        let curDayCheckins = this.checkIn.filter(x => {
-          return x.checkIn.diff(curDay, ["days", "hours"]).toObject().days == 0;
+        let curDayCheckins = this.checkIn.filter((x) => {
+          let difftime = x.checkIn.diff(curDay, ["days", "hours"]).toObject();
+          return difftime.days == 0 && difftime.hours >= 0;
         });
         if (curDayCheckins) {
           RiskyData.data.push(
-            curDayCheckins.filter(x => x.status == "Risky").length
+            curDayCheckins.filter((x) => x.status == "Risky").length
           );
           DangerData.data.push(
-            curDayCheckins.filter(x => x.status == "Danger").length
+            curDayCheckins.filter((x) => x.status == "Danger").length
           );
         } else {
           RiskyData.data.push(0);
@@ -154,8 +155,8 @@ export default {
         status = "Out of Office";
       }
       return status;
-    }
-  }
+    },
+  },
 };
 </script>
 

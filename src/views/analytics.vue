@@ -232,10 +232,12 @@ export default {
   methods: {
     updateFilter() {
       let filteredDepts = this.selectedDepartments.map((x) => x.id);
-
+      this.filteredCheckIn = this.checkIn
+/*
       this.filteredCheckIn = this.checkIn.filter((x) =>
         filteredDepts.includes(x.departmentid)
       );
+      */
 
       this.filteredCheckIn = this.filteredCheckIn.filter((x) => {
         return (
@@ -288,9 +290,14 @@ export default {
       var dates = {};
       this.filteredCheckIn.forEach((entry) => {
         var date = entry.checkIn.toDate();
+        var date2 = DateTime.fromSeconds(entry.checkIn.seconds).toFormat("DD")
+                   console.log(date);
+                                   console.log(date2);
         date.setHours(0, 0, 0, 0);
         dates[date] = (dates[date] || 0) + 1;
+
       });
+
       for (var date in dates) {
         var attr = {
           bar: true,
@@ -301,7 +308,7 @@ export default {
             hideIndicator: true,
           },
         };
-        console.log(typeof date);
+   
 
         this.calattr.push(attr);
       }
@@ -438,6 +445,7 @@ export default {
   padding: 30px;
 }
 /deep/.multiselect__select {
+  right:10px
 }
 /deep/.multiselect {
   width: 18vw;
