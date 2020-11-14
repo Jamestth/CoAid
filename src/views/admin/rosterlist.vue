@@ -1,28 +1,272 @@
 <template>
-    <b-container fluid>
-      <h1>
+  <b-container fluid>
+    <h1>
       Roster List
+      <b-button @click="newRoster">
+        Create Roster
+      </b-button>
     </h1>
-    <b-table hover :items="rosters"></b-table>
-    </b-container>
+    <b-table hover :items="rosters" :fields="fields"></b-table>
+
+    <b-modal ref="modal" title="Create a new Roster">
+      <h1>
+        Create a new Roster
+      </h1>
+      <b-form>
+        <b-row>
+          <b-col />
+          <b-col cols="10" class="pt-5">
+            <b-form-group
+              label-cols-sm="4"
+              label-cols-md="3"
+              id="input-group-2"
+              label="Name: "
+              label-for="input-2"
+              label-align="left"
+            >
+              <b-form-input
+                id="input-1"
+                type="text"
+                placeholder="Enter your name"
+                required
+                v-model="form.name"
+              ></b-form-input>
+            </b-form-group>
+          </b-col>
+          <b-col />
+        </b-row>
+        <b-row>
+          <b-col />
+          <b-col cols="10">
+            <b-form-group
+              label-cols-sm="4"
+              label-cols-md="3"
+              id="input-group-2"
+              label="Schedule: "
+              label-for="input-2"
+              label-align="left"
+            >
+              <b-form-radio-group
+                id="input-2"
+                :options="options"
+                class="mb-3"
+                value-field="item"
+                text-field="name"
+                disabled-field="notEnabled"
+                v-model="form.schedule"
+              ></b-form-radio-group>
+            </b-form-group>
+          </b-col>
+          <b-col />
+        </b-row>
+        <b-row>
+          <b-col />
+          <b-col cols="10">
+            <b-form-group
+              label-cols-sm="4"
+              label-cols-md="3"
+              id="input-group-3"
+              label="Start Date:"
+              label-for="input-2"
+              label-align="left"
+            >
+              <b-form-input
+                id="input-3"
+                type="date"
+                v-model="form.startDate"
+                required
+              ></b-form-input>
+            </b-form-group>
+          </b-col>
+          <b-col />
+        </b-row>
+        <b-row>
+          <b-col />
+          <b-col cols="10">
+            <b-form-group
+              label-cols-sm="4"
+              label-cols-md="3"
+              id="input-group-4"
+              label="End Date:"
+              label-for="input-2"
+              label-align="left"
+            >
+              <b-form-input
+                id="input-4"
+                type="date"
+                v-model="form.endDate"
+                required
+              ></b-form-input>
+            </b-form-group>
+          </b-col>
+          <b-col />
+        </b-row>
+        <b-row>
+          <b-col />
+          <b-col cols="10">
+            <b-form-group
+              label-cols-sm="4"
+              label-cols-md="3"
+              id="input-group-5"
+              label="Team Member: "
+              label-for="input-5"
+              label-align="left"
+            >
+              <multiselect
+                select-label=""
+                :show-labels="false"
+                :limit="4"
+                track-by="name"
+                label="name"
+                v-model="selectedEmp"
+                :options="employees"
+                :close-on-select="false"
+                multiple
+              ></multiselect>
+            </b-form-group>
+          </b-col>
+          <b-col />
+        </b-row>
+      </b-form>
+
+      <template #modal-footer>
+        <div class="w-100">
+          <b-button class="cusbtn" style="float:right" @click="submit"
+            >Submit</b-button
+          >
+        </div>
+      </template>
+    </b-modal>
+  </b-container>
 </template>
 
 <script>
-//import Multiselect from "vue-multiselect";
+import { database } from "../../assets/firebase.js";
+import { DateTime } from "luxon";
+import Multiselect from "vue-multiselect";
+
 export default {
-  components: {  },
+  components: {
+    Multiselect
+  },
   data() {
     return {
-      status1: "not_accepted",
-      status2: "not_accepted",
-      status3: "not_accepted",
+      rosters: [],
+      fields: [
+        {
+          key: "name",
+          label: "Name",
+          sortable: true
+        },
+        {
+          key: "schedule",
+          label: "Schedule",
+          sortable: true
+        },
+        {
+          key: "nEmployees",
+          label: "Number of Employees",
+          sortable: true
+        },
+        {
+          key: "startDate",
+          label: "Start Date",
+          sortable: true
+        },
+
+        {
+          key: "endDate",
+          label: "End Date",
+          sortable: true,
+          sortDirection: "desc"
+        }
+      ],
+      form: {
+        name: "",
+        schedule: "",
+        startDate: "",
+        endDate: ""
+      },
       value: null,
       selectedEmp: null,
-      rosters: [
-        { name: "A", quantity: 3, startdate: "01/01/2001", enddate: "02/02/2002", schedule: "even"},
-        { name: "B", quantity: 5, startdate: "01/01/2001", enddate: "02/02/2002", schedule: "odd"}
+      employees: [],
+      options: [
+        { item: "ODD", name: "Odd" },
+        { item: "EVEN", name: "Even" }
       ]
     };
+  },
+  methods: {
+    fetchData: function() {
+      database
+        .collection("rosters")
+        .get()
+        .then(rosters => {
+          rosters.forEach(roster => {
+            var rosterData = roster.data();
+            console.log(new Date(rosterData.startDate).getTime() / 1000);
+            var s = new Date(rosterData.startDate);
+            var e = new Date(rosterData.endDate);
+            console.log(
+              DateTime.fromSeconds(s.getTime() / 1000).toFormat("DD")
+            );
+            var rst = {
+              name: rosterData.name,
+              schedule: rosterData.schedule,
+              nEmployees: rosterData.selectedEmp.length,
+              startDate: DateTime.fromSeconds(s.getTime() / 1000).toFormat(
+                "DD"
+              ),
+              endDate: DateTime.fromSeconds(e.getTime() / 1000).toFormat("DD")
+            };
+            this.rosters.push(rst);
+          });
+        });
+      database
+        .collection("employees")
+        .get()
+        .then(emps =>
+          emps.forEach(emp => {
+            let empRecord = {
+              name: emp.data().name,
+              eid: emp.id,
+              ref: database.doc("/employees/" + emp.id)
+            };
+            this.employees.push(empRecord);
+          })
+        );
+    },
+    newRoster() {
+      this.$refs["modal"].show();
+    },
+    submit() {
+      console.log("This is called");
+      const name = this.form.name;
+      const schedule = this.form.schedule;
+      const startDate = this.form.startDate;
+      const endDate = this.form.endDate;
+      const selectedEmp = this.selectedEmp;
+      database
+        .collection("rosters")
+        .add({
+          name: name,
+          schedule: schedule,
+          startDate: startDate,
+          endDate: endDate,
+          selectedEmp: selectedEmp.map(x => x.ref)
+        })
+        .then(x => {
+          x;
+          console.log("Document successfully written!");
+          this.$router.push({ path: "/setroster" }).catch(error => error);
+        })
+        .catch(function(error) {
+          console.error("Error writing document: ", error);
+        });
+    }
+  },
+  created() {
+    this.fetchData();
   }
 };
 </script>

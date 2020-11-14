@@ -103,6 +103,12 @@ const routes = [
     component: () => import("../views/admin/setroster.vue"),
     meta: { requiresAuth: true },
   },
+  {
+    path: "/rosters",
+    name: "Roster List",
+    component: () => import("../views/admin/rosterlist.vue"),
+    meta: { requiresAuth: true },
+  },
 ];
 
 const router = new VueRouter({
