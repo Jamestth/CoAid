@@ -115,7 +115,12 @@
       <div class="chart-item">
         <label class="title">Check-ins per Day</label>
         <div class="chart-box">
-          <Calendar color="blue" :attributes="calattr" is-expanded />
+          <Calendar
+            :key="fetchedCheckDeptFlag"
+            color="blue"
+            :attributes="calattr"
+            is-expanded
+          />
         </div>
       </div>
 
@@ -279,6 +284,27 @@ export default {
           contactedAllempsId.includes(empid)
         );
       });
+      this.calattr = [];
+      var dates = {};
+      this.filteredCheckIn.forEach((entry) => {
+        var date = entry.checkIn.toDate();
+        date.setHours(0, 0, 0, 0);
+        dates[date] = (dates[date] || 0) + 1;
+      });
+      for (var date in dates) {
+        var attr = {
+          bar: true,
+          dates: new Date(date),
+          popover: {
+            label: dates[date].toString() + " check-ins",
+            visibility: "hover",
+            hideIndicator: true,
+          },
+        };
+        console.log(typeof date);
+
+        this.calattr.push(attr);
+      }
 
       //     this.filteredContacts = this.employees
 
@@ -390,33 +416,6 @@ export default {
             this.selectedContacts.push(empRecord);
           });
         });
-
-      database
-        .collection("checkIn")
-        .get()
-        .then((entries) => {
-          var dates = {};
-          entries.forEach((entry) => {
-            var date = entry.data().checkIn.toDate();
-            date.setHours(0, 0, 0, 0);
-            dates[date] = (dates[date] || 0) + 1;
-          });
-          for (var date in dates) {
-            var attr = {
-              bar: true,
-              dates: new Date(date),
-              popover: {
-                label: dates[date].toString() + " check-ins",
-                visibility: "hover",
-                hideIndicator: true,
-              },
-            };
-            console.log(typeof date);
-
-            this.calattr.push(attr);
-          }
-        });
-      console.log(this.calattr);
     },
   },
 };
@@ -507,13 +506,13 @@ export default {
 }
 .listbox {
   width: 37vw;
-  height: 37vh;
+  height: 36.8vh;
   align-items: center;
   overflow-y: scroll;
   overflow-x: hidden;
 }
 .chart-box {
-  width: 35vw;
+  width: 36.9vw;
   height: 37vh;
 }
 </style>
