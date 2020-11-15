@@ -43,18 +43,6 @@ const routes = [
     meta: { requiresAuth: false },
   },
   {
-    path: "/setroster",
-    name: "setroster",
-    component: () => import("../views/admin/setroster.vue"),
-    meta: { requiresAuth: false },
-  },
-  {
-    path: "/rosterlist",
-    name: "rosterlist",
-    component: () => import("../views/admin/rosterlist.vue"),
-    meta: { requiresAuth: false },
-  },
-  {
     path: "/schedule",
     name: "Schedule",
     component: () => import("../views/schedule.vue"),
@@ -95,12 +83,6 @@ const routes = [
     path: "/meetingsuccess",
     name: "Meetingsuccess",
     component: () => import("../views/meetingsuccess.vue"),
-    meta: { requiresAuth: true },
-  },
-  {
-    path: "/setroster",
-    name: "Set Roster",
-    component: () => import("../views/admin/setroster.vue"),
     meta: { requiresAuth: true },
   },
   {

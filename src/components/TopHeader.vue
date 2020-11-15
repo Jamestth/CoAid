@@ -25,7 +25,7 @@
             <b-nav-item v-if="isAdmin()" class="pr-3 p-2" to="/analytics"
               >Analytics</b-nav-item
             >
-            <b-nav-item v-if="isAdmin()" class="pr-3 p-2" to="/rosterlist"
+            <b-nav-item v-if="isAdmin()" class="pr-3 p-2" to="/rosters"
               >Rostering</b-nav-item
             >
 

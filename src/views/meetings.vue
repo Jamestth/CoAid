@@ -6,7 +6,7 @@
         to="/createmeeting"
         tag="button"
         class="btn ml-3"
-        style="margin:0"
+        style="margin: 0"
         >Create meeting</router-link
       >
     </h1>
@@ -28,7 +28,7 @@ import { database, auth } from "../assets/firebase.js";
 import SwitchPopover from "../components/SwitchPopover";
 export default {
   components: {
-    SwitchPopover
+    SwitchPopover,
   },
   data() {
     return {
@@ -37,42 +37,42 @@ export default {
         {
           key: "name",
           label: "Name",
-          sortable: true
+          sortable: true,
         },
         {
           key: "location",
           label: "Location",
-          sortable: true
+          sortable: true,
         },
         {
           key: "start",
           label: "Start",
           sortable: true,
-          sortDirection: "desc"
+          sortDirection: "desc",
         },
         {
           key: "end",
           label: "End",
-          sortable: true
+          sortable: true,
         },
 
         {
           key: "status",
           label: "Status",
-          sortable: false
-        }
-      ]
+          sortable: false,
+        },
+      ],
     };
   },
   methods: {
-    fetchData: function() {
+    fetchData: function () {
       let userID = auth.currentUser.uid;
 
       database
         .collection("meetings")
         .get()
-        .then(snapshot =>
-          snapshot.forEach(meetingrecords => {
+        .then((snapshot) =>
+          snapshot.forEach((meetingrecords) => {
             let record = {
               meetingId: meetingrecords.id,
               employeeID: [],
@@ -87,27 +87,27 @@ export default {
               name: meetingrecords.data().name,
               location: "",
               status: false,
-              isEnded: false
+              isEnded: false,
             };
             //accepted meeting
             meetingrecords
               .data()
-              .accepted.forEach(x =>
-                x.get().then(y => record.accepted.push(y.id))
+              .accepted.forEach((x) =>
+                x.get().then((y) => record.accepted.push(y.id))
               );
 
             meetingrecords
               .data()
               .location.get()
-              .then(loc => (record.location = loc.data().name));
+              .then((loc) => (record.location = loc.data().name));
             if (meetingrecords.size != 0) {
-              meetingrecords.data().employees.forEach(emp => {
-                emp.get().then(empdata => {
+              meetingrecords.data().employees.forEach((emp) => {
+                emp.get().then((empdata) => {
                   let empRecords = {
                     name: empdata.data().name,
                     avatar: empdata.data().avatar,
                     employeeId: empdata.id,
-                    isAccepted: record.accepted.includes(empdata.id)
+                    isAccepted: record.accepted.includes(empdata.id),
                   };
                   record.employees.push(empRecords);
                   record.employeeID.push(empdata.id);
@@ -117,17 +117,13 @@ export default {
                   );
                   let currentTime = DateTime.local();
                   if (empdata.data().uid == userID) {
-                    if (
-                      currentTime < endTime &&
-                      record.employees.includes(empdata.id)
-                    ) {
-                      record.status = true;
-                    } else if (
-                      currentTime >= endTime
-                      //record.employees.includes(empdata.id)
-                    ) {
+                    if (currentTime >= endTime) {
                       record.isEnded = true;
                     }
+                    record.status = record.employees
+                      .filter((x) => x.isAccepted)
+                      .map((x) => x.employeeId)
+                      .includes(empdata.id);
                     this.meetingsData.push(record);
                   }
                 });
@@ -135,18 +131,17 @@ export default {
             }
           })
         );
-    }
+    },
   },
   mounted() {
     this.fetchData();
-  }
+  },
 };
 </script>
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@500");
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@500");
-
 
 h1 {
   font-family: "DM Sans", sans-serif !important;

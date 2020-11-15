@@ -240,7 +240,6 @@ export default {
               })
               .then(x => {
                 x;
-                //console.log("Document successfully written!");
                 this.$router.push({ path: "/" }).catch(error => error);
               })
               .catch(function(error) {
@@ -256,24 +255,6 @@ export default {
       } else {
         alert("Password does not match");
       }
-
-      // database
-      //   .collection("employees")
-      //   .add({
-      //     name: this.form.name,
-      //     phone: this.form.phone,
-      //     email: this.form.email,
-      //     uid: myuid,
-      //     unit: this.form.unit,
-      //     avatar: ""
-      //   })
-      //   .then(function() {
-      //     console.log("Document successfully written!");
-      //   })
-      //   .catch(function(error) {
-      //     console.error("Error writing document: ", error);
-      //   });
-      //console.log("Finally!");
     }
   }
 };

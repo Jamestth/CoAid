@@ -378,7 +378,6 @@ export default {
         .then((querySnapShot) => {
           querySnapShot.forEach((employee) => {
             let employeeData = employee.data();
-            //console.log(employee.data())
             let records = {
               eid: employee.id,
               uid: employeeData.uid,
@@ -432,19 +431,13 @@ export default {
               .where("employee", "==", employee.id)
               .orderBy("checkIn", "desc")
               .limit(1)
-              //.where("Temperature", "==",36.5)
+
               .get()
               .then((snap) => {
                 snap.forEach((checkInRecord) => {
-                  /*console.log(
-                    DateTime.fromSeconds(checkInRecord.data().checkIn.seconds)
-          
-                  )*/
-
                   records.lastCheck = {
                     checkIn: checkInRecord.data().checkIn,
                     checkOut: checkInRecord.data().checkOut,
-                    //location: checkInRecord.data().location,
                     fluFlag: checkInRecord.data().fluFlag,
                     shnFlag: checkInRecord.data().shnFlag,
                     contactFlag: checkInRecord.data().contactFlag,
@@ -518,7 +511,6 @@ export default {
           })[0];
       } catch (err) {
         err;
-        console.log("hi");
         return { name: "none", schedule: "You are not assigned to a roster" };
       }
       if (output) {

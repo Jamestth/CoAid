@@ -210,12 +210,8 @@ export default {
         .then(rosters => {
           rosters.forEach(roster => {
             var rosterData = roster.data();
-            console.log(new Date(rosterData.startDate).getTime() / 1000);
             var s = new Date(rosterData.startDate);
             var e = new Date(rosterData.endDate);
-            console.log(
-              DateTime.fromSeconds(s.getTime() / 1000).toFormat("DD")
-            );
             var rst = {
               name: rosterData.name,
               schedule: rosterData.schedule,
@@ -246,7 +242,6 @@ export default {
       this.$refs["modal"].show();
     },
     submit() {
-      console.log("This is called");
       const name = this.form.name;
       const schedule = this.form.schedule;
       const startDate = this.form.startDate;
@@ -263,8 +258,7 @@ export default {
         })
         .then(x => {
           x;
-          console.log("Document successfully written!");
-          this.$router.push({ path: "/rosterlist" }).catch(error => error);
+          this.$router.push({ path: "/rosters" }).catch(error => error);
           this.$refs["modal"].hide();
           this.fetchData();
         })
